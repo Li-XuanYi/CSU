@@ -1,0 +1,352 @@
+% !Mode:: "TeX:UTF-8"
+\documentclass[12pt,a4paper]{article}
+% \usepackage{ctex} % chinese support
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage[vlined,boxed,ruled]{algorithm2e} %%不加end
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance,mathtools}
+\usepackage{wrapfig}
+\usepackage{mathrsfs, euscript}
+\usepackage[dvipsnames,table,xcdraw]{xcolor}
+\usepackage{hyperref}
+\usepackage{caption}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+{\setlength{\epsfxsize}{#2\hsize}
+\centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof]
+{\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist
+\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse}
+\makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution]
+{\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist
+\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse}
+\makeatother
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+        \Large{\textbf{A Demo for Algorithm2e}}\vspace{1mm}\\
+Help Document for CS2312-Algorithm and Complexity, Xiaofeng Gao@SJTU}}
+
+\begin{enumerate}
+
+    \item {\color{blue}\textbf{An example of If statements (with
+        source code on the left and samples on the right):}}
+
+        \begin{minipage}[t]{0.5\textwidth}
+
+\begin{verbatim}
+\begin{algorithm}[H]
+    \LinesNumbered
+    \KwIn{$x$, $y$}
+    \KwOut{$sign$}
+    \BlankLine
+    \caption{$div(x,y)$} \label{Alg-div}
+    \eIf{$rm(x,y)=0$}{
+        $sign \leftarrow 1$\;
+    }{
+        $sign \leftarrow 0$\;
+    }
+    \Return{$sign$}\;
+\end{algorithm}
+\end{verbatim}
+        \end{minipage}
+        \hspace{2mm}
+        \begin{minipage}[t]{0.4\textwidth}
+            \begin{algorithm}[H]
+                \LinesNumbered
+                \KwIn{$x$, $y$}
+                \KwOut{$sign$}
+                \BlankLine
+                \caption{$div(x,y)$} \label{Alg-div}
+                \eIf{$rm(x,y)=0$}{
+                    $sign \leftarrow 1$\;
+                }{
+                    $sign \leftarrow 0$\;
+                }
+                \Return{$sign$}\;
+            \end{algorithm}
+        \end{minipage}
+
+    \item {\color{blue}\textbf{An example of If-ElseIf-Else statements:}}
+
+        \begin{minipage}[t]{0.5\textwidth}
+\begin{verbatim}
+\begin{algorithm}[H]
+    \LinesNumbered
+    \KwIn{$score$}
+    \KwOut{Letter Grade}
+    \BlankLine
+    \caption{LetterGrade($score$)}
+    \label{Alg-Score}
+
+    \uIf{$score \ge 90$}{
+        \textbf{output} $A$\;
+    }
+    \uElseIf{$80 \le score < 90$}{
+        \textbf{output} $B$\;
+    }
+    \Else{
+        \textbf{output} $P$\;
+    }
+\end{algorithm}
+\end{verbatim}
+        \end{minipage}
+        \hspace{2mm}
+        \begin{minipage}[t]{0.4\textwidth}
+            \begin{algorithm}[H]
+                \LinesNumbered
+                \KwIn{$score$}
+                \KwOut{Letter Grade}
+                \BlankLine
+                \caption{LetterGrade($score$)} \label{Alg-Score}
+
+                \uIf{$score \ge 90$}{
+                    \textbf{output} $A$\;
+                }
+                \uElseIf{$80 \le score < 90$}{
+                    \textbf{output} $B$\;
+                }
+                \Else{
+                    \textbf{output} $P$\;
+                }
+            \end{algorithm}
+        \end{minipage}
+
+    \item {\color{blue}\textbf{An example of While statements:}}
+
+        \begin{minipage}[t]{0.5\textwidth}
+\begin{verbatim}
+\begin{algorithm}[H]
+    \LinesNumbered
+    \KwIn{$x$, $y$}
+    \KwOut{$x$}
+    \BlankLine
+    \caption{$rm(x,y)$} \label{Alg-rm}
+    \While{$x \ge y$}{
+        $x-=y$\;
+    }
+    \textbf{output} $x$\;
+\end{algorithm}
+\end{verbatim}
+        \end{minipage}
+        \hspace{2mm}
+        \begin{minipage}[t]{0.4\textwidth}
+            \begin{algorithm}[H]
+                \LinesNumbered
+                \KwIn{$x$, $y$}
+                \KwOut{$x$}
+                \BlankLine
+                \caption{$rm(x,y)$} \label{Alg-rm}
+                \While{$x \ge y$}{
+                    $x-=y$\;
+                }
+                \textbf{output} $x$\;
+            \end{algorithm}
+        \end{minipage}
+
+        \newpage
+    \item {\color{blue}\textbf{An example of For statements:}}
+
+        \begin{minipage}[t]{0.5\textwidth}
+\begin{verbatim}
+\begin{algorithm}[H]
+    \LinesNumbered
+    \KwIn{$n \in \mathbb{N}$}
+    \KwOut{The sum from 1 to $n$}
+    \BlankLine
+    \caption{Sum($n$)} \label{Alg-Sum}
+    $sum \leftarrow 0$\;
+    \For{$temp=1$ to $n$}{
+        $sum \leftarrow sum+temp$\;
+    }
+    \textbf{output} $sum$\;
+\end{algorithm}
+\end{verbatim}
+        \end{minipage}
+        \hspace{2mm}
+        \begin{minipage}[t]{0.4\textwidth}
+            \begin{algorithm}[H]
+                \LinesNumbered
+                \KwIn{$n \in \mathbb{N}$}
+                \KwOut{The sum from 1 to $n$}
+                \BlankLine
+                \caption{Sum($n$)} \label{Alg-Sum}
+                $sum \leftarrow 0$\;
+                \For{$temp=1$ to $n$}{
+                    $sum \leftarrow sum+temp$\;
+                }
+                \textbf{output} $sum$\;
+            \end{algorithm}
+        \end{minipage}
+
+    \item {\color{blue}\textbf{An example of Repeat-Until statements:}}
+
+        \begin{minipage}[t]{0.5\textwidth}
+\begin{verbatim}
+\begin{algorithm}[H]
+    \LinesNumbered
+    \KwIn{$a, b \in \mathbb{N}$}
+    \KwOut{
+        Greatest common divisor of $a$, $b$
+    }
+    \BlankLine
+    \caption{GCD($a$, $b$)} \label{Alg-GCD}
+
+    \Repeat{$gcd=0$}{
+        $gcd \leftarrow a \mod b$\;
+        $a \leftarrow b$\;
+        $b \leftarrow gcd$\;
+    }
+    \textbf{output} $gcd$\;
+\end{algorithm}
+\end{verbatim}
+        \end{minipage}
+        \hspace{2mm}
+        \begin{minipage}[t]{0.4\textwidth}
+            \begin{algorithm}[H]
+                \LinesNumbered
+                \KwIn{$a, b \in \mathbb{N}$}
+                \KwOut{Greatest common divisor of $a$, $b$}
+                \BlankLine
+                \caption{GCD($a$, $b$)} \label{Alg-GCD}
+
+                \Repeat{$gcd=0$}{
+                    $gcd \leftarrow a \mod b$\;
+                    $a \leftarrow b$\;
+                    $b \leftarrow gcd$\;
+                }
+                \textbf{output} $gcd$\;
+            \end{algorithm}
+        \end{minipage}
+
+    \item {\color{blue}\textbf{An example of Case statements:}}
+
+        \begin{minipage}[t]{0.5\textwidth}
+\begin{verbatim}
+\begin{algorithm}[H]
+    \LinesNumbered
+    \KwIn{$person$}
+    \KwOut{$person$'s gender}
+    \BlankLine
+    \caption{Gender} \label{Alg-Gender}
+    \Switch{$person$}{
+        \uCase{$person.gender=male$}{
+            \textbf{output} Male\;
+        }
+        \uCase{$person.gender=female$}{
+            \textbf{output} Female\;
+        }
+        \Other{
+            \textbf{output} Unknown\;
+        }
+    }
+\end{algorithm}
+\end{verbatim}
+        \end{minipage}
+        \hspace{2mm}
+        \begin{minipage}[t]{0.4\textwidth}
+            \begin{algorithm}[H]
+                \LinesNumbered
+                \KwIn{$person$}
+                \KwOut{$person$'s gender}
+                \BlankLine
+                \caption{Gender} \label{Alg-Gender}
+                \Switch{$person$}{
+                    \uCase{$person.gender=male$}{
+                        \textbf{output} Male\;
+                    }
+                    \uCase{$person.gender=female$}{
+                        \textbf{output} Female\;
+                    }
+                    \Other{
+                        \textbf{output} Unknown\;
+                    }
+                }
+            \end{algorithm}
+        \end{minipage}
+
+    \item {\color{blue}\textbf{An example of complicated pseudocode:}}
+
+        \begin{minipage}[t]{0.9\textwidth}
+            \begin{algorithm}[H]
+                \SetCommentSty{small}
+                \LinesNumbered
+                \KwIn{Alert set $\mathcal{A}$.}
+                \KwOut{Flow rerouting set $\mathcal{M}_f^i$; VM migration
+                set $\mathcal{M}_g^i$}
+                \caption{Pre-Alert Management Procedure} \label{Alg_Check}
+                $\mathcal{M}_f^i=\varnothing$,
+                $\mathcal{M}_g^i=\varnothing$, $\textsc{Alert\_ToR}=\varnothing$\;
+                \While{$\mathcal{A} \neq \varnothing$}{
+                    Pick $\textsc{Alert}_x \in \mathcal{A}$\;
+                    \Switch{$\textsc{Alert}_x$}{
+                        \uCase{$\textsc{Alert}_x$ from $s_j$}{
+                            {\color{ForestGreen}\tcp{ Compute congestion
+                            alert from outer switch $s_j$}}
+                            $\mathcal{F}=\{m_{ij}^k\mid \exists \mbox{
+                                flows out from } m_{ij}^k \in h_{ij} \in v_i
+                            \mbox{ passing through } s_j\}$\;
+                            $\mathcal{M}_f^i = \mathcal{M}_f^i \cup
+                            \textsc{Priority}(\mathcal{F}, \alpha)$\;
+                        }
+                        \uCase{$\textsc{Alert}_x$ from local ToR}{
+                            $\textsc{Alert\_ToR}
+                            =\textsc{Alert\_ToR}\bigcup \{\textsc{Alert}_x\}$\;
+                        }
+                        \Case{$\textsc{Alert}_x$ from $h_{ij}$}{
+                            {\color{ForestGreen}\tcp{ Receive overload
+                            alert from host $h_{ij} \in v_i$}}
+                            $\mathcal{F}=\{m_{ij}^k\mid m_{ij}^k \in h_{ij}\}$\;
+                            $\mathcal{M}_g^i = \mathcal{M}_g^i \cup
+                            \textsc{Priority}(\mathcal{F},
+                            1)$\; %\mbox{\textbf{Priority}}
+                        }
+                    }
+                    $\mathcal{A}= \mathcal{A} \backslash \{\textsc{Alert}_x\}$\;
+                }
+                \If {$\textsc{Alert\_ToR}\neq \varnothing$} {
+                    {\color{ForestGreen}\tcp{ Detect congestion alert
+                    from $v_i$'s local ToR}}
+                    $\mathcal{F}=\{m_{ij}^k\mid m_{ij}^k \in h_{ij},
+                    \forall h_{ij} \in v_i \}$\
+                    %Check whether flows from $m_{ij}^k \in h_{ij} \in v_i$;
+                    $\mathcal{M}_g^i = \mathcal{M}_g^i \cup
+                    \textsc{Priority}(\mathcal{F}, \beta)$\;
+                }
+                $\textsc{VmMigration}(\mathcal{M}_g^i)$
+                {\color{ForestGreen} \tcp*[r]{Apply VM migration}} %
+                % \mathcal{M}_g^i
+            \end{algorithm}
+        \end{minipage}
+
+\end{enumerate}
+
+{\color{blue} For more examples and explanations, please refer to the
+AlgorithmPackage.pdf help document.}
+
+%========================================================================
+\end{document}
+

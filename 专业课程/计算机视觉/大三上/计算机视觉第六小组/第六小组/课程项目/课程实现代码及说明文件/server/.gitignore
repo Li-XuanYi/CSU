@@ -1,0 +1,9 @@
+.idea/
+/target
+
+# Environment variables
+.env
+
+uploads/
+
+ml/

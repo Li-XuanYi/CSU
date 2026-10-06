@@ -1,0 +1,219 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab06-Approximation}}\vspace{1mm}\\
+CS2312-Algorithm and complexity, Xiaofeng Gao, Spring 2026.}}
+\begin{center}
+\footnotesize{\color{red}$*$ Contact TA Yixuan Cai for any questions. Include both your .pdf and .tex files in the uploaded .rar or .zip file.}
+
+% Please write down your name, student id and email.
+\footnotesize{\color{blue}$*$ Name:Yiming Li  \quad Student ID:524031910538 \quad Email: m10624@sjtu.edu.cn}
+\end{center}
+
+\begin{enumerate}
+  \item {\color{purple}(Bin Packing)} We are given a list of real numbers $a_1, a_2, \cdots , a_n$ (for any $a_i$, we have $0 < a_i\leq 1$) and we wish to pack them into as few unit-capacity bins as possible. A unit-capacity bin can accommodate any subset of the $a$’s whose sum is at most $1$. This problem is NP-hard (it is even NP-complete to determine if $2$ bins suffice). A simple strategy is to place each $a_i$ in turn into the first bin into which it can fit. Prove that this strategy is a $2$-approximation algorithm for bin-packing.
+
+  \begin{solution}
+  Let $m$ be the number of bins used by the First-Fit (FF) strategy, and let $OPT$ be the minimum number of bins required in the optimal solution.
+
+  First, we establish a trivial lower bound for the optimal solution. Since the total volume of all items must be accommodated, and each bin has a capacity of $1$, we have:
+  \[
+  OPT \ge \sum_{i=1}^n a_i
+  \]
+  
+  Next, we analyze the property of the FF algorithm. When the algorithm terminates, at most one bin can be less than half full. To see why, observe that for any two bins $B_i$ and $B_j$ produced by the algorithm, the sum of the total contents in both bins must be strictly greater than $1$:
+  \[
+  \text{weight}(B_i) + \text{weight}(B_j) > 1
+  \]
+  If their combined sum were $\le 1$, then when the algorithm was processing the first item that went into the later bin, it would have fit into the earlier bin, which contradicts the rule of the First-Fit strategy.
+
+  Therefore, if we pair up the $m$ bins (leaving at most one bin unpaired if $m$ is odd), the total sum of all item weights satisfies:
+  \[
+  \sum_{i=1}^n a_i = \sum_{j=1}^m \text{weight}(B_j) > \frac{m-1}{2}
+  \]
+  This implies:
+  \[
+  2 \sum_{i=1}^n a_i > m - 1 \implies m < 2 \sum_{i=1}^n a_i + 1
+  \]
+  Since $m$ must be an integer, we can take the ceiling:
+  \[
+  m \le 2 \left\lceil \sum_{i=1}^n a_i \right\rceil \le 2 \cdot OPT
+  \]
+  Thus, the First-Fit strategy always yields a solution using at most $2 \cdot OPT$ bins, proving it is a $2$-approximation algorithm.
+  \end{solution}
+
+  \item {\color{purple}($k$-Center)} The $k$-Center problem is a classic facility location problem in graph theory and combinatorial optimization. Given a complete undirected graph $G = (V, E)$ where vertices represent points (or cities) and edge weights satisfy the triangle inequality (i.e., the distance metric), the goal is to select $k$ vertices as \textbf{centers} such that the maximum distance from any vertex to its nearest center is minimized.
+
+    Formally, let $d(u,v)$ denote the distance (or cost) between vertices $u$ and $v$. We require $d(u,v) = d(v,u) \ge 0$, $d(u,u)=0$, and the triangle inequality $d(u,w) \le d(u,v)+d(v,w)$. The problem asks for a set $C \subseteq V$ with $|C| = k$ that minimizes
+    \[
+    \max_{v \in V} \min_{c \in C} d(v,c).
+    \]
+    The optimal value is called the \textbf{$k$-Center radius} or the \textbf{minimum covering radius}.
+
+    Design a $\frac{1}{2}$-approximation algorithm for $k$-Center problem, and prove the approximation rate of your algorithm.
+
+  \begin{solution}
+  \textit{Note on approximation ratio:} In standard optimization literature, since $k$-Center is a minimization problem, the approximation ratio is defined as $\frac{\text{Alg}}{\text{Opt}} \ge 1$. The term "$\frac{1}{2}$-approximation" here conventionally implies a **$2$-approximation** algorithm (i.e., proving $r_{alg} \le 2 \cdot r_{opt}$). We present the **Gonzalez Greedy Algorithm**, which achieves a $2$-approximation ratio.
+
+  \begin{algorithm}[H]
+  \caption{Gonzalez Greedy Algorithm for $k$-Center}
+  \KwIn{A complete graph $G=(V,E)$ with distance metric $d$, and an integer $k$.}
+  \KwOut{A set of centers $C \subseteq V$ with $|C| = k$.}
+  
+  Select an arbitrary vertex $v_1 \in V$ and initialize $C = \{v_1\}$\;
+  
+  \For{$i = 2$ \KwTo $k$}{
+      Find a vertex $v_i \in V \setminus C$ that maximizes $\min_{c \in C} d(v_i, c)$\;
+      
+      $C = C \cup \{v_i\}$\;
+  }
+  
+  \Return{$C$}\;
+  \end{algorithm}
+
+  \textbf{Proof of the Approximation Ratio:}
+
+  Let $C = \{v_1, v_2, \cdots, v_k\}$ be the set of $k$ centers selected by the algorithm. Let $v_{k+1}$ be a vertex in $V$ that maximizes the distance to its closest center in $C$. Let $r$ be this maximum distance:
+  \[
+  r = \min_{c \in C} d(v_{k+1}, c)
+  \]
+  By definition, $r$ is exactly the maximum covering radius of our algorithm's solution ($r_{alg} = r$).
+
+  According to the greedy choice of the algorithm, at each step $j$, the chosen vertex $v_j$ is the furthest from the existing centers $\{v_1, \dots, v_{j-1}\}$. Since the minimum distance to the center set only decreases as more centers are added, for any two vertices $v_i, v_j$ in the set $\{v_1, v_2, \cdots, v_k, v_{k+1}\}$ with $i < j$, we have:
+  \[
+  d(v_i, v_j) \ge \min_{c \in \{v_1, \dots, v_{j-1}\}} d(v_j, c) \ge \min_{c \in C} d(v_{k+1}, c) = r
+  \]
+  Thus, the distance between any pair of distinct vertices in the set $\{v_1, v_2, \cdots, v_{k+1}\}$ is at least $r$.
+
+  Now, consider the optimal solution with center set $C^* = \{c_1^*, c_2^*, \cdots, c_k^*\}$ and optimal radius $r_{opt}$. We have $k+1$ vertices in our set $\{v_1, \dots, v_{k+1}\}$, but the optimal solution only chooses $k$ centers. By the **Pigeonhole Principle**, at least two vertices from our set, say $v_i$ and $v_j$ ($i \neq j$), must be assigned to the same optimal center $c_m^* \in C^*$.
+
+  By the definition of the optimal radius and the symmetry of the metric:
+  \[
+  d(v_i, c_m^*) \le r_{opt} \quad \text{and} \quad d(v_j, c_m^*) \le r_{opt}
+  \]
+  Using the triangle inequality, we can bound the distance between $v_i$ and $v_j$:
+  \[
+  r \le d(v_i, v_j) \le d(v_i, c_m^*) + d(c_m^*, v_j) \le r_{opt} + r_{opt} = 2r_{opt}
+  \]
+  Since $r_{alg} = r$, we obtain $r_{alg} \le 2 \cdot r_{opt}$. This completes the proof.
+  \end{solution}
+
+  \item {\color{purple}(Weighted Vertex Cover)} Consider the \textbf{weighted vertex cover problem}: Given an undirected graph $G=(V,E)$ with nonnegative vertex weights $w_v \ge 0$ for each $v \in V$, find a subset $C \subseteq V$ such that every edge $e=(u,v)\in E$ has at least one endpoint in $C$ (i.e., $C$ covers all edges), and the total weight $\sum_{v\in C} w_v$ is minimized.
+
+\begin{enumerate}
+    \item Write an \textbf{Integer Linear Programming} (ILP) formulation for the problem and its \textbf{Linear Programming Relaxation} (LP Relaxation).
+    \item Design a \textbf{deterministic rounding approximation algorithm} based on the optimal LP solution. Describe the algorithm steps.
+    \item Prove that your algorithm is a \textbf{2-approximation algorithm} (i.e., for every instance, the weight of the solution output is at most twice the optimal value).
+    \item Give a tight example showing that the approximation ratio cannot be better than 2 (i.e., there exists an instance where the algorithm output is exactly twice the optimal solution).
+\end{enumerate}
+  
+  \begin{solution}
+  \textbf{(a) ILP Formulation and LP Relaxation}
+
+  \textbf{Integer Linear Programming (ILP):}
+  We introduce a binary decision variable $x_v \in \{0, 1\}$ for each vertex $v \in V$, where $x_v = 1$ indicates that $v$ is chosen in the vertex cover, and $x_v = 0$ otherwise.
+  \begin{align*}
+  \min \quad & \sum_{v \in V} w_v x_v \\
+  \text{s.t.} \quad & x_u + x_v \ge 1, \quad \forall (u,v) \in E \\
+  & x_v \in \{0, 1\}, \quad \forall v \in V
+  \end{align*}
+
+  \textbf{Linear Programming (LP) Relaxation:}
+  We relax the integer constraint $x_v \in \{0, 1\}$ to a continuous interval $[0, 1]$:
+  \begin{align*}
+  \min \quad & \sum_{v \in V} w_v x_v \\
+  \text{s.t.} \quad & x_u + x_v \ge 1, \quad \forall (u,v) \in E \\
+  & 0 \le x_v \le 1, \quad \forall v \in V
+  \end{align*}
+
+  \textbf{(b) Deterministic Rounding Approximation Algorithm}
+
+      1. Solve the LP Relaxation efficiently to obtain an optimal fractional solution $x^* = \{x_v^* \mid v \in V\}$.
+      
+      2. Construct the vertex cover set $C$ using a threshold of $\frac{1}{2}$:
+      \[
+      C = \left\{ v \in V \ \middle|\ x_v^* \ge \frac{1}{2} \right\}
+      \]
+      
+      3. Return the set $C$.
+
+  \textbf{(c) Proof of the 2-Approximation Ratio}
+
+  First, we show that $C$ is a valid vertex cover. For any edge $(u,v) \in E$, the LP relaxation guarantees that $x_u^* + x_v^* \ge 1$. This implies that at least one of $x_u^*$ or $x_v^*$ must be greater than or equal to $\frac{1}{2}$. By our rounding rule, at least one of $u$ or $v$ will be included in $C$. Thus, every edge is covered.
+
+  Next, we bound the weight of $C$. Let $Z_{ILP}$ be the weight of the optimal integer vertex cover ($OPT$), and let $Z_{LP}$ be the objective value of the optimal LP fractional solution. Since the LP relaxation expands the feasible region, we have:
+  \[
+  \sum_{v \in V} w_v x_v^* = Z_{LP} \le Z_{ILP} = OPT
+  \]
+  For every vertex $v \in C$, we know that $1 \le 2x_v^*$. We can bound the total weight of $C$ as follows:
+  \[
+  \sum_{v \in C} w_v \le \sum_{v \in C} w_v (2x_v^*) \le 2 \sum_{v \in V} w_v x_v^* = 2 Z_{LP} \le 2 \cdot OPT
+  \]
+  Therefore, the algorithm is a $2$-approximation algorithm.
+
+  \textbf{(d) Tight Example}
+
+  Consider a graph consisting of a single edge connecting two vertices: $G = (V,E)$ where $V = \{u, v\}$ and $E = \{(u,v)\}$. Let both vertices have a weight of $1$, i.e., $w_u = w_v = 1$.
+
+  \begin{itemize}
+      \item \textbf{Optimal Integer Solution ($OPT$):} To cover the single edge, it suffices to pick either vertex. For instance, picking $C^* = \{u\}$ yields $OPT = w_u = 1$.
+      \item \textbf{LP Relaxation Solution:} The optimal fractional solution is $x_u^* = 0.5$ and $x_v^* = 0.5$. The fractional objective value is $1 \cdot (0.5) + 1 \cdot (0.5) = 1$.
+      \item \textbf{Algorithm Output:} Since $x_u^* = 0.5 \ge \frac{1}{2}$ and $x_v^* = 0.5 \ge \frac{1}{2}$, the algorithm rounds both variables up to $1$, resulting in the vertex cover $C = \{u, v\}$.
+      \item \textbf{Total Weight of Algorithm Solution:} $\sum_{v \in C} w_v = w_u + w_v = 1 + 1 = 2$.
+  \end{itemize}
+  The ratio of the algorithm's solution weight to the optimal weight is $\frac{2}{1} = 2$. This demonstrates that the approximation ratio of $2$ is tight.
+  \end{solution}
+
+\end{enumerate}
+
+%========================================================================
+\end{document}

@@ -1,0 +1,297 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{multicol}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\title{CS2308《算法与复杂性》期末考试}
+\author{}
+\date{2022年6月16日}
+
+\begin{document}
+
+\maketitle
+
+\section*{测览说明}
+Final Exam for CS2308 Algorithm and Complexity
+
+\section*{CS2308《算法与复杂性》期末考试}
+This exam consists of 2 parts and 5 questions, some of them includes several sub-questions. Please make sure you have checked all of the questions.
+
+全卷共2部分，5道题，其中部分题包含一些子问题。请仔细检查是否完成了所有的问题。
+
+\section*{Part 1. Multiple Choice Questions (3.5*10=35')}
+This part contains 10 multiple choice questions, each with 3.5 points. Please choose ONE correct answer for each question and directly click your answer in CANVAS.
+
+(第一部分为单选题，共10道题目。每道题目请在四个选项中选择一个正确选项并直接在CANVAS中作答。)
+
+\subsection*{问题1 (3.5分)}
+(MC1) Choose the correct time complexity of the following algorithm.
+
+\textbf{Algorithm 1: Toy Algorithm 1}
+
+\textbf{Input:} An integer \(n\).
+
+\textbf{Output:} Certain summation.
+
+\begin{enumerate}[label=\arabic*., leftmargin=*]
+    \item \(sum \leftarrow 0\)
+    \item \textbf{for} \(i \leftarrow 1\) \textbf{to} \(n\) \textbf{do}
+    \item \hspace{1em} \textbf{for} \(j \leftarrow 1\) \textbf{to} \(\lfloor n / i \rfloor\) \textbf{do}
+    \item \hspace{2em} \(sum \leftarrow sum + i \times i\)
+    \item \textbf{return} \(sum\);
+\end{enumerate}
+
+Options:
+\begin{itemize}
+    \item \(O(n)\)
+    \item \(O(n \log \log n)\)
+    \item \(O(n \log n)\)
+\end{itemize}
+
+\subsection*{问题2 (3.5分)}
+(MC2) Choose the stablest sorting algorithms among the following algorithms, i.e., finding the sorting algorithm that has the best time complexity under the worst case.
+
+\begin{itemize}
+    \item Quick Sort
+    \item Merge Sort
+    \item Bubble Sort
+    \item Insertion Sort
+\end{itemize}
+
+\subsection*{问题3 (3.5分)}
+(MC3) Choose the correct correspondence between matroid and its Greedy-MAX algorithm.
+
+\begin{itemize}
+    \item \textbf{Graphic Matroid \(M_G\):} Consider a (undirected) graph \(G = (V,E)\), let \(S = E\) and \(\mathbf{C}\) the collection of all edge sets each of which induces an acyclic subgraph of \(G\). Then \(M_G = (S,C)\) is the graphic matroid.
+    \item \textbf{Graphic Matroid \(M_G^*\):} Consider a (undirected) graph \(G = (V,E)\), a subset \(I \subseteq E\) is independent if the complementary subgraph \((V, E \setminus I)\) of \(G\) is connected. Let \(S = E\) and \(\mathbf{C}\) be the collection of such \(I\), then \(M_G^* = (S,C)\) is the cographic matroid.
+\end{itemize}
+
+Options:
+\begin{itemize}
+    \item Graphic Matroid - Prim Algorithm
+    \item Graphic Matroid - Kruskal Algorithm
+    \item Cographic Matroid - Kruskal Algorithm
+    \item Cographic Matroid - Prim Algorithm
+\end{itemize}
+
+\subsection*{问题4 (3.5分)}
+(MC4) About the components of sorting networks, which of the following statements is FALSE?
+
+\begin{itemize}
+    \item The depth of a Merger \([n]\) is the same as the depth of a Bitonic-Sorter \([n]\)
+    \item The depth of a Sorter \([n]\) is \(O(\log n)\)
+    \item If the input to a Half-Cleaner is a bitonic sequence of 0's and 1's, then both the top half and the bottom half of the output are bitonic.
+    \item A Bitonic-Sorter of size \(n\) is composed of a Half-Cleaner of size \(n\) and two recursive Bitonic-Sorters of size \(n/2\)
+\end{itemize}
+
+\subsection*{问题5 (3.5分)}
+(MC5) Rod Cutting Problem. Given a rod of total length \(N\) inches and a table of selling prices \(P_L\) for lengths \(L = 1, 2, \ldots, M\). You are asked to find the maximum revenue \(R_N\) obtainable by cutting up the rod and selling the pieces. For example, based on the following table of prices, if we are to sell an 8-inch rod, the optimal solution is to cut it into two pieces of lengths 2 and 6, which produces revenue \(R_8 = P_2 + P_6 = 5 + 17 = 22\). And if we are to sell a 3-inch rod, the best way is not to cut it at all.
+
+\begin{center}
+\begin{tabular}{c|ccccccccc}
+Length \(L\) & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+\hline
+Price \(P_L\) & 1 & 5 & 8 & 9 & 10 & 17 & 17 & 20 & 23
+\end{tabular}
+\end{center}
+
+Which of the following statements is FALSE?
+
+\begin{itemize}
+    \item If \(N \leq M\), we have \(R_N = \max \{P_N, \max_{1 \leq i < N} \{R_i + R_{N-i}\} \}\)
+    \item This problem can be solved by dynamic programming.
+    \item If \(N > M\), we have \(R_N = \max_{1 \leq i < N} \{R_i + R_{N-M}\}\)
+    \item The time complexity of this algorithm is \(O(N^2)\)
+\end{itemize}
+
+\subsection*{问题6 (3.5分)}
+(MC6) Coin Changing Problem. Consider the problem of making change for \(n\) cents using the fewest number of coins. Assume that each coin's value is an integer. The coins of the lowest denomination is the cent.
+
+\begin{enumerate}[label=(\Roman*), leftmargin=*]
+    \item Suppose that the available coins are quarters (25 cents), dimes (10 cents), nickels (5 cents), and pennies (1 cent). The greedy algorithm always yields an optimal solution.
+    \item Suppose that the available coins are in the denominations that are powers of \(c\), that is, the denominations are \(c^0, c^1, \ldots, c^k\) for some integers \(c > 1\) and \(k \geq 1\). The greedy algorithm always yields an optimal solution.
+    \item Given any set of \(k\) different coin denominations which includes a penny (1 cent) so that there is a solution for every value of \(n\), greedy algorithm always yields an optimal solution.
+\end{enumerate}
+
+Which of the following statements is correct?
+
+\begin{itemize}
+    \item All of the three statements are correct.
+    \item Statement (II) is false.
+    \item Statement (I) is false.
+    \item Statement (III) is false.
+\end{itemize}
+
+\subsection*{问题7 (3.5分)}
+(MC7) For the given Linear Programming problem below, which one of the following is the correct dual form?
+
+\begin{align*}
+\text{minimize} \quad & 2x_1 + x_3 + 4 \\
+\text{subject to} \quad & 3x_1 - x_2 + x_3 = 1 \\
+& x_1 + 2x_2 - 3x_3 \leq 2 \\
+& x_2 + 6x_3 \geq 5 \\
+& x_1 \geq 0, x_2 \geq 0
+\end{align*}
+
+Options:
+\begin{enumerate}[label=\arabic*., leftmargin=*]
+    \item \begin{align*}
+        \text{maximize} \quad & y_1 + 2y_2 + 5y_3 + 4 \\
+        \text{subject to} \quad & 3y_1 + y_2 \geq 2 \\
+        & -y_1 + 2y_2 + y_3 \geq 0 \\
+        & y_1 - 3y_2 + 6y_3 = 1 \\
+        & y_2 \geq 0, y_3 \leq 0
+    \end{align*}
+    \item \begin{align*}
+        \text{maximize} \quad & y_1 + 2y_2 + 5y_3 + 4 \\
+        \text{subject to} \quad & 3y_1 + y_2 \geq 2 \\
+        & -y_1 + 2y_2 + y_3 \geq 0 \\
+        & y_1 - 3y_2 + 6y_3 = 1 \\
+        & y_2 \leq 0, y_3 \geq 0
+    \end{align*}
+    \item \begin{align*}
+        \text{maximize} \quad & y_1 + 2y_2 + 5y_3 - 4 \\
+        \text{subject to} \quad & 3y_1 + y_2 \leq 2 \\
+        & -y_1 + 2y_2 + y_3 \leq 0 \\
+        & y_1 - 3y_2 + 6y_3 = 1 \\
+        & y_2 \geq 0, y_3 \leq 0
+    \end{align*}
+    \item \begin{align*}
+        \text{maximize} \quad & y_1 + 2y_2 + 5y_3 - 4 \\
+        \text{subject to} \quad & 3y_1 + y_2 \geq 2 \\
+        & -y_1 + 2y_2 + y_3 \geq 0 \\
+        & y_1 - 3y_2 + 6y_3 = 1 \\
+        & y_2 \geq 0, y_3 \leq 0
+    \end{align*}
+\end{enumerate}
+
+\subsection*{问题8 (3.5分)}
+(MC8) When solving the problem All-Pairs Shortest Path by Floyd method, which one of the following iterations can give us the correct answer? (Assume that the graph is consists of \(n\) vertices, and define \(c\) as adjacency matrix of the shortest path between every two vertices)
+
+Options:
+\begin{enumerate}[label=\arabic*., leftmargin=*]
+    \item \begin{verbatim}
+1 for k <- 1 to n do
+2   for i <- 1 to n do
+3     for j <- 1 to n do
+4       if c_ki + c_ij < c_kj then
+5         c_kj = c_ki + c_ij;
+    \end{verbatim}
+    \item \begin{verbatim}
+1 for i <- 1 to n do
+2   for k <- 1 to n do
+3     for j <- 1 to n do
+4       if c_ki + c_kj < c_kj then
+5         c_kj = c_ki + c_kj
+    \end{verbatim}
+    \item \begin{verbatim}
+1 for i <- 1 to n do
+2   for k <- 1 to n do
+3     for j <- 1 to n do
+4       if c_ik + c_kj < c_ij then
+5         c_ij = c_ik + c_kj
+    \end{verbatim}
+    \item \begin{verbatim}
+1 for i <- 1 to n do
+2   for j <- 1 to n do
+3     for k <- 1 to n do
+4       if c_ik + c_kj < c_ij then
+5         c_ij = c_ik + c_kj
+    \end{verbatim}
+\end{enumerate}
+
+\subsection*{问题9 (3.5分)}
+(MC9) Given the graph \(G\) shown as follows, assume we start from vertex a and use alphabetical order to explore \(G\), then choose the correct correspondence between the exploration method and the exploration order.
+
+% 请在这里插入问题9的图片
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.6\textwidth]{graph_q9.png}
+%     \caption{Graph G}
+% \end{figure}
+
+Options:
+\begin{itemize}
+    \item Breadth-First-Search: a, b, f, j, c, h, d, e, g, i
+    \item Depth-First-Search: a, b, f, j, c, d, e, h, g, i
+    \item Depth-First-Search: a, b, f, j, c, d, e, i, h, g
+\end{itemize}
+
+\subsection*{问题10 (3.5分)}
+(MC10) A multistack consists of an infinite series of ordinary stacks \(S_0, S_1, \ldots, S_n, \ldots\), where the \(i\)-th stack \(S_i\) has the size of \(3^i\). For push operation of the multistack, we first intend to push the element onto \(S_0\). If \(S_i\) is full, then we intend to pop all elements off \(S_i\) and push them onto \(S_{i+1}\) to make room. (If \(S_{i+1}\) is already full, then we recursively move all its members to \(S_{i+2}\).) The following figure shows an illustrative example of making room for one new element in multistack. For every stack \(S_i\), a push/pop operation takes \(O(1)\) time. In the best, average and worst case, how long does it take to push a new element onto a multistack containing \(n\) elements.
+
+% 请在这里插入问题10的图片
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{multistack_q10.png}
+%     \caption{Making room for one new element in a multistack.}
+% \end{figure}
+
+Options:
+\begin{itemize}
+    \item \(O(\log n), O(\log^2 n), O(n)\)
+    \item \(O(1), O(\log^2 n), O(n)\)
+    \item \(O(1), O(\log n), O(n)\)
+    \item \(O(1), O(n), O(3^n)\)
+\end{itemize}
+
+\newpage
+\section*{Part 2. Questions and Answers (65')}
+This part contains 4 questions, some of them may contain multiple sub-questions. Please write down your solution on answer sheet, and upload the scanned version through CANVAS.
+
+\subsection*{(QA1, Divide-and-Conquer, 15')}
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item Write down the Master's Theorem that we have learned in the class. (Hint: If \(T(n) = aT(\lceil n/b \rceil) + O(n^d)\) for some constants \(a > 0, b > 1, d \geq 0\), then ...)
+    \item Consider the following recurrence.
+    \[ T(n) = 2T\left(\left\lceil \frac{n}{2} \right\rceil\right) + O(n\log n). \]
+    Can it be solved via the Master's Theorem in problem (a), why or why not? If true, write down the time complexity directly; otherwise, please also provide derivations.
+    \item A perfect permutation \(\Pi\) is a permutation of integers \(1, 2, \ldots, n\) which satisfies the following condition: there is no index \(k\) with \(1 \leq i < k < j \leq n\) where \(2\Pi_k = \Pi_i + \Pi_j\). Given an integer \(n\), please design an efficient algorithm in pseudo-code to generate a perfect permutation \(\Pi\) of length \(n\).
+\end{enumerate}
+
+\subsection*{(QA2, Greedy Strategy \& Dynamic Programming, 18')}
+Little Gyro loves to watch TV series, however, the TV series on the market are so dazzling that Little Gyro usually doesn't know which episode should be selected to watch. Please help him design algorithms to solve the following problems:
+
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item Suppose that Little Gyro has one TV set and can only watch one TV series at the same time. In order to get the greatest satisfaction, Little Gyro decides to watch as more TV series as possible. Given \(n\) TV series and for the \(i\)-th TV play define its start time \(t_i^s\) and end time \(t_i^e\), please briefly describe your algorithm and analyze its time complexity and space complexity.
+    \item Suppose that Little Gyro has a laptop and can watch TV series in a certain period of time \(T\). In order to get the greatest satisfaction, Little Gyro decides to watch the TV series which could gain more happiness. Given \(n\) TV series, a certain period of time \(T\) and for the \(i\)-th TV play define its happiness \(h_i\) and time cost \(t_i\), please briefly describe your algorithm and analyze its time complexity and space complexity.
+\end{enumerate}
+
+\subsection*{(QA3, Network Flow, 17')}
+Let \(G = (V,E)\) be a connected directed graph. Set \(k\) starting vertices \(S = \{s_1, s_2, \ldots, s_k\} \in V\) and \(k\) terminal vertices in \(T = \{t_1, t_2, \ldots, t_k\} \in V\). Your goal is to find more possible paths from the starting vertices \(s_i\) to any terminal vertices \(t_j\) such that no two paths share any edges, and no two paths end in the same vertex \(t_j\).
+
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item Design an algorithm to find more possible paths \(s_i \to t_j\) that start and end at different vertices and such that they do not share any edges.
+    \item Modify your algorithm to find more possible paths \(s_i \to t_j\), that start and end in different vertices and such that they share neither vertices nor edges.
+\end{enumerate}
+
+\subsection*{(QA4, NP and Polynomial-Time Reduction, 15')}
+\textbf{PARTITION.} Given \(n\) non-negative integers \(a_1, a_2, \ldots, a_n\), does there exist a subset \(S\) of \(\{1, 2, \ldots, n\}\) such that
+\[ \sum_{i \in S} a_i = \sum_{j \in \{1, 2, \ldots, n\} \setminus S} a_j. \]
+
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item Write down the certificate and certifier of the PARTITION problem, and show that it is an NP problem.
+    \item Show that PARTITION is NP-complete. (Hint: recall the SUBSET-SUM problem.)
+    \item Suppose \(n\) is even and we require that the subset \(S\) contains exactly \(\frac{n}{2}\) elements, is the PARTITION problem under these constraints still NP-complete? Justify your answer.
+\end{enumerate}
+
+\section*{问题11 (65分)}
+Upload The Answer Sheet (问答题部分答题纸提交处):
+
+Please upload your answer sheets using .pdf, .png, .jpeg or .jpg files. Make sure you've uploaded each page and name your file correctly.
+
+请于此处上传答题纸（问答题答案），注意每页答题纸必须有姓名和学号，请写清题号，对上传文档规范文件命名，命名格式为"Algorithm.pdf"。如果有多个文档，请用"Algorithm01.pdf"等命名上传。
+
+% 以下为上传按钮的示意，实际LaTeX中通常不需要绘制按钮，除非使用TikZ。
+\vspace{1cm}
+\noindent
+\fbox{\parbox{\textwidth}{\centering \textbf{上传} \quad \fbox{选择文件}}}
+
+\end{document}

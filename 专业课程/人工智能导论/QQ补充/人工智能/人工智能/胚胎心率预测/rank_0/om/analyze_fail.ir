@@ -1,0 +1,1922 @@
+# ===============================================================================================
+# The following shows the last analyze fail log message.
+# ===============================================================================================
+
+----------------------------------------------------
+- Caught exception:
+----------------------------------------------------
+
+----------------------------------------------------
+- C++ Call Stack: (For framework developers)
+----------------------------------------------------
+mindspore\ccsrc\pipeline\jit\ps\static_analysis\prim.cc:3169 mindspore::abstract::`anonymous-namespace'::RaiseEvaluator::RaiseConstant
+
+----------------------------------------------------
+- The Traceback of Net Construct Code:
+----------------------------------------------------
+# 0 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:417
+        if not self.sense_flag:
+# 1 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:418
+            return self._no_sens_impl(*inputs)
+                   ^
+# 2 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:437
+        if self.return_grad:
+# 3 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:436
+        loss = F.depend(loss, self.optimizer(grads))
+                              ^
+# 4 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:228
+        if self.is_group_lr:
+# 5 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:232
+            success = self.hyper_map_reverse(F.partial(_sgd_opt, self.momentum, lr),
+# 6 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:226
+        lr = self.get_lr()
+             ^
+# 7 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:748
+        if self.dynamic_lr:
+# 8 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:749
+            if self.is_group_lr:
+# 9 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755
+                lr = self.learning_rate(self.global_step).reshape(())
+                ^
+# 10 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:749
+            if self.is_group_lr:
+# 11 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755
+                lr = self.learning_rate(self.global_step).reshape(())
+                     ^
+# 12 In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\learning_rate_schedule.py:48
+        raise NotImplementedError
+        ^
+
+# ===============================================================================================
+# The following shows the IR when the function graphs evaluation fails to help locate the problem.
+# You can search the last ------------------------> to the node which is evaluated failure.
+# Refer to https://www.mindspore.cn/search?inputValue=analyze_fail.ir to get more instructions.
+# ===============================================================================================
+
+# IR entry: @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024
+# Total subgraphs: 55
+
+# Attrs:
+training : 1
+
+# Total params: 22
+# Params:
+%para1_inputs0 : <null>
+%para2_inputs1 : <null>
+%para3_fc1.weight : <Ref[Tensor[Float32]], (150, 8), ref_key=:fc1.weight>  :  has_default
+%para4_fc1.bias : <Ref[Tensor[Float32]], (150), ref_key=:fc1.bias>  :  has_default
+%para5_fc2.weight : <Ref[Tensor[Float32]], (120, 150), ref_key=:fc2.weight>  :  has_default
+%para6_fc2.bias : <Ref[Tensor[Float32]], (120), ref_key=:fc2.bias>  :  has_default
+%para7_fc3.weight : <Ref[Tensor[Float32]], (1, 120), ref_key=:fc3.weight>  :  has_default
+%para8_fc3.bias : <Ref[Tensor[Float32]], (1), ref_key=:fc3.bias>  :  has_default
+%para9_global_step : <Ref[Tensor[Int32]], (1), ref_key=:global_step>  :  has_default
+%para10_accum.fc1.weight : <Ref[Tensor[Float32]], (150, 8), ref_key=:accum.fc1.weight>  :  has_default
+%para11_accum.fc1.bias : <Ref[Tensor[Float32]], (150), ref_key=:accum.fc1.bias>  :  has_default
+%para12_accum.fc2.weight : <Ref[Tensor[Float32]], (120, 150), ref_key=:accum.fc2.weight>  :  has_default
+%para13_accum.fc2.bias : <Ref[Tensor[Float32]], (120), ref_key=:accum.fc2.bias>  :  has_default
+%para14_accum.fc3.weight : <Ref[Tensor[Float32]], (1, 120), ref_key=:accum.fc3.weight>  :  has_default
+%para15_accum.fc3.bias : <Ref[Tensor[Float32]], (1), ref_key=:accum.fc3.bias>  :  has_default
+%para16_stat.fc1.weight : <Ref[Tensor[Float32]], (150, 8), ref_key=:stat.fc1.weight>  :  has_default
+%para17_stat.fc1.bias : <Ref[Tensor[Float32]], (150), ref_key=:stat.fc1.bias>  :  has_default
+%para18_stat.fc2.weight : <Ref[Tensor[Float32]], (120, 150), ref_key=:stat.fc2.weight>  :  has_default
+%para19_stat.fc2.bias : <Ref[Tensor[Float32]], (120), ref_key=:stat.fc2.bias>  :  has_default
+%para20_stat.fc3.weight : <Ref[Tensor[Float32]], (1, 120), ref_key=:stat.fc3.weight>  :  has_default
+%para21_stat.fc3.bias : <Ref[Tensor[Float32]], (1), ref_key=:stat.fc3.bias>  :  has_default
+%para22_momentum : <Ref[Tensor[Float32]], (), ref_key=:momentum>  :  has_default
+
+subgraph attr:
+training : 1
+subgraph instance: mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024 : 000001D7AB672F90
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:416/    def construct(self, *inputs):/
+subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024(%para1_inputs0, %para2_inputs1, %para3_fc1.weight, %para4_fc1.bias, %para5_fc2.weight, %para6_fc2.bias, %para7_fc3.weight, %para8_fc3.bias, %para9_global_step, %para10_accum.fc1.weight, %para11_accum.fc1.bias, %para12_accum.fc2.weight, %para13_accum.fc2.bias, %para14_accum.fc3.weight, %para15_accum.fc3.bias, %para16_stat.fc1.weight, %para17_stat.fc1.bias, %para18_stat.fc2.weight, %para19_stat.fc2.bias, %para20_stat.fc3.weight, %para21_stat.fc3.bias, %para22_momentum) {
+
+#------------------------> 0
+  %1(CNode_1041) = call @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1025()
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:417/        if not self.sense_flag:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:417/        if not self.sense_flag:/
+}
+# Order:
+#   1: @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024:CNode_1041{[0]: ValueNode<FuncGraph> mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1025}
+#   2: @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024:CNode_1042{[0]: ValueNode<Primitive> Return, [1]: CNode_1041}
+
+
+subgraph attr:
+training : 1
+subgraph instance: mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1025 : 000001D7AB66F520
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:416/    def construct(self, *inputs):/
+subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1025 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024]() {
+  %1(CNode_1043) = $(mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024):MakeTuple(%para1_inputs0, %para2_inputs1)
+      : (<Tensor[Float32], (32, 8)>, <Tensor[Float32], (32, 1)>) -> (<Tuple[Tensor[Float32]*2], TupleShape((32, 8), (32, 1))>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:416/    def construct(self, *inputs):/
+
+#------------------------> 1
+  %2(CNode_1044) = UnpackCall_unpack_call(@_no_sens_impl_1045, %1)
+      : (<Func, NoShape>, <Tuple[Tensor[Float32]*2], TupleShape((32, 8), (32, 1))>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:418/            return self._no_sens_impl(*inputs)/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:418/            return self._no_sens_impl(*inputs)/
+}
+# Order:
+#   1: @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1025:CNode_1044{[0]: ValueNode<UnpackCall> MetaFuncGraph-unpack_call.1046, [1]: ValueNode<FuncGraph> _no_sens_impl_1045, [2]: CNode_1043}
+#   2: @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1025:CNode_1047{[0]: ValueNode<Primitive> Return, [1]: CNode_1044}
+
+
+subgraph attr:
+core : 1
+subgraph instance: UnpackCall_1026 : 000001D7AB687E40
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:418/            return self._no_sens_impl(*inputs)/
+subgraph @UnpackCall_1026(%para23_, %para24_) {
+  %1(CNode_1044) = TupleGetItem(%para24_1028, I64(0))
+      : (<Tuple[Tensor[Float32]*2], TupleShape((32, 8), (32, 1))>, <Int64, NoShape>) -> (<Tensor[Float32], (32, 8)>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:418/            return self._no_sens_impl(*inputs)/
+  %2(CNode_1044) = TupleGetItem(%para24_1028, I64(1))
+      : (<Tuple[Tensor[Float32]*2], TupleShape((32, 8), (32, 1))>, <Int64, NoShape>) -> (<Tensor[Float32], (32, 1)>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:418/            return self._no_sens_impl(*inputs)/
+
+#------------------------> 2
+  %3(CNode_1044) = %para23_1027(%1, %2)
+      : (<Tensor[Float32], (32, 8)>, <Tensor[Float32], (32, 1)>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:418/            return self._no_sens_impl(*inputs)/
+  Return(%3)
+      : (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:418/            return self._no_sens_impl(*inputs)/
+}
+# Order:
+#   1: @UnpackCall_1026:CNode_1044{[0]: param_1027, [1]: CNode_1044, [2]: CNode_1044}
+#   2: @UnpackCall_1026:CNode_1044{[0]: ValueNode<Primitive> Return, [1]: CNode_1044}
+
+
+subgraph attr:
+training : 1
+subgraph instance: _no_sens_impl_1029 : 000001D7AB682940
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:431/    def _no_sens_impl(self, *inputs):/
+subgraph @_no_sens_impl_1029 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024](%para25_inputs0, %para26_inputs1) {
+
+#------------------------> 3
+  %1(CNode_1048) = call @_no_sens_impl_1030()
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:437/        if self.return_grad:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:437/        if self.return_grad:/
+}
+# Order:
+#   1: @_no_sens_impl_1029:loss{[0]: ValueNode<UnpackCall> MetaFuncGraph-unpack_call.1049, [1]: ValueNode<FuncGraph> mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1023, [2]: CNode_1050}
+#   2: @_no_sens_impl_1029:grads{[0]: ValueNode<UnpackGraphPrimitive> UnpackGraph, [1]: ValueNode<FuncGraph> mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1023, [2]: CNode_1050}
+#   3: @_no_sens_impl_1029:grads{[0]: ValueNode<DoSignaturePrimitive> S_Prim_grad, [1]: grads, [2]: CNode_1051}
+#   4: @_no_sens_impl_1029:grads{[0]: ValueNode<UnpackCall> MetaFuncGraph-unpack_call.1052, [1]: grads, [2]: CNode_1050}
+#   5: @_no_sens_impl_1029:grads{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Identity_construct_1053, [1]: grads}
+#   6: @_no_sens_impl_1029:CNode_1054{[0]: ValueNode<FuncGraph> mindspore_nn_optim_sgd_SGD_construct_1032, [1]: grads}
+#   7: @_no_sens_impl_1029:loss{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Depend, [1]: loss, [2]: CNode_1054}
+#   8: @_no_sens_impl_1029:CNode_1048{[0]: ValueNode<FuncGraph> _no_sens_impl_1030}
+#   9: @_no_sens_impl_1029:CNode_1055{[0]: ValueNode<Primitive> Return, [1]: CNode_1048}
+
+
+subgraph attr:
+training : 1
+subgraph instance: _no_sens_impl_1030 : 000001D7AB6863B0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:431/    def _no_sens_impl(self, *inputs):/
+subgraph @_no_sens_impl_1030 parent: [subgraph @_no_sens_impl_1029]() {
+
+#------------------------> 4
+  %1(CNode_1056) = call @_no_sens_impl_1031()
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:437/        if self.return_grad:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:437/        if self.return_grad:/
+}
+# Order:
+#   1: @_no_sens_impl_1030:CNode_1056{[0]: ValueNode<FuncGraph> _no_sens_impl_1031}
+#   2: @_no_sens_impl_1030:CNode_1057{[0]: ValueNode<Primitive> Return, [1]: CNode_1056}
+
+
+subgraph attr:
+training : 1
+subgraph instance: _no_sens_impl_1031 : 000001D7AB686900
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:431/    def _no_sens_impl(self, *inputs):/
+subgraph @_no_sens_impl_1031 parent: [subgraph @_no_sens_impl_1029]() {
+  %1(CNode_1050) = $(_no_sens_impl_1029):MakeTuple(%para25_inputs0, %para26_inputs1)
+      : (<Tensor[Float32], (32, 8)>, <Tensor[Float32], (32, 1)>) -> (<Tuple[Tensor[Float32]*2], TupleShape((32, 8), (32, 1))>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:431/    def _no_sens_impl(self, *inputs):/
+  %2(loss) = $(_no_sens_impl_1029):UnpackCall_unpack_call(@mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1023, %1)
+      : (<Func, NoShape>, <Tuple[Tensor[Float32]*2], TupleShape((32, 8), (32, 1))>) -> (<Tensor[Float32], ()>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:433/        loss = self.network(*inputs)/
+  %3(grads) = $(_no_sens_impl_1029):UnpackGraph(@mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1023, %1)
+      : (<Func, NoShape>, <Tuple[Tensor[Float32]*2], TupleShape((32, 8), (32, 1))>) -> (<Func, NoShape>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:434/        grads = self.grad_no_sens(self.network, self.weights)(*inputs)/
+  %4(CNode_1051) = $(_no_sens_impl_1029):MakeTuple(%para3_fc1.weight, %para4_fc1.bias, %para5_fc2.weight, %para6_fc2.bias, %para7_fc3.weight, %para8_fc3.bias)
+      : (<Ref[Tensor[Float32]], (150, 8)>, <Ref[Tensor[Float32]], (150)>, <Ref[Tensor[Float32]], (120, 150)>, <Ref[Tensor[Float32]], (120)>, <Ref[Tensor[Float32]], (1, 120)>, <Ref[Tensor[Float32]], (1)>) -> (<Tuple[Ref[Tensor[Float32]]*6], TupleShape((150, 8), (150), (120, 150), (120), (1, 120), (1))>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:434/        grads = self.grad_no_sens(self.network, self.weights)(*inputs)/
+  %5(grads) = $(_no_sens_impl_1029):S_Prim_grad(%3, %4)
+      : (<Func, NoShape>, <Tuple[Ref[Tensor[Float32]]*6], TupleShape((150, 8), (150), (120, 150), (120), (1, 120), (1))>) -> (<Func, NoShape>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:434/        grads = self.grad_no_sens(self.network, self.weights)(*inputs)/
+  %6(grads) = $(_no_sens_impl_1029):UnpackCall_unpack_call(%5, %1)
+      : (<Func, NoShape>, <Tuple[Tensor[Float32]*2], TupleShape((32, 8), (32, 1))>) -> (<Tuple[Tensor[Float32]*6], TupleShape((150, 8), (150), (120, 150), (120), (1, 120), (1))>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:434/        grads = self.grad_no_sens(self.network, self.weights)(*inputs)/
+  %7(grads) = $(_no_sens_impl_1029):call @mindspore_nn_layer_basic_Identity_construct_1053(%6)
+      : (<Tuple[Tensor[Float32]*6], TupleShape((150, 8), (150), (120, 150), (120), (1, 120), (1))>) -> (<Tuple[Tensor[Float32]*6], TupleShape((150, 8), (150), (120, 150), (120), (1, 120), (1))>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:435/        grads = self.grad_reducer(grads)/
+
+#------------------------> 5
+  %8(CNode_1054) = $(_no_sens_impl_1029):call @mindspore_nn_optim_sgd_SGD_construct_1032(%7)
+      : (<Tuple[Tensor[Float32]*6], TupleShape((150, 8), (150), (120, 150), (120), (1, 120), (1))>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:436/        loss = F.depend(loss, self.optimizer(grads))/
+  %9(loss) = $(_no_sens_impl_1029):S_Prim_Depend[side_effect_propagate: I64(1)](%2, %8)
+      : (<Tensor[Float32], ()>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:436/        loss = F.depend(loss, self.optimizer(grads))/
+  Return(%9)
+      : (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:442/        return loss/
+}
+# Order:
+#   1: @_no_sens_impl_1031:CNode_1058{[0]: ValueNode<Primitive> Return, [1]: loss}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: mindspore_nn_optim_sgd_SGD_construct_1032 : 000001D7A8AD1580
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:219/    def construct(self, gradients):/
+subgraph @mindspore_nn_optim_sgd_SGD_construct_1032 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024](%para27_gradients) {
+  %1(CNode_1059) = S_Prim_AssignAdd[input_names: ["ref", "value"], output_names: ["ref"], side_effect_mem: Bool(1)](%para9_global_step, Tensor(shape=[1], dtype=Int32, value=[1]))
+      : (<Ref[Tensor[Int32]], (1)>, <Tensor[Int32], (1)>) -> (<Tensor[Int32], (1)>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:227/        self.assignadd(self.global_step, self.global_step_increase_tensor)/
+  %2(CNode_1060) = StopGradient(%1)
+      : (<Tensor[Int32], (1)>) -> (<Tensor[Int32], (1)>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:218/    @jit/
+
+#------------------------> 6
+  %3(CNode_1061) = call @mindspore_nn_optim_sgd_SGD_construct_1033()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:228/        if self.is_group_lr:/
+  %4(CNode_1062) = Depend[side_effect_propagate: I64(1)](%3, %2)
+      : (<null>, <Tensor[Int32], (1)>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:228/        if self.is_group_lr:/
+  Return(%4)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:228/        if self.is_group_lr:/
+}
+# Order:
+#   1: @mindspore_nn_optim_sgd_SGD_construct_1032:gradients{[0]: ValueNode<FuncGraph> flatten_gradients_1063, [1]: param_gradients}
+#   2: @mindspore_nn_optim_sgd_SGD_construct_1032:gradients{[0]: ValueNode<FuncGraph> gradients_centralization_1064, [1]: gradients}
+#   3: @mindspore_nn_optim_sgd_SGD_construct_1032:gradients{[0]: ValueNode<FuncGraph> scale_grad_1065, [1]: gradients}
+#   4: @mindspore_nn_optim_sgd_SGD_construct_1032:lr{[0]: ValueNode<FuncGraph> get_lr_1035}
+#   5: @mindspore_nn_optim_sgd_SGD_construct_1032:CNode_1059{[0]: ValueNode<DoSignaturePrimitive> S_Prim_AssignAdd, [1]: param_global_step, [2]: ValueNode<Tensor> Tensor(shape=[1], dtype=Int32, value=[1])}
+#   6: @mindspore_nn_optim_sgd_SGD_construct_1032:CNode_1061{[0]: ValueNode<FuncGraph> mindspore_nn_optim_sgd_SGD_construct_1033}
+#   7: @mindspore_nn_optim_sgd_SGD_construct_1032:CNode_1066{[0]: ValueNode<Primitive> Return, [1]: CNode_1062}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: mindspore_nn_optim_sgd_SGD_construct_1033 : 000001D7A8ACFAF0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:219/    def construct(self, gradients):/
+subgraph @mindspore_nn_optim_sgd_SGD_construct_1033 parent: [subgraph @mindspore_nn_optim_sgd_SGD_construct_1032]() {
+
+#------------------------> 7
+  %1(CNode_1067) = call @mindspore_nn_optim_sgd_SGD_construct_1034()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:232/            success = self.hyper_map_reverse(F.partial(_sgd_opt, self.momentum, lr),/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:232/            success = self.hyper_map_reverse(F.partial(_sgd_opt, self.momentum, lr),/
+}
+# Order:
+#   1: @mindspore_nn_optim_sgd_SGD_construct_1033:CNode_1068{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Partial, [1]: ValueNode<DoSignaturePrimitive> S_Prim_sgd_opt, [2]: param_momentum, [3]: lr}
+#   2: @mindspore_nn_optim_sgd_SGD_construct_1033:success{[0]: ValueNode<DoSignaturePrimitive> S_Prim_hyper_map, [1]: CNode_1068, [2]: gradients, [3]: CNode_1069, [4]: CNode_1070, [5]: CNode_1071, [6]: CNode_1072}
+#   3: @mindspore_nn_optim_sgd_SGD_construct_1033:CNode_1067{[0]: ValueNode<FuncGraph> mindspore_nn_optim_sgd_SGD_construct_1034}
+#   4: @mindspore_nn_optim_sgd_SGD_construct_1033:CNode_1073{[0]: ValueNode<Primitive> Return, [1]: CNode_1067}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: mindspore_nn_optim_sgd_SGD_construct_1034 : 000001D7A8AD2AC0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:219/    def construct(self, gradients):/
+subgraph @mindspore_nn_optim_sgd_SGD_construct_1034 parent: [subgraph @mindspore_nn_optim_sgd_SGD_construct_1033]() {
+
+#------------------------> 8
+  %1(lr) = $(mindspore_nn_optim_sgd_SGD_construct_1032):call @get_lr_1035()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:226/        lr = self.get_lr()/
+  %2(CNode_1068) = $(mindspore_nn_optim_sgd_SGD_construct_1033):S_Prim_Partial[side_effect_propagate: I64(1)](S_Prim_sgd_opt, %para22_momentum, %1)
+      : (<null>, <Ref[Tensor[Float32]], ()>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:232/            success = self.hyper_map_reverse(F.partial(_sgd_opt, self.momentum, lr),/
+  %3(gradients) = $(mindspore_nn_optim_sgd_SGD_construct_1032):call @flatten_gradients_1063(%para27_gradients)
+      : (<Tuple[Tensor[Float32]*6], TupleShape((150, 8), (150), (120, 150), (120), (1, 120), (1))>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:223/        gradients = self.flatten_gradients(gradients)/
+  %4(gradients) = $(mindspore_nn_optim_sgd_SGD_construct_1032):call @gradients_centralization_1064(%3)
+      : (<null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:224/        gradients = self.gradients_centralization(gradients)/
+  %5(gradients) = $(mindspore_nn_optim_sgd_SGD_construct_1032):call @scale_grad_1065(%4)
+      : (<null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:225/        gradients = self.scale_grad(gradients)/
+  %6(CNode_1069) = $(mindspore_nn_optim_sgd_SGD_construct_1032):MakeTuple(%para3_fc1.weight, %para4_fc1.bias, %para5_fc2.weight, %para6_fc2.bias, %para7_fc3.weight, %para8_fc3.bias)
+      : (<Ref[Tensor[Float32]], (150, 8)>, <Ref[Tensor[Float32]], (150)>, <Ref[Tensor[Float32]], (120, 150)>, <Ref[Tensor[Float32]], (120)>, <Ref[Tensor[Float32]], (1, 120)>, <Ref[Tensor[Float32]], (1)>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:220/        params = self._parameters/
+  %7(CNode_1070) = $(mindspore_nn_optim_sgd_SGD_construct_1032):MakeTuple(%para10_accum.fc1.weight, %para11_accum.fc1.bias, %para12_accum.fc2.weight, %para13_accum.fc2.bias, %para14_accum.fc3.weight, %para15_accum.fc3.bias)
+      : (<Ref[Tensor[Float32]], (150, 8)>, <Ref[Tensor[Float32]], (150)>, <Ref[Tensor[Float32]], (120, 150)>, <Ref[Tensor[Float32]], (120)>, <Ref[Tensor[Float32]], (1, 120)>, <Ref[Tensor[Float32]], (1)>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:221/        accum = self.accum/
+  %8(CNode_1071) = $(mindspore_nn_optim_sgd_SGD_construct_1032):MakeTuple(%para16_stat.fc1.weight, %para17_stat.fc1.bias, %para18_stat.fc2.weight, %para19_stat.fc2.bias, %para20_stat.fc3.weight, %para21_stat.fc3.bias)
+      : (<Ref[Tensor[Float32]], (150, 8)>, <Ref[Tensor[Float32]], (150)>, <Ref[Tensor[Float32]], (120, 150)>, <Ref[Tensor[Float32]], (120)>, <Ref[Tensor[Float32]], (1, 120)>, <Ref[Tensor[Float32]], (1)>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:222/        stat = self.stat/
+  %9(CNode_1072) = $(mindspore_nn_optim_sgd_SGD_construct_1032):MakeTuple(S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]], S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]], S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]], S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]], S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]], S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]])
+      : (<null>, <null>, <null>, <null>, <null>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:233/                                             gradients, params, accum, stat, self.opt)/
+  %10(success) = $(mindspore_nn_optim_sgd_SGD_construct_1033):S_Prim_hyper_map(%2, %5, %6, %7, %8, %9)
+      : (<null>, <null>, <null>, <null>, <null>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:232/            success = self.hyper_map_reverse(F.partial(_sgd_opt, self.momentum, lr),/
+  Return(%10)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:234/        return success/
+}
+# Order:
+#   1: @mindspore_nn_optim_sgd_SGD_construct_1034:CNode_1075{[0]: ValueNode<Primitive> Return, [1]: success}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: get_lr_1035 : 000001D7A8ACE5B0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:739/    def get_lr(self):/
+subgraph @get_lr_1035 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024]() {
+
+#------------------------> 9
+  %1(CNode_1076) = call @get_lr_1036()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:748/        if self.dynamic_lr:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:748/        if self.dynamic_lr:/
+}
+# Order:
+#   1: @get_lr_1035:CNode_1076{[0]: ValueNode<FuncGraph> get_lr_1036}
+#   2: @get_lr_1035:CNode_1077{[0]: ValueNode<Primitive> Return, [1]: CNode_1076}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: get_lr_1036 : 000001D7A8AD0AE0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:739/    def get_lr(self):/
+subgraph @get_lr_1036 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024]() {
+
+#------------------------> 10
+  %1(CNode_1078) = call @get_lr_1037()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:749/            if self.is_group_lr:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:749/            if self.is_group_lr:/
+}
+# Order:
+#   1: @get_lr_1036:CNode_1078{[0]: ValueNode<FuncGraph> get_lr_1037}
+#   2: @get_lr_1036:CNode_1079{[0]: ValueNode<Primitive> Return, [1]: CNode_1078}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: get_lr_1037 : 000001D7A8ACD5C0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:739/    def get_lr(self):/
+subgraph @get_lr_1037 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024]() {
+
+#------------------------> 11
+  %1(CNode_1080) = call @get_lr_1038()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755/                lr = self.learning_rate(self.global_step).reshape(())/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755/                lr = self.learning_rate(self.global_step).reshape(())/
+}
+# Order:
+#   1: @get_lr_1037:CNode_1081{[0]: ValueNode<FuncGraph> __main___AdjustLearningRate_construct_1040, [1]: param_global_step}
+#   2: @get_lr_1037:CNode_1082{[0]: ValueNode<Primitive> getattr, [1]: CNode_1081, [2]: ValueNode<StringImm> reshape}
+#   3: @get_lr_1037:lr{[0]: CNode_1082, [1]: ValueNode<ValueTuple> ()}
+#   4: @get_lr_1037:CNode_1080{[0]: ValueNode<FuncGraph> get_lr_1038}
+#   5: @get_lr_1037:CNode_1083{[0]: ValueNode<Primitive> Return, [1]: CNode_1080}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: get_lr_1038 : 000001D7A8AD5540
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:739/    def get_lr(self):/
+subgraph @get_lr_1038 parent: [subgraph @get_lr_1037]() {
+
+#------------------------> 12
+  %1(CNode_1084) = call @get_lr_1039()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:749/            if self.is_group_lr:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:749/            if self.is_group_lr:/
+}
+# Order:
+#   1: @get_lr_1038:CNode_1084{[0]: ValueNode<FuncGraph> get_lr_1039}
+#   2: @get_lr_1038:CNode_1085{[0]: ValueNode<Primitive> Return, [1]: CNode_1084}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: get_lr_1039 : 000001D7A8ACDB10
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:739/    def get_lr(self):/
+subgraph @get_lr_1039 parent: [subgraph @get_lr_1037]() {
+
+#------------------------> 13
+  %1(CNode_1081) = $(get_lr_1037):call @__main___AdjustLearningRate_construct_1040(%para9_global_step)
+      : (<Ref[Tensor[Int32]], (1)>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755/                lr = self.learning_rate(self.global_step).reshape(())/
+  %2(CNode_1082) = $(get_lr_1037):getattr(%1, "reshape")
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755/                lr = self.learning_rate(self.global_step).reshape(())/
+  %3(lr) = $(get_lr_1037):%2(())
+      : (<null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755/                lr = self.learning_rate(self.global_step).reshape(())/
+  Return(%3)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:756/        return lr/
+}
+# Order:
+#   1: @get_lr_1039:CNode_1086{[0]: ValueNode<Primitive> Return, [1]: lr}
+
+
+subgraph attr:
+training : 1
+subgraph instance: __main___AdjustLearningRate_construct_1040 : 000001D7A8ACE060
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\learning_rate_schedule.py:33/    def construct(self, global_step):/
+subgraph @__main___AdjustLearningRate_construct_1040(%para28_global_step) {
+
+#------------------------> 14
+  %1(CNode_1087) = raise[side_effect_io: Bool(1)]("NotImplementedError", "None")
+      : (<String, NoShape>, <String, NoShape>) -> (<null>)
+      #scope: (Default/optimizer-SGD/learning_rate-AdjustLearningRate)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\learning_rate_schedule.py:48/        raise NotImplementedError/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD/learning_rate-AdjustLearningRate)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\learning_rate_schedule.py:48/        raise NotImplementedError/
+}
+# Order:
+#   1: @__main___AdjustLearningRate_construct_1040:CNode_1087{[0]: ValueNode<Primitive> raise, [1]: ValueNode<StringImm> NotImplementedError, [2]: ValueNode<StringImm> None}
+#   2: @__main___AdjustLearningRate_construct_1040:CNode_1088{[0]: ValueNode<Primitive> Return, [1]: CNode_1087}
+
+
+# ===============================================================================================
+# The total of function graphs in evaluation stack: 15
+# ===============================================================================================
+
+
+# ===============================================================================================
+# The rest function graphs are the following:
+# ===============================================================================================
+subgraph attr:
+training : 1
+subgraph instance: _no_sens_impl_1045 : 000001D7AB66E530
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:431/    def _no_sens_impl(self, *inputs):/
+subgraph @_no_sens_impl_1045 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024](%para29_inputs) {
+  %1(CNode_1048) = call @_no_sens_impl_1089()
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:437/        if self.return_grad:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:437/        if self.return_grad:/
+}
+# Order:
+#   1: @_no_sens_impl_1045:loss{[0]: ValueNode<UnpackCall> MetaFuncGraph-unpack_call.1049, [1]: ValueNode<FuncGraph> mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1090, [2]: param_inputs}
+#   2: @_no_sens_impl_1045:grads{[0]: ValueNode<UnpackGraphPrimitive> UnpackGraph, [1]: ValueNode<FuncGraph> mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1090, [2]: param_inputs}
+#   3: @_no_sens_impl_1045:grads{[0]: ValueNode<DoSignaturePrimitive> S_Prim_grad, [1]: grads, [2]: CNode_1051}
+#   4: @_no_sens_impl_1045:grads{[0]: ValueNode<UnpackCall> MetaFuncGraph-unpack_call.1052, [1]: grads, [2]: param_inputs}
+#   5: @_no_sens_impl_1045:grads{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Identity_construct_1091, [1]: grads}
+#   6: @_no_sens_impl_1045:CNode_1054{[0]: ValueNode<FuncGraph> mindspore_nn_optim_sgd_SGD_construct_1092, [1]: grads}
+#   7: @_no_sens_impl_1045:loss{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Depend, [1]: loss, [2]: CNode_1054}
+#   8: @_no_sens_impl_1045:CNode_1048{[0]: ValueNode<FuncGraph> _no_sens_impl_1089}
+#   9: @_no_sens_impl_1045:CNode_1055{[0]: ValueNode<Primitive> Return, [1]: CNode_1048}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: mindspore_nn_optim_sgd_SGD_construct_1092 : 000001D7AB670510
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:219/    def construct(self, gradients):/
+subgraph @mindspore_nn_optim_sgd_SGD_construct_1092 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024](%para30_gradients) {
+  %1(CNode_1059) = S_Prim_AssignAdd[input_names: ["ref", "value"], output_names: ["ref"], side_effect_mem: Bool(1)](%para9_global_step, Tensor(shape=[1], dtype=Int32, value=[1]))
+      : (<Ref[Tensor[Int32]], (1), ref_key=:global_step>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:227/        self.assignadd(self.global_step, self.global_step_increase_tensor)/
+  %2(CNode_1060) = StopGradient(%1)
+      : (<null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:218/    @jit/
+  %3(CNode_1061) = call @mindspore_nn_optim_sgd_SGD_construct_1093()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:228/        if self.is_group_lr:/
+  %4(CNode_1062) = Depend[side_effect_propagate: I64(1)](%3, %2)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:228/        if self.is_group_lr:/
+  Return(%4)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:228/        if self.is_group_lr:/
+}
+# Order:
+#   1: @mindspore_nn_optim_sgd_SGD_construct_1092:gradients{[0]: ValueNode<FuncGraph> flatten_gradients_1094, [1]: param_gradients}
+#   2: @mindspore_nn_optim_sgd_SGD_construct_1092:gradients{[0]: ValueNode<FuncGraph> gradients_centralization_1095, [1]: gradients}
+#   3: @mindspore_nn_optim_sgd_SGD_construct_1092:gradients{[0]: ValueNode<FuncGraph> scale_grad_1096, [1]: gradients}
+#   4: @mindspore_nn_optim_sgd_SGD_construct_1092:lr{[0]: ValueNode<FuncGraph> get_lr_1097}
+#   5: @mindspore_nn_optim_sgd_SGD_construct_1092:CNode_1059{[0]: ValueNode<DoSignaturePrimitive> S_Prim_AssignAdd, [1]: param_global_step, [2]: ValueNode<Tensor> Tensor(shape=[1], dtype=Int32, value=[1])}
+#   6: @mindspore_nn_optim_sgd_SGD_construct_1092:CNode_1061{[0]: ValueNode<FuncGraph> mindspore_nn_optim_sgd_SGD_construct_1093}
+#   7: @mindspore_nn_optim_sgd_SGD_construct_1092:CNode_1066{[0]: ValueNode<Primitive> Return, [1]: CNode_1062}
+
+
+subgraph attr:
+training : 1
+subgraph instance: mindspore_nn_layer_basic_Identity_construct_1091 : 000001D7AB66DA90
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:505/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Identity_construct_1091(%para31_x) {
+  Return(%para31_x)
+      : (<null>)
+      #scope: (Default/grad_reducer-Identity)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:506/        return x/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Identity_construct_1091:CNode_1098{[0]: ValueNode<Primitive> Return, [1]: param_x}
+
+
+subgraph attr:
+training : 1
+subgraph instance: mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1090 : 000001D7AB6774A0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:120/    def construct(self, data, label):/
+subgraph @mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1090 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024](%para32_data, %para33_label) {
+  %1(out) = call @__main___Net_construct_1099(%para32_data)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:121/        out = self._backbone(data)/
+  %2(CNode_1101) = call @mindspore_nn_loss_loss_MSELoss_construct_1100(%1, %para33_label)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:122/        return self._loss_fn(out, label)/
+  Return(%2)
+      : (<null>)
+      #scope: (Default/network-WithLossCell)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:122/        return self._loss_fn(out, label)/
+}
+# Order:
+#   1: @mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1090:out{[0]: ValueNode<FuncGraph> __main___Net_construct_1099, [1]: param_data}
+#   2: @mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1090:CNode_1101{[0]: ValueNode<FuncGraph> mindspore_nn_loss_loss_MSELoss_construct_1100, [1]: out, [2]: param_label}
+#   3: @mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1090:CNode_1102{[0]: ValueNode<Primitive> Return, [1]: CNode_1101}
+
+
+subgraph attr:
+training : 1
+subgraph instance: _no_sens_impl_1089 : 000001D7AB6878F0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:431/    def _no_sens_impl(self, *inputs):/
+subgraph @_no_sens_impl_1089 parent: [subgraph @_no_sens_impl_1045]() {
+  %1(CNode_1056) = call @_no_sens_impl_1103()
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:437/        if self.return_grad:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:437/        if self.return_grad:/
+}
+# Order:
+#   1: @_no_sens_impl_1089:CNode_1056{[0]: ValueNode<FuncGraph> _no_sens_impl_1103}
+#   2: @_no_sens_impl_1089:CNode_1057{[0]: ValueNode<Primitive> Return, [1]: CNode_1056}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: scale_grad_1096 : 000001D7AB67BF00
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:471/    def scale_grad(self, gradients):/
+subgraph @scale_grad_1096(%para34_gradients) {
+  %1(CNode_1105) = call @scale_grad_1104()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:485/        if self.need_scale:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:485/        if self.need_scale:/
+}
+# Order:
+#   1: @scale_grad_1096:CNode_1105{[0]: ValueNode<FuncGraph> scale_grad_1104}
+#   2: @scale_grad_1096:CNode_1106{[0]: ValueNode<Primitive> Return, [1]: CNode_1105}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: gradients_centralization_1095 : 000001D7AB6764B0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:452/    def gradients_centralization(self, gradients):/
+subgraph @gradients_centralization_1095(%para35_gradients) {
+  %1(CNode_1108) = call @gradients_centralization_1107()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:466/        if self.is_group:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:466/        if self.is_group:/
+}
+# Order:
+#   1: @gradients_centralization_1095:CNode_1108{[0]: ValueNode<FuncGraph> gradients_centralization_1107}
+#   2: @gradients_centralization_1095:CNode_1109{[0]: ValueNode<Primitive> Return, [1]: CNode_1108}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: flatten_gradients_1094 : 000001D7AB675A10
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:410/    def flatten_gradients(self, gradients):/
+subgraph @flatten_gradients_1094(%para36_gradients) {
+  %1(CNode_1111) = call @flatten_gradients_1110()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:424/        if self._use_flattened_params:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:424/        if self._use_flattened_params:/
+}
+# Order:
+#   1: @flatten_gradients_1094:CNode_1111{[0]: ValueNode<FuncGraph> flatten_gradients_1110}
+#   2: @flatten_gradients_1094:CNode_1112{[0]: ValueNode<Primitive> Return, [1]: CNode_1111}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: get_lr_1097 : 000001D7AB676F50
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:739/    def get_lr(self):/
+subgraph @get_lr_1097 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024]() {
+  %1(CNode_1076) = call @get_lr_1113()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:748/        if self.dynamic_lr:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:748/        if self.dynamic_lr:/
+}
+# Order:
+#   1: @get_lr_1097:CNode_1076{[0]: ValueNode<FuncGraph> get_lr_1113}
+#   2: @get_lr_1097:CNode_1077{[0]: ValueNode<Primitive> Return, [1]: CNode_1076}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: mindspore_nn_optim_sgd_SGD_construct_1093 : 000001D7AB67A9C0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:219/    def construct(self, gradients):/
+subgraph @mindspore_nn_optim_sgd_SGD_construct_1093 parent: [subgraph @mindspore_nn_optim_sgd_SGD_construct_1092]() {
+  %1(CNode_1067) = call @mindspore_nn_optim_sgd_SGD_construct_1114()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:232/            success = self.hyper_map_reverse(F.partial(_sgd_opt, self.momentum, lr),/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:232/            success = self.hyper_map_reverse(F.partial(_sgd_opt, self.momentum, lr),/
+}
+# Order:
+#   1: @mindspore_nn_optim_sgd_SGD_construct_1093:CNode_1068{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Partial, [1]: ValueNode<DoSignaturePrimitive> S_Prim_sgd_opt, [2]: param_momentum, [3]: lr}
+#   2: @mindspore_nn_optim_sgd_SGD_construct_1093:success{[0]: ValueNode<DoSignaturePrimitive> S_Prim_hyper_map, [1]: CNode_1068, [2]: gradients, [3]: CNode_1069, [4]: CNode_1070, [5]: CNode_1071, [6]: CNode_1072}
+#   3: @mindspore_nn_optim_sgd_SGD_construct_1093:CNode_1067{[0]: ValueNode<FuncGraph> mindspore_nn_optim_sgd_SGD_construct_1114}
+#   4: @mindspore_nn_optim_sgd_SGD_construct_1093:CNode_1073{[0]: ValueNode<Primitive> Return, [1]: CNode_1067}
+
+
+subgraph attr:
+training : 1
+subgraph instance: mindspore_nn_loss_loss_MSELoss_construct_1100 : 000001D7AB685E60
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:315/    def construct(self, logits, labels):/
+subgraph @mindspore_nn_loss_loss_MSELoss_construct_1100(%para37_logits, %para38_labels) {
+  %1(CNode_1115) = S_Prim__check_is_tensor[constexpr_prim: Bool(1)]("logits", %para37_logits, "MSELoss")
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:316/        _check_is_tensor('logits', logits, self.cls_name)/
+  %2(CNode_1116) = S_Prim__check_is_tensor[constexpr_prim: Bool(1)]("labels", %para38_labels, "MSELoss")
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:317/        _check_is_tensor('labels', labels, self.cls_name)/
+  %3(CNode_1117) = MakeTuple(%1, %2)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:315/    def construct(self, logits, labels):/
+  %4(CNode_1118) = StopGradient(%3)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:315/    def construct(self, logits, labels):/
+  %5(CNode_1119) = S_Prim_sub(%para37_logits, %para38_labels)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:318/        x = F.square(logits - labels)/
+  %6(x) = call @square_1120(%5)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:318/        x = F.square(logits - labels)/
+  %7(CNode_1122) = call @get_loss_1121(%6)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:319/        return self.get_loss(x)/
+  %8(CNode_1123) = Depend[side_effect_propagate: I64(1)](%7, %4)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:319/        return self.get_loss(x)/
+  Return(%8)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:319/        return self.get_loss(x)/
+}
+# Order:
+#   1: @mindspore_nn_loss_loss_MSELoss_construct_1100:CNode_1115{[0]: ValueNode<DoSignaturePrimitive> S_Prim__check_is_tensor, [1]: ValueNode<StringImm> logits, [2]: param_logits, [3]: ValueNode<StringImm> MSELoss}
+#   2: @mindspore_nn_loss_loss_MSELoss_construct_1100:CNode_1116{[0]: ValueNode<DoSignaturePrimitive> S_Prim__check_is_tensor, [1]: ValueNode<StringImm> labels, [2]: param_labels, [3]: ValueNode<StringImm> MSELoss}
+#   3: @mindspore_nn_loss_loss_MSELoss_construct_1100:CNode_1119{[0]: ValueNode<DoSignaturePrimitive> S_Prim_sub, [1]: param_logits, [2]: param_labels}
+#   4: @mindspore_nn_loss_loss_MSELoss_construct_1100:x{[0]: ValueNode<FuncGraph> square_1120, [1]: CNode_1119}
+#   5: @mindspore_nn_loss_loss_MSELoss_construct_1100:CNode_1122{[0]: ValueNode<FuncGraph> get_loss_1121, [1]: x}
+#   6: @mindspore_nn_loss_loss_MSELoss_construct_1100:CNode_1124{[0]: ValueNode<Primitive> Return, [1]: CNode_1123}
+
+
+subgraph attr:
+training : 1
+ge_sync_data : 0
+subgraph instance: __main___Net_construct_1099 : 000001D7AB67F420
+# In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:71/
+subgraph @__main___Net_construct_1099 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024](%para39_x) {
+  %1(CNode_1125) = S_Prim_equal("relu", "relu")
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:72/
+  %2(CNode_1126) = Cond(%1, Bool(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:72/
+  %3(CNode_1127) = Switch(%2, @__main___Net_construct_1128, @__main___Net_construct_1129)
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:72/
+  %4(CNode_1130) = %3()
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:72/
+  %5(CNode_1132) = call @__main___Net_construct_1131(%4)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:121/        out = self._backbone(data)/
+  Return(%5)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:72/
+}
+# Order:
+#   1: @__main___Net_construct_1099:CNode_1125{[0]: ValueNode<DoSignaturePrimitive> S_Prim_equal, [1]: ValueNode<StringImm> relu, [2]: ValueNode<StringImm> relu}
+#   2: @__main___Net_construct_1099:CNode_1126{[0]: ValueNode<Primitive> Cond, [1]: CNode_1125, [2]: ValueNode<BoolImm> false}
+#   3: @__main___Net_construct_1099:CNode_1127{[0]: ValueNode<Primitive> Switch, [1]: CNode_1126, [2]: ValueNode<FuncGraph> __main___Net_construct_1128, [3]: ValueNode<FuncGraph> __main___Net_construct_1129}
+#   4: @__main___Net_construct_1099:CNode_1130{[0]: CNode_1127}
+#   5: @__main___Net_construct_1099:CNode_1132{[0]: ValueNode<FuncGraph> __main___Net_construct_1131, [1]: CNode_1130}
+#   6: @__main___Net_construct_1099:CNode_1133{[0]: ValueNode<Primitive> Return, [1]: CNode_1132}
+
+
+subgraph attr:
+training : 1
+subgraph instance: _no_sens_impl_1103 : 000001D7AB6843D0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:431/    def _no_sens_impl(self, *inputs):/
+subgraph @_no_sens_impl_1103 parent: [subgraph @_no_sens_impl_1045]() {
+  %1(loss) = $(_no_sens_impl_1045):UnpackCall_unpack_call(@mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1090, %para29_inputs)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:433/        loss = self.network(*inputs)/
+  %2(grads) = $(_no_sens_impl_1045):UnpackGraph(@mindspore_nn_wrap_cell_wrapper_WithLossCell_construct_1090, %para29_inputs)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:434/        grads = self.grad_no_sens(self.network, self.weights)(*inputs)/
+  %3(CNode_1051) = $(_no_sens_impl_1045):MakeTuple(%para3_fc1.weight, %para4_fc1.bias, %para5_fc2.weight, %para6_fc2.bias, %para7_fc3.weight, %para8_fc3.bias)
+      : (<Ref[Tensor[Float32]], (150, 8), ref_key=:fc1.weight>, <Ref[Tensor[Float32]], (150), ref_key=:fc1.bias>, <Ref[Tensor[Float32]], (120, 150), ref_key=:fc2.weight>, <Ref[Tensor[Float32]], (120), ref_key=:fc2.bias>, <Ref[Tensor[Float32]], (1, 120), ref_key=:fc3.weight>, <Ref[Tensor[Float32]], (1), ref_key=:fc3.bias>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:434/        grads = self.grad_no_sens(self.network, self.weights)(*inputs)/
+  %4(grads) = $(_no_sens_impl_1045):S_Prim_grad(%2, %3)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:434/        grads = self.grad_no_sens(self.network, self.weights)(*inputs)/
+  %5(grads) = $(_no_sens_impl_1045):UnpackCall_unpack_call(%4, %para29_inputs)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:434/        grads = self.grad_no_sens(self.network, self.weights)(*inputs)/
+  %6(grads) = $(_no_sens_impl_1045):call @mindspore_nn_layer_basic_Identity_construct_1091(%5)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:435/        grads = self.grad_reducer(grads)/
+  %7(CNode_1054) = $(_no_sens_impl_1045):call @mindspore_nn_optim_sgd_SGD_construct_1092(%6)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:436/        loss = F.depend(loss, self.optimizer(grads))/
+  %8(loss) = $(_no_sens_impl_1045):S_Prim_Depend[side_effect_propagate: I64(1)](%1, %7)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:436/        loss = F.depend(loss, self.optimizer(grads))/
+  Return(%8)
+      : (<null>)
+      #scope: (Default)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:442/        return loss/
+}
+# Order:
+#   1: @_no_sens_impl_1103:CNode_1058{[0]: ValueNode<Primitive> Return, [1]: loss}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: scale_grad_1104 : 000001D7AB67E430
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:471/    def scale_grad(self, gradients):/
+subgraph @scale_grad_1104 parent: [subgraph @scale_grad_1096]() {
+  %1(CNode_1135) = call @scale_grad_1134()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:485/        if self.need_scale:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:485/        if self.need_scale:/
+}
+# Order:
+#   1: @scale_grad_1104:CNode_1135{[0]: ValueNode<FuncGraph> scale_grad_1134}
+#   2: @scale_grad_1104:CNode_1136{[0]: ValueNode<Primitive> Return, [1]: CNode_1135}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: gradients_centralization_1107 : 000001D7AB676A00
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:452/    def gradients_centralization(self, gradients):/
+subgraph @gradients_centralization_1107 parent: [subgraph @gradients_centralization_1095]() {
+  %1(CNode_1138) = call @gradients_centralization_1137()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:466/        if self.is_group:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:466/        if self.is_group:/
+}
+# Order:
+#   1: @gradients_centralization_1107:CNode_1138{[0]: ValueNode<FuncGraph> gradients_centralization_1137}
+#   2: @gradients_centralization_1107:CNode_1139{[0]: ValueNode<Primitive> Return, [1]: CNode_1138}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: flatten_gradients_1110 : 000001D7AB66DFE0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:410/    def flatten_gradients(self, gradients):/
+subgraph @flatten_gradients_1110 parent: [subgraph @flatten_gradients_1094]() {
+  %1(CNode_1141) = call @flatten_gradients_1140()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:424/        if self._use_flattened_params:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:424/        if self._use_flattened_params:/
+}
+# Order:
+#   1: @flatten_gradients_1110:CNode_1141{[0]: ValueNode<FuncGraph> flatten_gradients_1140}
+#   2: @flatten_gradients_1110:CNode_1142{[0]: ValueNode<Primitive> Return, [1]: CNode_1141}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: get_lr_1113 : 000001D7AB66FFC0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:739/    def get_lr(self):/
+subgraph @get_lr_1113 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024]() {
+  %1(CNode_1078) = call @get_lr_1143()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:749/            if self.is_group_lr:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:749/            if self.is_group_lr:/
+}
+# Order:
+#   1: @get_lr_1113:CNode_1078{[0]: ValueNode<FuncGraph> get_lr_1143}
+#   2: @get_lr_1113:CNode_1079{[0]: ValueNode<Primitive> Return, [1]: CNode_1078}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: mindspore_nn_optim_sgd_SGD_construct_1114 : 000001D7AB67AF10
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:219/    def construct(self, gradients):/
+subgraph @mindspore_nn_optim_sgd_SGD_construct_1114 parent: [subgraph @mindspore_nn_optim_sgd_SGD_construct_1093]() {
+  %1(lr) = $(mindspore_nn_optim_sgd_SGD_construct_1092):call @get_lr_1097()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:226/        lr = self.get_lr()/
+  %2(CNode_1068) = $(mindspore_nn_optim_sgd_SGD_construct_1093):S_Prim_Partial[side_effect_propagate: I64(1)](S_Prim_sgd_opt, %para22_momentum, %1)
+      : (<null>, <Ref[Tensor[Float32]], (), ref_key=:momentum>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:232/            success = self.hyper_map_reverse(F.partial(_sgd_opt, self.momentum, lr),/
+  %3(gradients) = $(mindspore_nn_optim_sgd_SGD_construct_1092):call @flatten_gradients_1094(%para30_gradients)
+      : (<null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:223/        gradients = self.flatten_gradients(gradients)/
+  %4(gradients) = $(mindspore_nn_optim_sgd_SGD_construct_1092):call @gradients_centralization_1095(%3)
+      : (<null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:224/        gradients = self.gradients_centralization(gradients)/
+  %5(gradients) = $(mindspore_nn_optim_sgd_SGD_construct_1092):call @scale_grad_1096(%4)
+      : (<null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:225/        gradients = self.scale_grad(gradients)/
+  %6(CNode_1069) = $(mindspore_nn_optim_sgd_SGD_construct_1092):MakeTuple(%para3_fc1.weight, %para4_fc1.bias, %para5_fc2.weight, %para6_fc2.bias, %para7_fc3.weight, %para8_fc3.bias)
+      : (<Ref[Tensor[Float32]], (150, 8), ref_key=:fc1.weight>, <Ref[Tensor[Float32]], (150), ref_key=:fc1.bias>, <Ref[Tensor[Float32]], (120, 150), ref_key=:fc2.weight>, <Ref[Tensor[Float32]], (120), ref_key=:fc2.bias>, <Ref[Tensor[Float32]], (1, 120), ref_key=:fc3.weight>, <Ref[Tensor[Float32]], (1), ref_key=:fc3.bias>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:220/        params = self._parameters/
+  %7(CNode_1070) = $(mindspore_nn_optim_sgd_SGD_construct_1092):MakeTuple(%para10_accum.fc1.weight, %para11_accum.fc1.bias, %para12_accum.fc2.weight, %para13_accum.fc2.bias, %para14_accum.fc3.weight, %para15_accum.fc3.bias)
+      : (<Ref[Tensor[Float32]], (150, 8), ref_key=:accum.fc1.weight>, <Ref[Tensor[Float32]], (150), ref_key=:accum.fc1.bias>, <Ref[Tensor[Float32]], (120, 150), ref_key=:accum.fc2.weight>, <Ref[Tensor[Float32]], (120), ref_key=:accum.fc2.bias>, <Ref[Tensor[Float32]], (1, 120), ref_key=:accum.fc3.weight>, <Ref[Tensor[Float32]], (1), ref_key=:accum.fc3.bias>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:221/        accum = self.accum/
+  %8(CNode_1071) = $(mindspore_nn_optim_sgd_SGD_construct_1092):MakeTuple(%para16_stat.fc1.weight, %para17_stat.fc1.bias, %para18_stat.fc2.weight, %para19_stat.fc2.bias, %para20_stat.fc3.weight, %para21_stat.fc3.bias)
+      : (<Ref[Tensor[Float32]], (150, 8), ref_key=:stat.fc1.weight>, <Ref[Tensor[Float32]], (150), ref_key=:stat.fc1.bias>, <Ref[Tensor[Float32]], (120, 150), ref_key=:stat.fc2.weight>, <Ref[Tensor[Float32]], (120), ref_key=:stat.fc2.bias>, <Ref[Tensor[Float32]], (1, 120), ref_key=:stat.fc3.weight>, <Ref[Tensor[Float32]], (1), ref_key=:stat.fc3.bias>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:222/        stat = self.stat/
+  %9(CNode_1072) = $(mindspore_nn_optim_sgd_SGD_construct_1092):MakeTuple(S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]], S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]], S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]], S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]], S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]], S_Prim_SGD[dampening: F32(0), input_names: ["parameters", "gradient", "learning_rate", "accum", "momentum", "stat"], weight_decay: F32(0), side_effect_mem: Bool(1), nesterov: Bool(0), output_names: ["output"]])
+      : (<null>, <null>, <null>, <null>, <null>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:233/                                             gradients, params, accum, stat, self.opt)/
+  %10(success) = $(mindspore_nn_optim_sgd_SGD_construct_1093):S_Prim_hyper_map(%2, %5, %6, %7, %8, %9)
+      : (<null>, <null>, <null>, <null>, <null>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:232/            success = self.hyper_map_reverse(F.partial(_sgd_opt, self.momentum, lr),/
+  Return(%10)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\sgd.py:234/        return success/
+}
+# Order:
+#   1: @mindspore_nn_optim_sgd_SGD_construct_1114:CNode_1075{[0]: ValueNode<Primitive> Return, [1]: success}
+
+
+subgraph attr:
+training : 1
+subgraph instance: get_loss_1121 : 000001D7AB686E50
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:125/    def get_loss(self, x, weights=1.0):/
+subgraph @get_loss_1121(%para40_x, %para41_weights) {
+  %1(CNode_1145) = call @get_loss_1144()
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:143/        if self.reduce and self.average:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:143/        if self.reduce and self.average:/
+}
+# Order:
+#   1: @get_loss_1121:input_dtype{[0]: ValueNode<Primitive> getattr, [1]: param_x, [2]: ValueNode<StringImm> dtype}
+#   2: @get_loss_1121:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Cast, [1]: param_x, [2]: ValueNode<Float> Float32}
+#   3: @get_loss_1121:weights{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Cast, [1]: param_weights, [2]: ValueNode<Float> Float32}
+#   4: @get_loss_1121:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Mul, [1]: weights, [2]: x}
+#   5: @get_loss_1121:CNode_1145{[0]: ValueNode<FuncGraph> get_loss_1144}
+#   6: @get_loss_1121:CNode_1146{[0]: ValueNode<Primitive> Return, [1]: CNode_1145}
+
+
+subgraph attr:
+subgraph instance: square_1120 : 000001D7AB681950
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\ops\function\math_func.py:6081/def square(input):/
+subgraph @square_1120(%para42_input) {
+  %1(CNode_1147) = S_Prim_Square[input_names: ["input_x"], output_names: ["output"]](%para42_input)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\ops\function\math_func.py:6110/    return square_(input)/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\ops\function\math_func.py:6110/    return square_(input)/
+}
+# Order:
+#   1: @square_1120:CNode_1147{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Square, [1]: param_input}
+#   2: @square_1120:CNode_1148{[0]: ValueNode<Primitive> Return, [1]: CNode_1147}
+
+
+subgraph attr:
+training : 1
+after_block : 1
+ge_sync_data : 0
+subgraph instance: __main___Net_construct_1131 : 000001D7AB6888E0
+# In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:71/
+subgraph @__main___Net_construct_1131(%para43_) {
+  Return(%para43_phi_x)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:83/
+}
+# Order:
+#   1: @__main___Net_construct_1131:CNode_1149{[0]: ValueNode<Primitive> Return, [1]: param_phi_x}
+
+
+subgraph attr:
+training : 1
+ge_sync_data : 0
+subgraph instance: __main___Net_construct_1128 : 000001D7AB682E90
+# In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:71/
+subgraph @__main___Net_construct_1128 parent: [subgraph @__main___Net_construct_1099]() {
+  %1(CNode_1150) = ClassType()
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:75/
+  %2(CNode_1151) = ClassType()
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:74/
+  %3(CNode_1153) = call @mindspore_nn_layer_basic_Dense_construct_1152(%para39_x)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:74/
+  %4(x) = %2(%3)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:74/
+  %5(CNode_1155) = call @mindspore_nn_layer_basic_Dense_construct_1154(%4)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:75/
+  %6(x) = %1(%5)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:75/
+  %7(x) = call @mindspore_nn_layer_basic_Dense_construct_1156(%6)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:77/
+  Return(%7)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:74/
+}
+# Order:
+#   1: @__main___Net_construct_1128:CNode_1151{[0]: ValueNode<ClassType> class 'mindspore.nn.layer.activation.ReLU'}
+#   2: @__main___Net_construct_1128:CNode_1153{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_1152, [1]: param_x}
+#   3: @__main___Net_construct_1128:x{[0]: CNode_1151, [1]: CNode_1153}
+#   4: @__main___Net_construct_1128:CNode_1150{[0]: ValueNode<ClassType> class 'mindspore.nn.layer.activation.ReLU'}
+#   5: @__main___Net_construct_1128:CNode_1155{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_1154, [1]: x}
+#   6: @__main___Net_construct_1128:x{[0]: CNode_1150, [1]: CNode_1155}
+#   7: @__main___Net_construct_1128:x{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_1156, [1]: x}
+#   8: @__main___Net_construct_1128:CNode_1157{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+subgraph attr:
+training : 1
+ge_sync_data : 0
+subgraph instance: __main___Net_construct_1129 : 000001D7AB67C9A0
+# In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:71/
+subgraph @__main___Net_construct_1129 parent: [subgraph @__main___Net_construct_1099]() {
+  %1(CNode_1158) = S_Prim_equal("relu", "sigmoid")
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:78/
+  %2(CNode_1159) = Cond(%1, Bool(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:78/
+  %3(CNode_1160) = Switch(%2, @__main___Net_construct_1161, @__main___Net_construct_1162)
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:78/
+  %4(CNode_1163) = %3()
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:78/
+  %5(CNode_1165) = call @__main___Net_construct_1164(%4)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:121/        out = self._backbone(data)/
+  Return(%5)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:78/
+}
+# Order:
+#   1: @__main___Net_construct_1129:CNode_1158{[0]: ValueNode<DoSignaturePrimitive> S_Prim_equal, [1]: ValueNode<StringImm> relu, [2]: ValueNode<StringImm> sigmoid}
+#   2: @__main___Net_construct_1129:CNode_1159{[0]: ValueNode<Primitive> Cond, [1]: CNode_1158, [2]: ValueNode<BoolImm> false}
+#   3: @__main___Net_construct_1129:CNode_1160{[0]: ValueNode<Primitive> Switch, [1]: CNode_1159, [2]: ValueNode<FuncGraph> __main___Net_construct_1161, [3]: ValueNode<FuncGraph> __main___Net_construct_1162}
+#   4: @__main___Net_construct_1129:CNode_1163{[0]: CNode_1160}
+#   5: @__main___Net_construct_1129:CNode_1165{[0]: ValueNode<FuncGraph> __main___Net_construct_1164, [1]: CNode_1163}
+#   6: @__main___Net_construct_1129:CNode_1166{[0]: ValueNode<Primitive> Return, [1]: CNode_1165}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: scale_grad_1134 : 000001D7AB67E980
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:471/    def scale_grad(self, gradients):/
+subgraph @scale_grad_1134 parent: [subgraph @scale_grad_1096]() {
+  Return(%para34_gradients)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:488/        return gradients/
+}
+# Order:
+#   1: @scale_grad_1134:CNode_1167{[0]: ValueNode<Primitive> Return, [1]: param_gradients}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: gradients_centralization_1137 : 000001D7AB66EFD0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:452/    def gradients_centralization(self, gradients):/
+subgraph @gradients_centralization_1137 parent: [subgraph @gradients_centralization_1095]() {
+  Return(%para35_gradients)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:469/        return gradients/
+}
+# Order:
+#   1: @gradients_centralization_1137:CNode_1168{[0]: ValueNode<Primitive> Return, [1]: param_gradients}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: flatten_gradients_1140 : 000001D7AB675F60
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:410/    def flatten_gradients(self, gradients):/
+subgraph @flatten_gradients_1140 parent: [subgraph @flatten_gradients_1094]() {
+  Return(%para36_gradients)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:427/        return gradients/
+}
+# Order:
+#   1: @flatten_gradients_1140:CNode_1169{[0]: ValueNode<Primitive> Return, [1]: param_gradients}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: get_lr_1143 : 000001D7AB67A470
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:739/    def get_lr(self):/
+subgraph @get_lr_1143 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024]() {
+  %1(CNode_1080) = call @get_lr_1170()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755/                lr = self.learning_rate(self.global_step).reshape(())/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755/                lr = self.learning_rate(self.global_step).reshape(())/
+}
+# Order:
+#   1: @get_lr_1143:CNode_1081{[0]: ValueNode<FuncGraph> __main___AdjustLearningRate_construct_1171, [1]: param_global_step}
+#   2: @get_lr_1143:CNode_1082{[0]: ValueNode<Primitive> getattr, [1]: CNode_1081, [2]: ValueNode<StringImm> reshape}
+#   3: @get_lr_1143:lr{[0]: CNode_1082, [1]: ValueNode<ValueTuple> ()}
+#   4: @get_lr_1143:CNode_1080{[0]: ValueNode<FuncGraph> get_lr_1170}
+#   5: @get_lr_1143:CNode_1083{[0]: ValueNode<Primitive> Return, [1]: CNode_1080}
+
+
+subgraph attr:
+training : 1
+subgraph instance: get_loss_1144 : 000001D7AB6853C0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:125/    def get_loss(self, x, weights=1.0):/
+subgraph @get_loss_1144 parent: [subgraph @get_loss_1121]() {
+  %1(CNode_1173) = call @get_loss_1172()
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:144/            x = self.reduce_mean(x, self.get_axis(x))/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:144/            x = self.reduce_mean(x, self.get_axis(x))/
+}
+# Order:
+#   1: @get_loss_1144:CNode_1174{[0]: ValueNode<FuncGraph> get_axis_1175, [1]: x}
+#   2: @get_loss_1144:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_ReduceMean, [1]: x, [2]: CNode_1174}
+#   3: @get_loss_1144:CNode_1173{[0]: ValueNode<FuncGraph> get_loss_1172}
+#   4: @get_loss_1144:CNode_1176{[0]: ValueNode<Primitive> Return, [1]: CNode_1173}
+
+
+subgraph attr:
+training : 1
+subgraph instance: mindspore_nn_layer_basic_Dense_construct_1156 : 000001D7AB6799D0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Dense_construct_1156 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024](%para44_x) {
+  %1(CNode_1178) = call @L_mindspore_nn_layer_basic_Dense_construct_1177(%para44_x, %para8_fc3.bias, %para7_fc3.weight)
+      : (<null>, <Ref[Tensor[Float32]], (1), ref_key=:fc3.bias>, <Ref[Tensor[Float32]], (1, 120), ref_key=:fc3.weight>) -> (<null>)
+      #scope: (Default)
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:625/        if len(x_shape) != 2:/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Dense_construct_1156:CNode_1178{[0]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1177, [1]: param_x, [2]: param_fc3.bias, [3]: param_fc3.weight}
+#   2: @mindspore_nn_layer_basic_Dense_construct_1156:CNode_1179{[0]: ValueNode<Primitive> Return, [1]: CNode_1178}
+
+
+subgraph attr:
+training : 1
+subgraph instance: mindspore_nn_layer_basic_Dense_construct_1154 : 000001D7AB67D440
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Dense_construct_1154 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024](%para45_x) {
+  %1(CNode_1180) = call @L_mindspore_nn_layer_basic_Dense_construct_1177(%para45_x, %para6_fc2.bias, %para5_fc2.weight)
+      : (<null>, <Ref[Tensor[Float32]], (120), ref_key=:fc2.bias>, <Ref[Tensor[Float32]], (120, 150), ref_key=:fc2.weight>) -> (<null>)
+      #scope: (Default)
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc2-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:625/        if len(x_shape) != 2:/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Dense_construct_1154:CNode_1180{[0]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1177, [1]: param_x, [2]: param_fc2.bias, [3]: param_fc2.weight}
+#   2: @mindspore_nn_layer_basic_Dense_construct_1154:CNode_1181{[0]: ValueNode<Primitive> Return, [1]: CNode_1180}
+
+
+subgraph attr:
+training : 1
+subgraph instance: mindspore_nn_layer_basic_Dense_construct_1152 : 000001D7AB67F970
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Dense_construct_1152 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_TrainOneStepCell_construct_1024](%para46_x) {
+  %1(CNode_1182) = call @L_mindspore_nn_layer_basic_Dense_construct_1177(%para46_x, %para4_fc1.bias, %para3_fc1.weight)
+      : (<null>, <Ref[Tensor[Float32]], (150), ref_key=:fc1.bias>, <Ref[Tensor[Float32]], (150, 8), ref_key=:fc1.weight>) -> (<null>)
+      #scope: (Default)
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc1-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:625/        if len(x_shape) != 2:/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Dense_construct_1152:CNode_1182{[0]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1177, [1]: param_x, [2]: param_fc1.bias, [3]: param_fc1.weight}
+#   2: @mindspore_nn_layer_basic_Dense_construct_1152:CNode_1183{[0]: ValueNode<Primitive> Return, [1]: CNode_1182}
+
+
+subgraph attr:
+training : 1
+after_block : 1
+ge_sync_data : 0
+subgraph instance: __main___Net_construct_1164 : 000001D7AB684920
+# In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:71/
+subgraph @__main___Net_construct_1164(%para47_) {
+  Return(%para47_phi_x)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:78/
+}
+# Order:
+#   1: @__main___Net_construct_1164:CNode_1184{[0]: ValueNode<Primitive> Return, [1]: param_phi_x}
+
+
+subgraph attr:
+training : 1
+ge_sync_data : 0
+subgraph instance: __main___Net_construct_1161 : 000001D7AB67DEE0
+# In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:71/
+subgraph @__main___Net_construct_1161 parent: [subgraph @__main___Net_construct_1099]() {
+  %1(CNode_1185) = ClassType()
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:80/
+  %2(CNode_1186) = ClassType()
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:79/
+  %3(CNode_1187) = call @mindspore_nn_layer_basic_Dense_construct_1152(%para39_x)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:79/
+  %4(x) = %2(%3)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:79/
+  %5(CNode_1188) = call @mindspore_nn_layer_basic_Dense_construct_1154(%4)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:80/
+  %6(x) = %1(%5)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:80/
+  %7(x) = call @mindspore_nn_layer_basic_Dense_construct_1156(%6)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:82/
+  Return(%7)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:79/
+}
+# Order:
+#   1: @__main___Net_construct_1161:CNode_1186{[0]: ValueNode<ClassType> class 'mindspore.nn.layer.activation.Sigmoid'}
+#   2: @__main___Net_construct_1161:CNode_1187{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_1152, [1]: param_x}
+#   3: @__main___Net_construct_1161:x{[0]: CNode_1186, [1]: CNode_1187}
+#   4: @__main___Net_construct_1161:CNode_1185{[0]: ValueNode<ClassType> class 'mindspore.nn.layer.activation.Sigmoid'}
+#   5: @__main___Net_construct_1161:CNode_1188{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_1154, [1]: x}
+#   6: @__main___Net_construct_1161:x{[0]: CNode_1185, [1]: CNode_1188}
+#   7: @__main___Net_construct_1161:x{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_1156, [1]: x}
+#   8: @__main___Net_construct_1161:CNode_1189{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+subgraph attr:
+training : 1
+ge_sync_data : 0
+subgraph instance: __main___Net_construct_1162 : 000001D7AB6779F0
+# In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:71/
+subgraph @__main___Net_construct_1162 parent: [subgraph @__main___Net_construct_1099]() {
+  Return(%para39_x)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:78/
+}
+# Order:
+#   1: @__main___Net_construct_1162:CNode_1190{[0]: ValueNode<Primitive> Return, [1]: param_x}
+
+
+subgraph attr:
+training : 1
+subgraph instance: __main___AdjustLearningRate_construct_1171 : 000001D7AB679F20
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\learning_rate_schedule.py:33/    def construct(self, global_step):/
+subgraph @__main___AdjustLearningRate_construct_1171(%para48_global_step) {
+  %1(CNode_1087) = raise[side_effect_io: Bool(1)]("NotImplementedError", "None")
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD/learning_rate-AdjustLearningRate)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\learning_rate_schedule.py:48/        raise NotImplementedError/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD/learning_rate-AdjustLearningRate)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\learning_rate_schedule.py:48/        raise NotImplementedError/
+}
+# Order:
+#   1: @__main___AdjustLearningRate_construct_1171:CNode_1087{[0]: ValueNode<Primitive> raise, [1]: ValueNode<StringImm> NotImplementedError, [2]: ValueNode<StringImm> None}
+#   2: @__main___AdjustLearningRate_construct_1171:CNode_1088{[0]: ValueNode<Primitive> Return, [1]: CNode_1087}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: get_lr_1170 : 000001D7AB67D990
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:739/    def get_lr(self):/
+subgraph @get_lr_1170 parent: [subgraph @get_lr_1143]() {
+  %1(CNode_1084) = call @get_lr_1191()
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:749/            if self.is_group_lr:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:749/            if self.is_group_lr:/
+}
+# Order:
+#   1: @get_lr_1170:CNode_1084{[0]: ValueNode<FuncGraph> get_lr_1191}
+#   2: @get_lr_1170:CNode_1085{[0]: ValueNode<Primitive> Return, [1]: CNode_1084}
+
+
+subgraph attr:
+training : 1
+subgraph instance: get_axis_1175 : 000001D7AB683E80
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:113/    def get_axis(self, x):/
+subgraph @get_axis_1175(%para49_x) {
+  %1(shape) = call @shape_1192(%para49_x)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:120/        shape = F.shape(x)/
+  %2(length) = S_Prim_sequence_len(%1)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:121/        length = F.tuple_len(shape)/
+  %3(perm) = S_Prim_make_range(I64(0), %2)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:122/        perm = F.make_range(0, length)/
+  Return(%3)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:123/        return perm/
+}
+# Order:
+#   1: @get_axis_1175:shape{[0]: ValueNode<FuncGraph> shape_1192, [1]: param_x}
+#   2: @get_axis_1175:length{[0]: ValueNode<DoSignaturePrimitive> S_Prim_sequence_len, [1]: shape}
+#   3: @get_axis_1175:perm{[0]: ValueNode<DoSignaturePrimitive> S_Prim_make_range, [1]: ValueNode<Int64Imm> 0, [2]: length}
+#   4: @get_axis_1175:CNode_1193{[0]: ValueNode<Primitive> Return, [1]: perm}
+
+
+subgraph attr:
+training : 1
+subgraph instance: get_loss_1172 : 000001D7AB6823F0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:125/    def get_loss(self, x, weights=1.0):/
+subgraph @get_loss_1172 parent: [subgraph @get_loss_1144]() {
+  %1(CNode_1195) = call @get_loss_1194()
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:145/        if self.reduce and not self.average:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:145/        if self.reduce and not self.average:/
+}
+# Order:
+#   1: @get_loss_1172:CNode_1195{[0]: ValueNode<FuncGraph> get_loss_1194}
+#   2: @get_loss_1172:CNode_1196{[0]: ValueNode<Primitive> Return, [1]: CNode_1195}
+
+
+subgraph attr:
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1177 : 000001D7AB677F40
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1177(%para50_x, %para51_, %para52_) {
+  %1(x_shape) = S_Prim_Shape(%para50_x)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:623/        x_shape = self.shape_op(x)/
+  %2(CNode_1197) = S_Prim_check_dense_input_shape[constexpr_prim: Bool(1)](%1, "Dense")
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:624/        check_dense_input_shape(x_shape, self.cls_name)/
+  %3(CNode_1198) = StopGradient(%2)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+  %4(CNode_1199) = S_Prim_inner_len(%1)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:625/        if len(x_shape) != 2:/
+  %5(CNode_1200) = S_Prim_not_equal(%4, I64(2))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:625/        if len(x_shape) != 2:/
+  %6(CNode_1201) = Cond(%5, Bool(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:625/        if len(x_shape) != 2:/
+  %7(CNode_1202) = Switch(%6, @L_mindspore_nn_layer_basic_Dense_construct_1203, @L_mindspore_nn_layer_basic_Dense_construct_1204)
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:625/        if len(x_shape) != 2:/
+  %8(CNode_1205) = %7()
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:625/        if len(x_shape) != 2:/
+  %9(CNode_1207) = call @L_mindspore_nn_layer_basic_Dense_construct_1206(%8)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:77/
+  %10(CNode_1208) = Depend[side_effect_propagate: I64(1)](%9, %3)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:77/
+  Return(%10)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:625/        if len(x_shape) != 2:/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1177:x_shape{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Shape, [1]: param_x}
+#   2: @L_mindspore_nn_layer_basic_Dense_construct_1177:CNode_1197{[0]: ValueNode<DoSignaturePrimitive> S_Prim_check_dense_input_shape, [1]: x_shape, [2]: ValueNode<StringImm> Dense}
+#   3: @L_mindspore_nn_layer_basic_Dense_construct_1177:CNode_1199{[0]: ValueNode<DoSignaturePrimitive> S_Prim_inner_len, [1]: x_shape}
+#   4: @L_mindspore_nn_layer_basic_Dense_construct_1177:CNode_1200{[0]: ValueNode<DoSignaturePrimitive> S_Prim_not_equal, [1]: CNode_1199, [2]: ValueNode<Int64Imm> 2}
+#   5: @L_mindspore_nn_layer_basic_Dense_construct_1177:CNode_1201{[0]: ValueNode<Primitive> Cond, [1]: CNode_1200, [2]: ValueNode<BoolImm> false}
+#   6: @L_mindspore_nn_layer_basic_Dense_construct_1177:CNode_1202{[0]: ValueNode<Primitive> Switch, [1]: CNode_1201, [2]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1203, [3]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1204}
+#   7: @L_mindspore_nn_layer_basic_Dense_construct_1177:CNode_1205{[0]: CNode_1202}
+#   8: @L_mindspore_nn_layer_basic_Dense_construct_1177:CNode_1207{[0]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1206, [1]: CNode_1205}
+#   9: @L_mindspore_nn_layer_basic_Dense_construct_1177:CNode_1208{[0]: ValueNode<Primitive> Depend, [1]: CNode_1207, [2]: CNode_1198}
+#  10: @L_mindspore_nn_layer_basic_Dense_construct_1177:CNode_1179{[0]: ValueNode<Primitive> Return, [1]: CNode_1208}
+
+
+subgraph attr:
+skip_auto_parallel_compile : 1
+training : 1
+subgraph instance: get_lr_1191 : 000001D7AB67C450
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:739/    def get_lr(self):/
+subgraph @get_lr_1191 parent: [subgraph @get_lr_1143]() {
+  %1(CNode_1081) = $(get_lr_1143):call @__main___AdjustLearningRate_construct_1171(%para9_global_step)
+      : (<Ref[Tensor[Int32]], (1), ref_key=:global_step>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755/                lr = self.learning_rate(self.global_step).reshape(())/
+  %2(CNode_1082) = $(get_lr_1143):getattr(%1, "reshape")
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755/                lr = self.learning_rate(self.global_step).reshape(())/
+  %3(lr) = $(get_lr_1143):%2(())
+      : (<null>) -> (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:755/                lr = self.learning_rate(self.global_step).reshape(())/
+  Return(%3)
+      : (<null>)
+      #scope: (Default/optimizer-SGD)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\optim\optimizer.py:756/        return lr/
+}
+# Order:
+#   1: @get_lr_1191:CNode_1086{[0]: ValueNode<Primitive> Return, [1]: lr}
+
+
+subgraph attr:
+subgraph instance: shape_1192 : 000001D7AB6898D0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\ops\function\array_func.py:1484/def shape(input_x):/
+subgraph @shape_1192(%para53_input_x) {
+  %1(CNode_1209) = S_Prim_Shape(%para53_input_x)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\ops\function\array_func.py:1510/    return shape_(input_x)/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\ops\function\array_func.py:1510/    return shape_(input_x)/
+}
+# Order:
+#   1: @shape_1192:CNode_1209{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Shape, [1]: param_input_x}
+#   2: @shape_1192:CNode_1210{[0]: ValueNode<Primitive> Return, [1]: CNode_1209}
+
+
+subgraph attr:
+training : 1
+subgraph instance: get_loss_1194 : 000001D7AB688E30
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:125/    def get_loss(self, x, weights=1.0):/
+subgraph @get_loss_1194 parent: [subgraph @get_loss_1144]() {
+  %1(CNode_1212) = call @get_loss_1211()
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:145/        if self.reduce and not self.average:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:145/        if self.reduce and not self.average:/
+}
+# Order:
+#   1: @get_loss_1194:CNode_1212{[0]: ValueNode<FuncGraph> get_loss_1211}
+#   2: @get_loss_1194:CNode_1213{[0]: ValueNode<Primitive> Return, [1]: CNode_1212}
+
+
+subgraph attr:
+after_block : 1
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1206 : 000001D7AB678490
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1206 parent: [subgraph @L_mindspore_nn_layer_basic_Dense_construct_1177](%para54_) {
+  %1(CNode_1215) = call @L_mindspore_nn_layer_basic_Dense_construct_1214()
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:628/        if self.has_bias:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:628/        if self.has_bias:/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1206:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_MatMul, [1]: param_phi_x, [2]: param_L_fc3.weight}
+#   2: @L_mindspore_nn_layer_basic_Dense_construct_1206:CNode_1215{[0]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1214}
+#   3: @L_mindspore_nn_layer_basic_Dense_construct_1206:CNode_1216{[0]: ValueNode<Primitive> Return, [1]: CNode_1215}
+
+
+subgraph attr:
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1203 : 000001D7AB67FEC0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1203 parent: [subgraph @L_mindspore_nn_layer_basic_Dense_construct_1177]() {
+  %1(CNode_1217) = S_Prim_negative(I64(1))
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:626/            x = self.reshape(x, (-1, x_shape[-1]))/
+  %2(x_shape) = $(L_mindspore_nn_layer_basic_Dense_construct_1177):S_Prim_Shape(%para50_x)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:623/        x_shape = self.shape_op(x)/
+  %3(CNode_1218) = S_Prim_negative(I64(1))
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:626/            x = self.reshape(x, (-1, x_shape[-1]))/
+  %4(CNode_1219) = S_Prim_getitem(%2, %3)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:626/            x = self.reshape(x, (-1, x_shape[-1]))/
+  %5(CNode_1220) = S_Prim_MakeTuple(%1, %4)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:626/            x = self.reshape(x, (-1, x_shape[-1]))/
+  %6(x) = S_Prim_Reshape[input_names: ["tensor", "shape"], output_names: ["output"]](%para50_x, %5)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:626/            x = self.reshape(x, (-1, x_shape[-1]))/
+  Return(%6)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:626/            x = self.reshape(x, (-1, x_shape[-1]))/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1203:CNode_1217{[0]: ValueNode<DoSignaturePrimitive> S_Prim_negative, [1]: ValueNode<Int64Imm> 1}
+#   2: @L_mindspore_nn_layer_basic_Dense_construct_1203:CNode_1218{[0]: ValueNode<DoSignaturePrimitive> S_Prim_negative, [1]: ValueNode<Int64Imm> 1}
+#   3: @L_mindspore_nn_layer_basic_Dense_construct_1203:CNode_1219{[0]: ValueNode<DoSignaturePrimitive> S_Prim_getitem, [1]: x_shape, [2]: CNode_1218}
+#   4: @L_mindspore_nn_layer_basic_Dense_construct_1203:CNode_1220{[0]: ValueNode<DoSignaturePrimitive> S_Prim_MakeTuple, [1]: CNode_1217, [2]: CNode_1219}
+#   5: @L_mindspore_nn_layer_basic_Dense_construct_1203:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Reshape, [1]: param_x, [2]: CNode_1220}
+#   6: @L_mindspore_nn_layer_basic_Dense_construct_1203:CNode_1221{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+subgraph attr:
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1204 : 000001D7AB67B460
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1204 parent: [subgraph @L_mindspore_nn_layer_basic_Dense_construct_1177]() {
+  Return(%para50_x)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:625/        if len(x_shape) != 2:/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1204:CNode_1222{[0]: ValueNode<Primitive> Return, [1]: param_x}
+
+
+subgraph attr:
+training : 1
+subgraph instance: get_loss_1211 : 000001D7AB6873A0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:125/    def get_loss(self, x, weights=1.0):/
+subgraph @get_loss_1211 parent: [subgraph @get_loss_1144]() {
+  %1(weights) = $(get_loss_1121):S_Prim_Cast[input_names: ["x", "dst_type"], output_names: ["output"], DstT: F32, SrcT: F32](%para41_weights, F32)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:141/        weights = self.cast(weights, mstype.float32)/
+  %2(x) = $(get_loss_1121):S_Prim_Cast[input_names: ["x", "dst_type"], output_names: ["output"], DstT: F32, SrcT: F32](%para40_x, F32)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:140/        x = self.cast(x, mstype.float32)/
+  %3(x) = $(get_loss_1121):S_Prim_Mul[input_names: ["x", "y"], output_names: ["output"]](%1, %2)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:142/        x = self.mul(weights, x)/
+  %4(CNode_1174) = $(get_loss_1144):call @get_axis_1175(%3)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:144/            x = self.reduce_mean(x, self.get_axis(x))/
+  %5(x) = $(get_loss_1144):S_Prim_ReduceMean[keep_dims: Bool(0), input_names: ["input_x", "axis"], output_names: ["y"]](%3, %4)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:144/            x = self.reduce_mean(x, self.get_axis(x))/
+  %6(input_dtype) = $(get_loss_1121):getattr(%para40_x, "dtype")
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:139/        input_dtype = x.dtype/
+  %7(x) = S_Prim_Cast[input_names: ["x", "dst_type"], output_names: ["output"], DstT: F32, SrcT: F32](%5, %6)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:147/        x = self.cast(x, input_dtype)/
+  Return(%7)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\loss\loss.py:148/        return x/
+}
+# Order:
+#   1: @get_loss_1211:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Cast, [1]: x, [2]: input_dtype}
+#   2: @get_loss_1211:CNode_1223{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+subgraph attr:
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1214 : 000001D7AB680410
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1214 parent: [subgraph @L_mindspore_nn_layer_basic_Dense_construct_1206]() {
+  %1(CNode_1225) = call @L_mindspore_nn_layer_basic_Dense_construct_1224()
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:629/            x = self.bias_add(x, self.bias)/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:629/            x = self.bias_add(x, self.bias)/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1214:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_BiasAdd, [1]: x, [2]: param_L_fc3.bias}
+#   2: @L_mindspore_nn_layer_basic_Dense_construct_1214:CNode_1225{[0]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1224}
+#   3: @L_mindspore_nn_layer_basic_Dense_construct_1214:CNode_1226{[0]: ValueNode<Primitive> Return, [1]: CNode_1225}
+
+
+subgraph attr:
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1224 : 000001D7AB6789E0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1224 parent: [subgraph @L_mindspore_nn_layer_basic_Dense_construct_1214]() {
+  %1(CNode_1228) = call @L_mindspore_nn_layer_basic_Dense_construct_1227()
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:630/        if self.activation_flag:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:630/        if self.activation_flag:/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1224:CNode_1228{[0]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1227}
+#   2: @L_mindspore_nn_layer_basic_Dense_construct_1224:CNode_1229{[0]: ValueNode<Primitive> Return, [1]: CNode_1228}
+
+
+subgraph attr:
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1227 : 000001D7AB680960
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1227 parent: [subgraph @L_mindspore_nn_layer_basic_Dense_construct_1214]() {
+  %1(CNode_1231) = call @L_mindspore_nn_layer_basic_Dense_construct_1230()
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:630/        if self.activation_flag:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:630/        if self.activation_flag:/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1227:CNode_1231{[0]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1230}
+#   2: @L_mindspore_nn_layer_basic_Dense_construct_1227:CNode_1232{[0]: ValueNode<Primitive> Return, [1]: CNode_1231}
+
+
+subgraph attr:
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1230 : 000001D7AB680EB0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1230 parent: [subgraph @L_mindspore_nn_layer_basic_Dense_construct_1214]() {
+  %1(x_shape) = $(L_mindspore_nn_layer_basic_Dense_construct_1177):S_Prim_Shape(%para50_x)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:623/        x_shape = self.shape_op(x)/
+  %2(CNode_1233) = S_Prim_inner_len(%1)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:632/        if len(x_shape) != 2:/
+  %3(CNode_1234) = S_Prim_not_equal(%2, I64(2))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:632/        if len(x_shape) != 2:/
+  %4(CNode_1235) = Cond(%3, Bool(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:632/        if len(x_shape) != 2:/
+  %5(CNode_1236) = Switch(%4, @L_mindspore_nn_layer_basic_Dense_construct_1237, @L_mindspore_nn_layer_basic_Dense_construct_1238)
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:632/        if len(x_shape) != 2:/
+  %6(CNode_1239) = %5()
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:632/        if len(x_shape) != 2:/
+  %7(CNode_1241) = call @L_mindspore_nn_layer_basic_Dense_construct_1240(%6)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net)
+      # In file C:\Users\22159\AppData\Local\Temp\ipykernel_24972\2596902594.py:77/
+  Return(%7)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:632/        if len(x_shape) != 2:/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1230:CNode_1233{[0]: ValueNode<DoSignaturePrimitive> S_Prim_inner_len, [1]: x_shape}
+#   2: @L_mindspore_nn_layer_basic_Dense_construct_1230:CNode_1234{[0]: ValueNode<DoSignaturePrimitive> S_Prim_not_equal, [1]: CNode_1233, [2]: ValueNode<Int64Imm> 2}
+#   3: @L_mindspore_nn_layer_basic_Dense_construct_1230:CNode_1235{[0]: ValueNode<Primitive> Cond, [1]: CNode_1234, [2]: ValueNode<BoolImm> false}
+#   4: @L_mindspore_nn_layer_basic_Dense_construct_1230:CNode_1236{[0]: ValueNode<Primitive> Switch, [1]: CNode_1235, [2]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1237, [3]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1238}
+#   5: @L_mindspore_nn_layer_basic_Dense_construct_1230:CNode_1239{[0]: CNode_1236}
+#   6: @L_mindspore_nn_layer_basic_Dense_construct_1230:CNode_1241{[0]: ValueNode<FuncGraph> L_mindspore_nn_layer_basic_Dense_construct_1240, [1]: CNode_1239}
+#   7: @L_mindspore_nn_layer_basic_Dense_construct_1230:CNode_1242{[0]: ValueNode<Primitive> Return, [1]: CNode_1241}
+
+
+subgraph attr:
+after_block : 1
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1240 : 000001D7AB681400
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1240(%para55_) {
+  Return(%para55_phi_x)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:635/        return x/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1240:CNode_1243{[0]: ValueNode<Primitive> Return, [1]: param_phi_x}
+
+
+subgraph attr:
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1237 : 000001D7AB67CEF0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1237 parent: [subgraph @L_mindspore_nn_layer_basic_Dense_construct_1214]() {
+  %1(x) = $(L_mindspore_nn_layer_basic_Dense_construct_1206):S_Prim_MatMul[transpose_a: Bool(0), input_names: ["x1", "x2"], transpose_b: Bool(1), output_names: ["output"], transpose_x1: Bool(0), transpose_x2: Bool(1)](%para54_phi_x, %para52_L_fc3.weight)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:627/        x = self.matmul(x, self.weight)/
+  %2(x) = $(L_mindspore_nn_layer_basic_Dense_construct_1214):S_Prim_BiasAdd[format: "NCHW", input_names: ["x", "b"], output_names: ["output"], data_format: "NCHW"](%1, %para51_L_fc3.bias)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:629/            x = self.bias_add(x, self.bias)/
+  %3(x_shape) = $(L_mindspore_nn_layer_basic_Dense_construct_1177):S_Prim_Shape(%para50_x)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:623/        x_shape = self.shape_op(x)/
+  %4(CNode_1244) = S_Prim_negative(I64(1))
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:633/            out_shape = x_shape[:-1] + (F.shape(x)[-1],)/
+  %5(CNode_1245) = S_Prim_make_slice(None, %4, None)
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:633/            out_shape = x_shape[:-1] + (F.shape(x)[-1],)/
+  %6(CNode_1246) = S_Prim_getitem(%3, %5)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:633/            out_shape = x_shape[:-1] + (F.shape(x)[-1],)/
+  %7(CNode_1248) = call @L_shape_1247(%2)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:633/            out_shape = x_shape[:-1] + (F.shape(x)[-1],)/
+  %8(CNode_1249) = S_Prim_negative(I64(1))
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:633/            out_shape = x_shape[:-1] + (F.shape(x)[-1],)/
+  %9(CNode_1250) = S_Prim_getitem(%7, %8)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:633/            out_shape = x_shape[:-1] + (F.shape(x)[-1],)/
+  %10(CNode_1251) = S_Prim_MakeTuple(%9)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:633/            out_shape = x_shape[:-1] + (F.shape(x)[-1],)/
+  %11(out_shape) = S_Prim_add(%6, %10)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:633/            out_shape = x_shape[:-1] + (F.shape(x)[-1],)/
+  %12(x) = S_Prim_Reshape[input_names: ["tensor", "shape"], output_names: ["output"]](%2, %11)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:634/            x = self.reshape(x, out_shape)/
+  Return(%12)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:633/            out_shape = x_shape[:-1] + (F.shape(x)[-1],)/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1237:CNode_1244{[0]: ValueNode<DoSignaturePrimitive> S_Prim_negative, [1]: ValueNode<Int64Imm> 1}
+#   2: @L_mindspore_nn_layer_basic_Dense_construct_1237:CNode_1245{[0]: ValueNode<DoSignaturePrimitive> S_Prim_make_slice, [1]: ValueNode<None> None, [2]: CNode_1244, [3]: ValueNode<None> None}
+#   3: @L_mindspore_nn_layer_basic_Dense_construct_1237:CNode_1246{[0]: ValueNode<DoSignaturePrimitive> S_Prim_getitem, [1]: x_shape, [2]: CNode_1245}
+#   4: @L_mindspore_nn_layer_basic_Dense_construct_1237:CNode_1248{[0]: ValueNode<FuncGraph> L_shape_1247, [1]: x}
+#   5: @L_mindspore_nn_layer_basic_Dense_construct_1237:CNode_1249{[0]: ValueNode<DoSignaturePrimitive> S_Prim_negative, [1]: ValueNode<Int64Imm> 1}
+#   6: @L_mindspore_nn_layer_basic_Dense_construct_1237:CNode_1250{[0]: ValueNode<DoSignaturePrimitive> S_Prim_getitem, [1]: CNode_1248, [2]: CNode_1249}
+#   7: @L_mindspore_nn_layer_basic_Dense_construct_1237:CNode_1251{[0]: ValueNode<DoSignaturePrimitive> S_Prim_MakeTuple, [1]: CNode_1250}
+#   8: @L_mindspore_nn_layer_basic_Dense_construct_1237:out_shape{[0]: ValueNode<DoSignaturePrimitive> S_Prim_add, [1]: CNode_1246, [2]: CNode_1251}
+#   9: @L_mindspore_nn_layer_basic_Dense_construct_1237:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Reshape, [1]: x, [2]: out_shape}
+#  10: @L_mindspore_nn_layer_basic_Dense_construct_1237:CNode_1252{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+subgraph attr:
+training : 1
+subgraph instance: L_mindspore_nn_layer_basic_Dense_construct_1238 : 000001D7AB67B9B0
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:622/    def construct(self, x):/
+subgraph @L_mindspore_nn_layer_basic_Dense_construct_1238 parent: [subgraph @L_mindspore_nn_layer_basic_Dense_construct_1214]() {
+  %1(x) = $(L_mindspore_nn_layer_basic_Dense_construct_1206):S_Prim_MatMul[transpose_a: Bool(0), input_names: ["x1", "x2"], transpose_b: Bool(1), output_names: ["output"], transpose_x1: Bool(0), transpose_x2: Bool(1)](%para54_phi_x, %para52_L_fc3.weight)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:627/        x = self.matmul(x, self.weight)/
+  %2(x) = $(L_mindspore_nn_layer_basic_Dense_construct_1214):S_Prim_BiasAdd[format: "NCHW", input_names: ["x", "b"], output_names: ["output"], data_format: "NCHW"](%1, %para51_L_fc3.bias)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:629/            x = self.bias_add(x, self.bias)/
+  Return(%2)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-Net/fc3-Dense)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\nn\layer\basic.py:632/        if len(x_shape) != 2:/
+}
+# Order:
+#   1: @L_mindspore_nn_layer_basic_Dense_construct_1238:CNode_1253{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+subgraph attr:
+subgraph instance: L_shape_1247 : 000001D7AB679480
+# In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\ops\function\array_func.py:1484/def shape(input_x):/
+subgraph @L_shape_1247(%para56_input_x) {
+  %1(CNode_1209) = S_Prim_Shape(%para56_input_x)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\ops\function\array_func.py:1510/    return shape_(input_x)/
+  Return(%1)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_loss_fn-MSELoss)
+      # In file C:\Users\22159\AppData\Local\anaconda3\envs\mindspore_py39\lib\site-packages\mindspore\ops\function\array_func.py:1510/    return shape_(input_x)/
+}
+# Order:
+#   1: @L_shape_1247:CNode_1209{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Shape, [1]: param_input_x}
+#   2: @L_shape_1247:CNode_1210{[0]: ValueNode<Primitive> Return, [1]: CNode_1209}
+
+

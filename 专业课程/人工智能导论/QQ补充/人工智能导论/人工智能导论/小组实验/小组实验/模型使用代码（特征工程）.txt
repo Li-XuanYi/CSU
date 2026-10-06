@@ -1,0 +1,297 @@
+import torch
+import pandas as pd
+import numpy as np
+from torch import nn
+from sklearn.preprocessing import StandardScaler
+from joblib import load  # 用于加载保存的标准化器
+
+# --------------------------
+# 1. 定义模型结构（必须与训练时完全一致）
+# --------------------------
+class LogisticRegression(nn.Module):
+    def __init__(self, input_dim):
+        super().__init__()
+        self.linear = nn.Linear(input_dim, 1)
+        self.sigmoid = nn.Sigmoid()
+        
+    def forward(self, x):
+        return self.sigmoid(self.linear(x))
+
+# --------------------------
+# 2. 加载模型和标准化器
+# --------------------------
+def load_resources(model_path, scaler_path):
+    # 加载标准化器（假设训练时已保存）
+    scaler = load(scaler_path) 
+    
+    # 初始化模型
+    model = LogisticRegression(input_dim=18)  # 替换为实际特征数量
+    model.load_state_dict(torch.load(model_path))
+    model.eval()  # 设置为评估模式
+    
+    return model, scaler
+
+# --------------------------
+# 3. 数据预处理流水线
+# --------------------------
+num_columns=['年龄','em','1ET天','胚芽','卵黄囊','胎心']
+
+def map_iii_line(value):
+    if pd.isna(value):
+        return 'Ⅲ线_欠清'
+    value = str(value).strip()
+    if value in {'微量宫腔积液', '少量宫腔积液', '宫腔积液', '积液', '微量积液', '宫腔积水', '大量宫腔积液', '少量积液'}:
+        return 'Ⅲ线_有积液'
+    elif value in {'1'}:
+        return 'Ⅲ线_Ⅰ'
+    elif value in {'2稍欠清', '2                2', '2', '2均'}:
+        return 'Ⅲ线_Ⅱ'
+    elif value in {'3                3', '3均', '3均匀', '33', '3均，宫腔积液', '3'}:
+        return 'Ⅲ线_Ⅲ'
+    elif value in {'2-3'}:
+        return 'Ⅲ线_Ⅱ-Ⅲ'
+    else:
+        return 'Ⅲ线_欠清'
+    
+
+
+def preprocess_data(data_0_path,data_1_path,scaler):
+    # 加载新数据
+    new_data_0 = pd.read_excel(data_0_path, engine="openpyxl")  # 支持CSV/Excel等格式
+    # 特征工程（与训练时一致）
+    processed_data_0 = new_data_0[['年龄', 'em','1ET天', '胚芽', '卵黄囊', '胎心', '孕囊','Ⅲ线','助孕方式']]  # 示例操作
+    
+    for col in num_columns:
+        # 步骤1：将列数据强制转为字符串类型（确保后续操作安全）
+        processed_data_0[col] = processed_data_0[col].astype(str)
+
+        # 步骤2：使用正则提取首个匹配的数字（支持正负号、小数点）
+        processed_data_0[col] = processed_data_0[col].astype(str).str.extract(r'([-+]?\d*\.?\d+)', expand=False)
+
+        # 步骤3：将提取的字符串转为数值类型，无法转换的设为NaN
+        processed_data_0[col] = pd.to_numeric(processed_data_0[col], errors='coerce')
+    
+    processed_data_0['孕囊'] = (
+        processed_data_0['孕囊'].astype(str)
+        .apply(lambda x: np.nan if x.strip() == '无' else x)  # "无"设为空值
+        .str.replace('暗区', '', case=False)  # 去除所有"暗区"字样（不区分大小写）
+        .str.replace('[^0-9Xx.]', '', regex=True)  # 移除非数字、X和小数点的字符
+        .str.replace('x', 'X', case=False)  # 统一为X分隔符
+        .str.replace(r'X+', 'X', regex=True)  # 合并多个连续的X
+    )
+
+    # 2. 安全分割处理
+    split_data = (
+        processed_data_0['孕囊'].str.split('X', expand=True, n=1)  # 最多分割1次得到两列
+        .replace({'': np.nan, None: np.nan})         # 空字符串转NaN
+        .iloc[:, :2]                                 # 确保只取前两列
+        .rename(columns={0: 'X', 1: 'Y'})            # 重命名列
+    )
+    
+    # 3. 合并回原数据
+    processed_data_0 = pd.concat([processed_data_0, split_data], axis=1)
+
+    # 继续后续的数值转换和过滤（原代码）
+    processed_data_0['X'] = pd.to_numeric(processed_data_0['X'], errors='coerce')
+    processed_data_0['Y'] = pd.to_numeric(processed_data_0['Y'], errors='coerce')
+    processed_data_0['xyAverage'] = (processed_data_0['X'] + processed_data_0['Y'])/2.0
+    
+    processed_data_0['助孕方式_binary'] = processed_data_0['助孕方式'].apply(lambda x: 1 if x == '冻胚' else 0)
+    # 应用这个函数替换原列
+    processed_data_0['Ⅲ线'] = processed_data_0['Ⅲ线'].apply(map_iii_line)
+
+    # 6类Ⅲ线特征的独热编码
+    mapping = {
+        'Ⅲ线_Ⅰ':     [1, 0, 0, 0, 0, 0],
+        'Ⅲ线_Ⅱ':     [0, 1, 0, 0, 0, 0],
+        'Ⅲ线_Ⅱ-Ⅲ':  [0, 0, 1, 0, 0, 0],
+        'Ⅲ线_Ⅲ':     [0, 0, 0, 1, 0, 0],
+        'Ⅲ线_有积液': [0, 0, 0, 0, 1, 0],
+        'Ⅲ线_欠清':   [0, 0, 0, 0, 0, 1],
+    }
+
+    # 检查是否存在未定义值
+    unknown_values = set(processed_data_0['Ⅲ线']) - set(mapping.keys())
+    if unknown_values:
+        print("未定义的Ⅲ线值：", unknown_values)
+        raise ValueError("请检查这些值的分类！")
+
+    # 构造新的6个列名
+    onehot_cols = ['Ⅲ线_Ⅰ', 'Ⅲ线_Ⅱ', 'Ⅲ线_Ⅱ-Ⅲ', 'Ⅲ线_Ⅲ', 'Ⅲ线_有积液', 'Ⅲ线_欠清']
+
+    # 应用映射生成6列的独热编码
+    onehots = processed_data_0['Ⅲ线'].apply(lambda x: pd.Series(mapping[x], index=onehot_cols))
+
+    # 合并到原数据中
+    processed_data_0 = pd.concat([processed_data_0, onehots], axis=1)
+
+    # 6. 丢弃原始“Ⅲ线”和“助孕方式”列（可选）
+    processed_data_0 = processed_data_0.drop(columns=['Ⅲ线', '助孕方式'])
+    feature_data_0=processed_data_0[['年龄', 'em','1ET天',     
+    '胚芽',                   
+    '卵黄囊',            
+    '胎心', 
+    'xyAverage','Ⅲ线_Ⅰ', 'Ⅲ线_Ⅱ', 'Ⅲ线_Ⅱ-Ⅲ', 'Ⅲ线_Ⅲ', 'Ⅲ线_有积液', 'Ⅲ线_欠清','助孕方式_binary']]
+    
+    new_data_1 = pd.read_excel(data_1_path, engine="openpyxl")  # 支持CSV/Excel等格式
+    # 特征工程（与训练时一致）
+    processed_data_1 = new_data_1[['年龄', 'em','1ET天', '胚芽', '卵黄囊', '胎心', '孕囊','Ⅲ线','助孕方式']]  # 示例操作
+    
+    for col in num_columns:
+        # 步骤1：将列数据强制转为字符串类型（确保后续操作安全）
+        processed_data_1[col] = processed_data_1[col].astype(str)
+
+        # 步骤2：使用正则提取首个匹配的数字（支持正负号、小数点）
+        processed_data_1[col] = processed_data_1[col].str.extract(r'([-+]?\d*\.?\d+)', expand=False)
+
+        # 步骤3：将提取的字符串转为数值类型，无法转换的设为NaN
+        processed_data_1[col] = pd.to_numeric(processed_data_1[col], errors='coerce')
+    
+    processed_data_1['孕囊'] = (
+        processed_data_1['孕囊'].astype(str)
+        .apply(lambda x: np.nan if x.strip() == '无' else x)  # "无"设为空值
+        .str.replace('暗区', '', case=False)  # 去除所有"暗区"字样（不区分大小写）
+        .str.replace('[^0-9Xx.]', '', regex=True)  # 移除非数字、X和小数点的字符
+        .str.replace('x', 'X', case=False)  # 统一为X分隔符
+        .str.replace(r'X+', 'X', regex=True)  # 合并多个连续的X
+    )
+
+    # 2. 安全分割处理
+    split_data = (
+        processed_data_1['孕囊'].str.split('X', expand=True, n=1)  # 最多分割1次得到两列
+        .replace({'': np.nan, None: np.nan})         # 空字符串转NaN
+        .iloc[:, :2]                                 # 确保只取前两列
+        .rename(columns={0: 'X', 1: 'Y'})            # 重命名列
+    )
+
+    # 3. 合并回原数据
+    processed_data_1 = pd.concat([processed_data_1, split_data], axis=1)
+
+    # 继续后续的数值转换和过滤（原代码）
+    processed_data_1['X'] = pd.to_numeric(processed_data_1['X'], errors='coerce')
+    processed_data_1['Y'] = pd.to_numeric(processed_data_1['Y'], errors='coerce')
+    processed_data_1['xyAverage'] = (processed_data_1['X'] + processed_data_1['Y'])/2.0
+    
+    processed_data_1['助孕方式_binary'] = processed_data_1['助孕方式'].apply(lambda x: 1 if x == '冻胚' else 0)
+    # 应用这个函数替换原列
+    processed_data_1['Ⅲ线'] = processed_data_1['Ⅲ线'].apply(map_iii_line)
+
+    # 6类Ⅲ线特征的独热编码
+    mapping = {
+        'Ⅲ线_Ⅰ':     [1, 0, 0, 0, 0, 0],
+        'Ⅲ线_Ⅱ':     [0, 1, 0, 0, 0, 0],
+        'Ⅲ线_Ⅱ-Ⅲ':  [0, 0, 1, 0, 0, 0],
+        'Ⅲ线_Ⅲ':     [0, 0, 0, 1, 0, 0],
+        'Ⅲ线_有积液': [0, 0, 0, 0, 1, 0],
+        'Ⅲ线_欠清':   [0, 0, 0, 0, 0, 1],
+    }
+
+    # 检查是否存在未定义值
+    unknown_values = set(processed_data_1['Ⅲ线']) - set(mapping.keys())
+    if unknown_values:
+        print("未定义的Ⅲ线值：", unknown_values)
+        raise ValueError("请检查这些值的分类！")
+
+    # 构造新的6个列名
+    onehot_cols = ['Ⅲ线_Ⅰ', 'Ⅲ线_Ⅱ', 'Ⅲ线_Ⅱ-Ⅲ', 'Ⅲ线_Ⅲ', 'Ⅲ线_有积液', 'Ⅲ线_欠清']
+
+    # 应用映射生成6列的独热编码
+    onehots = processed_data_1['Ⅲ线'].apply(lambda x: pd.Series(mapping[x], index=onehot_cols))
+
+    # 合并到原数据中
+    processed_data_1 = pd.concat([processed_data_1, onehots], axis=1)
+
+    # 6. 丢弃原始“Ⅲ线”和“助孕方式”列（可选）
+    processed_data_1 = processed_data_1.drop(columns=['Ⅲ线', '助孕方式'])
+    
+    feature_data_1=processed_data_1[['年龄', 'em','1ET天',     
+    '胚芽',                   
+    '卵黄囊',            
+    '胎心', 
+    'xyAverage','Ⅲ线_Ⅰ', 'Ⅲ线_Ⅱ', 'Ⅲ线_Ⅱ-Ⅲ', 'Ⅲ线_Ⅲ', 'Ⅲ线_有积液', 'Ⅲ线_欠清','助孕方式_binary']]
+    # 标准化处理
+    feature_data_0['result']=0
+    feature_data_1['result']=1
+    feature_data = pd.concat([feature_data_0, feature_data_1], axis=0, ignore_index=True)
+    feature_data['胚芽Bigger'] = feature_data['胚芽']**3/feature_data['1ET天']
+    feature_data['卵黄囊Bigger'] = feature_data['卵黄囊']**4/feature_data['em']
+    feature_data['胎心Bigger'] = feature_data['胎心']**3/feature_data['年龄']
+    feature_data['xyAverageBigger'] = feature_data['xyAverage']**3/feature_data['1ET天']
+    
+    feature_data_=feature_data[['年龄', 'em','1ET天','胚芽', '卵黄囊', '胎心', 'xyAverage','胚芽Bigger', '卵黄囊Bigger', '胎心Bigger', 'xyAverageBigger','助孕方式_binary','Ⅲ线_Ⅰ', 'Ⅲ线_Ⅱ', 'Ⅲ线_Ⅱ-Ⅲ', 'Ⅲ线_Ⅲ', 'Ⅲ线_有积液', 'Ⅲ线_欠清','result']]
+    scaled_data = scaler.transform(feature_data_.drop('result',axis=1))
+    print(scaled_data)
+    return feature_data_, scaled_data
+    
+# --------------------------
+# 4. 执行预测
+# --------------------------
+def predict(model, scaled_data, threshold=0.5):
+    tensor_data = torch.tensor(scaled_data, dtype=torch.float32)
+    
+    with torch.no_grad():
+        probabilities = model(tensor_data).numpy().flatten()
+    
+    predictions = (probabilities > threshold).astype(int)
+    return probabilities, predictions
+
+# --------------------------
+# 5. 主函数
+# --------------------------
+if __name__ == "__main__":
+    # 资源配置
+    MODEL_PATH = 'pregnancy_prediction_model.pth'
+    SCALER_PATH = 'standard_scaler.joblib'  # 训练时保存的标准化器
+    DATA_1_PATH = '筛选结果1.xlsx'          # 新数据文件路径
+    DATA_0_PATH = '筛选结果0.xlsx'          # 新数据文件路径    
+    SAVE_PATH = 'predictions.csv'           # 结果保存路径
+    
+    # 加载资源
+    model, scaler = load_resources(MODEL_PATH, SCALER_PATH)
+    
+    # 预处理数据
+    raw_data, processed_data = preprocess_data(DATA_0_PATH,DATA_1_PATH, scaler)
+
+    # 执行预测
+    probs, preds = predict(model, processed_data, threshold=0.78)
+    
+    # 保存带原始数据的结果
+    results = raw_data.copy()
+    results['Predicted_Probability'] = probs
+    results['Predicted_Class'] = preds
+    results.to_csv(SAVE_PATH, index=False)
+    
+    # 打印示例结果
+    print("预测结果样例：")
+    print(results.head())
+    print(f"结果已保存至：{SAVE_PATH}")
+    
+    # 提取真实标签和预测结果
+    y_true = results['result'].values
+    y_pred = results['Predicted_Class'].values
+    y_prob = results['Predicted_Probability'].values
+
+    # 计算评估指标
+    from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_auc_score
+
+    # 准确率
+    accuracy = accuracy_score(y_true, y_pred)
+    print(f"\n模型准确率: {accuracy * 100:.2f}%")
+
+    # 分类报告
+    print("\n分类报告:")
+    print(classification_report(y_true, y_pred))
+
+    # 混淆矩阵
+    print("\n混淆矩阵:")
+    print(confusion_matrix(y_true, y_pred))
+
+    # AUC-ROC（二分类时计算）
+    if len(np.unique(y_true)) == 2:
+        auc_roc = roc_auc_score(y_true, y_prob)
+        print(f"\nAUC-ROC: {auc_roc:.4f}")
+
+    # 打印示例结果
+    print("\n预测结果样例：")
+    print(results.head())
+    print(f"结果已保存至：{SAVE_PATH}")

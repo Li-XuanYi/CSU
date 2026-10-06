@@ -1,0 +1,76 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
+\title{上海交通大学试卷 (A卷)}
+\author{2021至2022学年第2学期}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\noindent
+班级号 \underline{\hspace{2cm}} \hspace{1cm} 学号 \underline{\hspace{2cm}} \hspace{1cm} 姓名 \underline{\hspace{2cm}} \hspace{1cm} 课程名称 \underline{\hspace{2cm}} \hspace{1cm} 成绩 \underline{\hspace{2cm}}
+
+\section*{Problem 1. (15 points)}
+For every \(n \geqslant 1\) let
+\[ \mathcal{H}_n \coloneqq \{S \subseteq \{1, \ldots, n\} \mid |S| = \lceil n / 2 \rceil \}. \]
+Prove that
+\[ 2^{n / 2} \leqslant |\mathcal{H}_n| \leqslant 2^n. \]
+\textbf{Hint:} consider the set \(\{S \mid S \subseteq \{1, \ldots, \lceil n / 2 \rceil \} \}\).
+
+\section*{Problem 2. (10 points)}
+Solve the following recurrence relations and give an \(O\) bound for each of them.
+
+\begin{enumerate}[label=(\arabic*), leftmargin=*]
+    \item \(T(n) = 4 \cdot T(\lfloor n / 3 \rfloor) + 5 \cdot n.\)
+    \item \(T(1) = 1\) and \(T(n) = T(\lfloor \sqrt{n} \rfloor) + 5\) for \(n \geqslant 2\).
+\end{enumerate}
+
+\section*{Problem 3. (10 points)}
+Show that if an undirected graph with \(n\) vertices has \(k\) connected components, then it has at least \(n - k\) edges.
+
+\section*{Problem 4. (20 points)}
+Given two strings \(x = x_1 x_2 \cdots x_n\) and \(y = y_1 y_2 \cdots y_m\), we wish to find the length of their longest common substring, that is, the largest \(k\) for which there are indices \(i\) and \(j\) with \(x_i x_{i+1} \cdots x_{i+k-1} = y_j y_{j+1} \cdots y_{j+k-1}\). Show how to do this in time \(O(m \cdot n)\).
+
+\section*{Problem 5. (15 points)}
+Consider the following linear program.
+% 注意：原始PDF中此处具体线性规划内容缺失，以下为占位符
+\[
+\begin{array}{ll}
+\text{Maximize} & \ldots \\
+\text{subject to} & \ldots
+\end{array}
+\]
+Write its dual program. Is the solution \((x,y,z) = (0.5,0.5,0)\) optimal? Please justify your answer.
+
+\section*{Problem 6. (15 points)}
+Prove that
+\[ \sqrt{|V|} \text{-CLIQUE} \]
+\textbf{Instance:} A graph \(G = (V, E)\) \\
+\textbf{Problem:} Output a clique of size \(\left[ \sqrt{|V|} \right]\) in \(G\) if exists.
+is NP-complete.
+
+\section*{Problem 7. (15 points)}
+Let \(d \in \mathbb{N}\). The \(d\)-COLORABILITY problem is to decide whether a given graph \(G = (V, E)\) can be colored by \(d\) colors, i.e., whether there exists a function \(f: V \to \{1, \ldots, d\}\) such that for every \(u, v \in V\) with \(\{u, v\} \in E\) we have \(f(u) \neq f(v)\).
+
+\begin{enumerate}[label=(\arabic*), leftmargin=*]
+    \item Formulate \(d\)-COLORABILITY as a search problem.
+    \item Give a reduction from 4-COLORABILITY to 7-COLORABILITY.
+\end{enumerate}
+
+\vspace{2cm}
+\noindent
+我承诺，我将严格遵守考试纪律。 \hfill 承诺人：\underline{\hspace{4cm}}
+
+\end{document}

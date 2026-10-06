@@ -1,0 +1,393 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{subcaption}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab01-AlgorithmAnalysis}}\vspace{1mm}\\
+CS2312-Algorithm and complexity, Xiaofeng Gao, Spring 2026.}}
+\begin{center}
+\footnotesize{\color{red}$*$ Contact TA Steven Chen for any questions. Include both your .pdf and .tex files in the uploaded .rar or .zip file.}
+
+% Please write down your name, student id and email.
+\footnotesize{\color{blue}$*$ Name: Yiming Li  \quad Student ID: 524031910538 \quad Email:  M10624@sjtu.edu.cn}
+\end{center}
+
+
+\begin{enumerate}
+    % -------------------------------
+    % Question 1
+    % -------------------------------
+    \item {\color{purple}(Minimal Counterexample Principle)}
+    Prove that if one is given an unlimited supply of 6 cents, 10 cents, and 15 cents, one can make any amount of change larger than 29 cents.
+
+\begin{proof}
+    
+    Define $P(n)$ to be the statement that "given an unlimited supply of 6 cents, 10 cents, and 15 cents, one can make $n$ cents". We will try to prove that $P(n)$ is true for every $n > 29$.
+    
+
+    First, we verify that $P(n)$ holds for $n = 30,31,32,33,34,35$, as shown in the table below:
+    
+    \begin{center}
+    \begin{tabular}{c c c c} 
+    \hline
+            \ & 6 & 10 & 15\\
+    \hline
+            30 & 0 & 0 & 2\\
+    \hline
+            31 & 1 & 1 & 1\\
+    \hline
+            32 & 2 & 2 & 0\\
+    \hline
+            33 & 3 & 0 & 1\\
+    \hline
+            34 & 4 & 1 & 0\\
+    \hline
+            35 & 0 & 2 & 1\\
+    \hline
+    \end{tabular}
+    \end{center}
+
+    If $P(n)$ is not true for every $n > 29$, then there must be a smallest such value $k$, such that $P(k)$ is false.
+    
+    Since $P(n)$ holds for $30 \le n \le 35$, we have $k > 35$ and $k-6 > 29$. Since k is the smallest value for which $P(k)$ false, $P(k-6)$ is true.
+
+    Thus, $k-6$ cents can be formed using the given coins. Adding one more 6-cent coin, we can make $k$ cents. Hence $P(k)$ is true, which is a contradiction, allowing us to conclude that our original assumption is false.
+
+\end{proof}
+    
+
+    \smallskip
+    % -------------------------------
+    % Question 2
+    % -------------------------------
+    \item {\color{purple}{(Complexity Class)}}  
+    Given the following functions:
+    
+    \[
+    \quad f_1(n) = \lg n, \quad f_2(n) = 2^n, \quad f_3(n) = 1, \quad f_4(n) = \log^2{n}
+    \]
+    
+    \[
+    \quad f_5(n) = n, \quad f_6(n) = n!, \quad f_7(n) = n^n, \quad f_8(n) = 2^{\sqrt{\log n}}
+    \]
+
+
+    \begin{enumerate}
+        \item Assume $\log n = \log_2 n \text{ and } \lg n = \log_{10} n$. Rank the functions $f(n)$ by growth rate, with "$\succ$" and "$\equiv$". e.g. $n^2\succ n \equiv 4n$. 
+    \end{enumerate}
+
+\begin{solution}
+    For $f_1(n) = \lg n$, $f_4(n) = \log^2{n}$, $f_5(n) = n$, $f_8(n) = 2^{\sqrt{\log n}}$, we have \[
+    \lg n \prec \log^2{n} = \sqrt{\log{n}}^4 \prec 2^{\sqrt{\log n}} \prec 2^{\log n} = n
+    \]
+    Thus\[
+     f_1(n) \prec f_4(n) \prec f_8(n) \prec f_5(n)
+    \]
+    
+    For $f_2(n) = 2^n$, $f_6(n) = n!$, $f_7(n) = n^n$, we have \[
+    2^n \prec n! \prec n^n
+    \]
+    Thus 
+    \[
+    f_2(n) \prec f_6(n) \prec f_7(n)
+    \]
+    
+    So we have the solution:
+    \[
+    \boxed{f_3(n) \prec f_1(n) \prec f_4(n) \prec f_8(n) \prec f_5(n) \prec f_2(n) \prec f_6(n) \prec f_7(n)}
+    \]
+    
+\end{solution}
+    
+    \smallskip
+    % -------------------------------
+    % Question 3
+    % -------------------------------
+    \item {\color{purple}(Time Complexity of Attention)}
+    
+    Attention is a fundamental component of the Transformer architecture. 
+    The standard \textit{scaled dot-product attention} is defined as
+    
+    \begin{equation}
+        \text{Attention}(Q, K, V) = 
+        \text{softmax}\!\left(\frac{QK^{T}}{\sqrt{d_k}}\right)V
+    \end{equation}
+    
+    where $Q$, $K$, and $V$ denote the \textit{query}, \textit{key}, and \textit{value} matrices, with $d_k$ representing the dimensionality of both $Q$ and $K$, and $d_v$ representing the dimensionality of $V$.
+    
+    Since the representational capacity of a single attention head is limited, modern Transformer models employ \textit{Multi-Head Attention}. This mechanism applies multiple attention operations in parallel and concatenates their outputs:
+    
+    \begin{equation}
+        \text{MultiHead}(Q, K, V) =
+        \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O
+    \end{equation}
+    
+    where each attention head is defined as
+    
+    \begin{equation}
+        \text{head}_i = 
+        \text{Attention}(QW_i^Q, KW_i^K, VW_i^V),
+    \end{equation}
+    
+    and $W_i^Q, W_i^K, W_i^V$ are learned parameters for the $i$-th head, while $W^O$ is the learned output projection matrix applied to the concatenated multi-head outputs. These $W$ matrices are not fixed inputs.
+    
+    Assume the following for the input sequence \(X \in \mathbb{R}^{n \times d_m}\):
+    \begin{itemize}
+        \item The input sequence length is $n$.
+        \item The model dimension is $d_{m}$.
+        \item The number of attention heads is $h$.
+        \item Each head has dimensionality $d = d_{m}/h$.
+        \item The \textit{query} and \textit{key} dimensionalities are equal: $d_k = d_v = d$.
+    \end{itemize}
+        
+    \begin{enumerate}
+        \item Write the pseudo-code for the \textbf{Multi-Head Attention} and \textbf{Scaled Dot-Product Attention} functions. Assume the input sequence $X$ has already been linearly projected into $Q$, $K$, and $V$. Clearly specify the input and output variable domains (i.e., dimensions) in your algorithm. For \textbf{Multi-Head Attention}, you can use $Attention()$ as a black box function that computes scaled dot-product attention.
+
+            \begin{algorithm}[H]
+                \LinesNumbered
+                \KwIn{$Q \in \mathbb{R}^{n \times d}$, $K \in \mathbb{R}^{n \times d}$, $V \in \mathbb{R}^{n \times d}$}
+                \KwOut{$O \in \mathbb{R}^{n \times d}$}
+                \BlankLine
+                \caption{Scaled Dot-Product Attention} \label{attention}
+                
+                $S \leftarrow QK^T$ \tcp*{$S \in \mathbb{R}^{n \times n}$}
+                
+                $S \leftarrow S / \sqrt{d}$\;
+                
+                $A \leftarrow \text{softmax}(S)$
+                
+                $O \leftarrow AV$\;
+                
+                \textbf{output} $O$\;
+            \end{algorithm}
+            \begin{algorithm}[H]
+                \LinesNumbered
+                \KwIn{$Q, K, V \in \mathbb{R}^{n \times d_m}$}
+                \KwOut{$O \in \mathbb{R}^{n \times d_m}$}
+                \BlankLine
+                \caption{Multi-Head Attention} \label{multihead}
+                
+                \For{$i = 1$ to $h$}{
+                    $Q_i \leftarrow QW_i^Q$ \tcp*{$\mathbb{R}^{n \times d}$}
+                    
+                    $K_i \leftarrow KW_i^K$\;
+                    
+                    $V_i \leftarrow VW_i^V$\;
+                    
+                    $head_i \leftarrow \text{Attention}(Q_i, K_i, V_i)$\;
+                }
+                
+                $H \leftarrow \text{Concat}(head_1, \dots, head_h)$ \tcp*{$\mathbb{R}^{n \times d_m}$}
+                
+                $O \leftarrow HW^O$\;
+                
+                \textbf{output} $O$\;
+            \end{algorithm}
+
+        \item Analyze the \textbf{time complexity} of Scaled Dot-Product Attention in terms of $n$ and $d$. 
+        
+        {\color{blue}{(Detailed explanation required)}}
+
+        {\color{red}{(HINT: $d_k = d_v = d$)}}
+        \paragraph{Time Complexity of Scaled Dot-Product Attention}
+
+            Given $Q, K, V \in \mathbb{R}^{n \times d}$, the scaled dot-product attention is defined as
+            \[
+            O = \text{softmax}\left(\frac{QK^T}{\sqrt{d}}\right)V.
+            \]
+            
+            \textbf{Compute $QK^T$:}
+                $Q \in \mathbb{R}^{n \times d}$ and $K^T \in \mathbb{R}^{d \times n}$, so the cost is $O(n^2 d)$.
+            
+            \textbf{Scaling:}
+                Dividing each element of the $n \times n$ matrix by $\sqrt{d}$ takes $O(n^2)$.
+            
+            \textbf{Softmax:}
+                Applying softmax over an $n \times n$ matrix require $O(n^2)$.
+            \textbf{Compute $AV$:}
+                $A \in \mathbb{R}^{n \times n}$ and $V \in \mathbb{R}^{n \times d}$, so the multiplication cost is $O(n^2 d)$.
+
+            \vspace{4pt}
+            
+            \textbf{Final Complexity:} Summing all terms:
+            \[
+            O(n^2 d) + O(n^2) + O(n^2) + O(n^2 d) = O(n^2 d).
+            \]
+            
+            \[
+            \boxed{O(n^2 d)}
+            \]
+            
+            The main cost comes from the two matrix multiplications $QK^T$ and $AV$, with each requiring $O(n^2 d)$ operations.
+    
+        \item Analyze the \textbf{time complexity} of Multi-Head Attention in terms of $n$ and $d_{m}$. 
+        
+        {\color{blue}{(Detailed explanation required)}}
+        
+        {\color{red}{(HINT: In practice, $n \gg d_{m}$. Consider relationship between $d$ and $d_{m}$)}}
+
+        \paragraph{Time Complexity of Multi-Head Attention}
+
+            Given $Q, K, V \in \mathbb{R}^{n \times d_m}$, Multi-Head Attention is defined as
+            \[
+            \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O,
+            \]
+            where each head is
+            \[
+            \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V),
+            \]
+            and each head has dimension $d = \frac{d_m}{h}$.
+            
+            \textbf{Projections:} \\
+                For each head, computing $QW_i^Q$, $KW_i^K$, and $VW_i^V$ involves matrix multiplications:
+                \[
+                (n \times d_m)(d_m \times d) = O(n d_m d)
+                \]
+                Since there are 3 such projections per head and $h$ heads, using $d = \frac{d_m}{h}$, we have the total cost
+                \[
+                O(h \cdot n d_m d) = O(n d_m^2)
+                \]
+            
+            \textbf{Scaled dot-product attention (per head):} \\
+                From previous analysis, each attention computation costs
+                \(
+                O(n^2 d)
+                \).
+                For $h$ heads, using $d = \frac{d_m}{h}$, we have the total cost
+                \[
+                O(h \cdot n^2 d) = O(n^2 d_m)
+                \]
+            
+            \textbf{Concatenation:} \\
+                Concatenating $h$ heads costs
+                \(O(n d_m)\).
+            
+            \textbf{Final linear projection:} \\
+                Multiplying $H \in \mathbb{R}^{n \times d_m}$ with $W^O \in \mathbb{R}^{d_m \times d_m}$ costs
+                \(
+                O(n d_m^2)
+                \).
+
+            \vspace{4pt}
+            
+            \textbf{Final Complexity:}
+            
+            Summing all terms:
+            \[
+            O(n d_m^2) + O(n^2 d_m) + O(n d_m) + O(n d_m^2).
+            \]
+            
+            The dominant terms are:
+            \[
+            \boxed{O(n^2 d_m) + O(n d_m^2)}
+            \]
+            
+            In practice, since $n \gg d_m$, the term $O(n^2 d_m)$ dominates.
+            
+            \[
+            \boxed{O(n^2 d_m)}
+            \]
+            
+            The time complexity of Multi-Head Attention is $O(n^2 d_m)$, dominated by the attention computations across all heads.
+    
+    \end{enumerate}
+
+    \smallskip
+    % -------------------------------
+    % Question 4
+    % -------------------------------
+    \item {\color{purple}(Divide-and-Conquer Analysis)}
+    A tromino is an $L$-shaped tile formed by three connected $1 \times 1$ squares. Given an $n \times n$ (where $n = 2^k$, $k \geq 1$) board with a missing square cell, your task is to fill the remaining cells with trominoes. Trominoes can be oriented in any arbitrary way, but they should cover all the cells of the board except the missing one exactly and with no overlaps.
+
+    \begin{figure}[h]
+        \hspace{0.15\textwidth}
+        \begin{minipage}{0.4\textwidth}
+            \subfigure[Tromino]
+            {\includegraphics[scale=1]{Fig-Tromino Example.jpg}}
+        \end{minipage}
+        \begin{minipage}{0.4\textwidth}
+            \subfigure[Board]
+            {\includegraphics[scale=1]{Fig-Tiling Problem.png}}
+        \end{minipage}
+    \end{figure}
+    
+    \begin{enumerate}
+        \item Design a divide-and-conquer method for the tromino tiling problem. Explain your algorithm. Do not provide pseudo-code.
+
+        {\color{red}{(HINT: Place the first tromino at the center of board)}}
+        \begin{solution}
+            We divide the $n \times n$ board into 4 equal $(n/2)\times(n/2)$ sub-boards. 
+            
+            Place the first tromino at the center of board, so that it covers the central squares of the three sub-boards that do not contain the missing square, creating exactly one missing square in each of the four sub-boards. 
+            
+            Now each sub-board is a subproblem of the original problem: a $(n/2)\times(n/2)$ board with one missing square. We recursively solve each of the four subboards in the same way.
+            
+            The recursion continues until we reach the base case $n=2$, where the board can be filled directly with a single tromino.
+        \end{solution}
+
+        \item Express the cost of solving the problem as a recurrence relation and use the Master Theorem to find the running time.
+
+        \begin{solution}
+            From the algorithm above we attain that the time complexity satisfies the recurrence relation:
+            \[
+            T(n) = 4T(n/2) + O(1)
+            \]
+            Use the Master Theorem to find $T(n)$, we have $a = 4$, $b = 2$, $d = 0$.
+            Since $d < \log_b{a}$, we have
+            \[
+            \boxed{T(n) = O(n^2)}
+            \]
+        \end{solution}
+        
+    \end{enumerate}
+\end{enumerate}
+
+
+
+
+
+
+%========================================================================
+\end{document}

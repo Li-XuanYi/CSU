@@ -1,0 +1,276 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+\usepackage[dvipsnames,svgnames]{xcolor}
+\usepackage{subcaption}
+\usepackage{float}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab05-TM\&Complexity}}\vspace{1mm}\\
+CS2312-Algorithm and complexity, Xiaofeng Gao, Spring 2026.}}
+\begin{center}
+\footnotesize{\color{red}$*$ Contact TA Steven Chen for any questions. Include both your .pdf and .tex files in the uploaded .rar or .zip file.}
+
+% Please write down your name, student id and email.
+\footnotesize{\color{blue}$*$ Name:Yiming Li  \quad Student ID:524031910538 \quad Email: m10624@sjtu.edu.cn}
+\end{center}
+
+
+\begin{enumerate}
+    % -------------------------------
+    % Question 1
+    % -------------------------------
+    \item {\color{purple}{(Turing Machine)}} 
+    
+    Given two sorted non-empty 3-bit binary integer arrays \(nums_1\) and \(nums_2\) in non-decreasing order, construct a 3-tape Deterministic Turing Machine that outputs the merged sorted array in non-decreasing order. The input tape is read-only.
+    
+    \textbf{Initial Configuration.}
+    \[
+        \begin{array}{|*{26}{c|}}
+        \hline
+        q_s \rightarrow & \triangleright & 0 & 0 & 1 & | & 0 & 1 & 0 & | & 0 & 1 & 1 & \# & 0 & 1 & 0 & | & 1 & 0 & 1 & | & 1 & 1 & 0 & \triangleleft \\
+        \hline
+        q_s \rightarrow & \triangleright & \multicolumn{24}{c|}{} \\
+        \hline
+        q_s \rightarrow & \triangleright & \multicolumn{24}{c|}{} \\
+        \hline
+        
+        \end{array}
+    \]
+    
+
+    \textbf{Alphabets. $\Gamma = \{0,1,\triangleright,\ \triangleleft,\ \vert,\ \#, \square\}$}
+
+    \begin{itemize}
+        \item \(\triangleright\) denotes the left-end marker,
+        \item \(\triangleleft\) denotes the right-end marker,
+        \item \(\#\) denotes the delimiter between arrays,
+        \item \(\vert\) denotes the delimiter between integers in an array,
+        \item \(\square\) denotes blank.
+    \end{itemize}
+
+    
+    \begin{enumerate}
+        \item Design an instruction set of the form:  
+        \[
+        \langle q_i,s^1_{j_1}, s^2_{j_2}, s^3_{j_3} \rangle \rightarrow \langle q_l,s^2_{k_2}, s^3_{k_3}, L/R/S, L/R/S, L/R/S \rangle.
+        \]
+
+        For example, suppose the machine is currently in state $q_s$, and all three tape heads are scanning the left-end marker $\triangleright$. We may move all three tape heads one cell to the right without changing the tape contents, while transitioning to state $q_1$. The corresponding instruction is:
+
+        \[
+        \langle q_s, \triangleright, \triangleright, \triangleright\rangle
+        \rightarrow \langle q_1, \triangleright, \triangleright, R, R, R \rangle
+        \]
+        
+\begin{solution}
+        To merge without using finite states to store tape symbols, the machine performs a purely physical, bit-by-bit comparison by moving the heads back and forth. Let $x, y \in \{0, 1\}$, $b_0, b_1 \in \{\triangleright,|\}$, $e_0, e_1 \in \{|, \#\}$ act as wildcards to match signals currently under the tape head. The complete and fully corrected instruction set is in Figure \ref{fig:merge}.
+
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{merge.jpg}
+            \caption{merge instruction set}
+            \label{fig:merge}
+        \end{figure}
+        
+        \end{solution}
+
+        \item Briefly show the whole process from the initial to the final configuration, where the input arrays are $nums_1 = [1, 2, 3]$ and $nums_2 = [2, 5, 6]$, and the output array is $[1, 2, 2, 3, 5, 6]$. For example:
+        \[
+        (q_s, \underline{\triangleright} 001|010|011\#010|101|110 \triangleleft, \underline{\triangleright}, \underline{\triangleright}) \vdash (q_1, \triangleright \underline{0}01|010|011\#010|101|110 \triangleleft, \underline{\triangleright}, \underline{\triangleright}) 
+        \]
+        \[
+        \vdash \cdots \vdash (q_h, \triangleright 001|010|011\#010|101|110 \underline{\triangleleft}, \cdots, \triangleright 001|010|010|011|101|110 \underline{\triangleleft})
+        \]
+
+        \begin{solution}
+        The computational process from initial to final colnfiguration is traced in Figure \ref{fig:process}.
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{process.jpg}
+            \caption{transition process}
+            \label{fig:process}
+        \end{figure}
+
+        \end{solution}
+        
+    \end{enumerate}
+
+    {\color{blue}{
+        
+    Note: You do not have to write out the non-transitioning tapes fully. For example, if only tape 1 changes state, you may write 
+    \[
+    (q_s, \underline{\triangleright} 001|010|011\#010|101|110 \triangleleft, \underline{\triangleright}, \underline{\triangleright}) \vdash (q_1, \triangleright \underline{0}01|010|011\#010|101|110 \triangleleft, \dots, \dots)
+    \]
+    If the same instruction executes repeatedly, you may skip the intermediate transitions. For example, if your instruction consecutively shifts the first tape pointer to the right, you may skip from 
+    \[(q_s, \underline{\triangleright} 001|010|011\#010|101|110 \triangleleft, \underline{\triangleright}, \underline{\triangleright}) \vdash^* (q_1, \triangleright 001|010|011\underline{\#}010|101|110 \triangleleft, \underline{\triangleright}, \underline{\triangleright})
+    \]
+    
+    }}
+
+    % -------------------------------
+    % Question 2
+    % -------------------------------
+    \item {\color{purple}(Reduction via Gadgets)} 
+    
+    The Steiner Tree (ST) problem: Given an undirected, unweighted, connected graph $G = (V, E)$, and a subset $S$ of the nodes of $G$ (the shaded nodes), plus a non-negative integer $k$, is there a subset $E'$ of edges of $G$ that connects all of the shaded nodes, where $|E'| \leq k$?
+
+    \begin{enumerate}
+        \item Show that the ST problem is in NP.
+        
+        \begin{solution}
+        To prove that the Steiner Tree (ST) problem is in NP, we show that a given candidate solution can be verified in polynomial time.
+        \begin{itemize}
+            \item \textbf{Verification Algorithm:}
+            \begin{enumerate}
+                \item Find a subset of edges $E' \subseteq E$. Check if $|E'| \le k$. If not true, output \textbf{No}. If true, construct the subgraph $G' = (V, E')$.
+                \item Run a standard BFS or DFS on $G'$ starting from any arbitrary node $s \in S$. Check if all target vertices in $S$ are reachable and belong to the same connected component. If yes, output \textbf{Yes}; otherwise, output \textbf{No}.
+            \end{enumerate}
+            \item \textbf{Complexity Analysis:} Step 1 and Step 2 take $O(|V| + |E|)$ time. Since the complete verification algorithm runs in linear polynomial time with respect to the graph size, we have ST $\in$ NP.
+        \end{itemize}
+        \end{solution}
+
+        \item Describe an efficient reduction from the 3-SAT to the ST problem.
+        
+        \begin{solution}
+        Given an instance $\Phi$ of 3-SAT with $n$ variables $x_1, \dots, x_n$ and $m$ clauses $C_1, \dots, C_m$, we construct an instance $I = (G, S, k)$ of the ST problem in polynomial time:
+        \begin{enumerate}
+            \item \textbf{Graph $G = (V, E)$ Construction:}
+            \begin{itemize}
+                \item Create a global base root node $R$.
+                \item \textbf{Variable Gadget:} For each variable $x_i$, create a diamond structure consisting of 4 nodes: a top node $T_i$, a bottom node $B_i$, a left node representing the literal $x_i$, and a right node representing the literal $\neg x_i$. Connect $T_i$ to both $x_i$ and $\neg x_i$, and connect both $x_i$ and $\neg x_i$ to $B_i$. Then, connect $R$ to each $T_i$.
+                \item \textbf{Clause Gadget:} For each clause $C_j$, create a single vertex $C_j$. Connect $C_j$ to the three literal nodes corresponding to the literals contained within $C_j$.
+            \end{itemize}
+            \item \textbf{Terminal Set $S$:} The required shaded vertices to connect include the root, all variable bottom nodes, and all clause nodes:
+            \[
+            S = \{R\} \cup \{B_1, B_2, \dots, B_n\} \cup \{C_1, C_2, \dots, C_m\}
+            \]
+            \item \textbf{Parameter $k$:} Set the edge budget bound to $k = 3n + m$.
+        \end{enumerate}
+        \end{solution}
+        
+        \item Prove the correctness of your reduction by showing that instance $\Phi$ is a Yes-instance of 3-SAT if and only if instance $I = (G, S, k)$ is a Yes-instance of ST.
+        
+        \begin{solution}
+        We now prove that $\Phi$ is satisfiable $\iff G$ contains a Steiner tree with at most $3n + m$ edges.
+        
+        \textbf{($\implies$):} Suppose $\Phi$ has a satisfying truth assignment. 
+        \begin{itemize}
+            \item For each variable $x_i$, if $x_i = \text{True}$, select the edges $(R, T_i)$, $(T_i, x_i)$, and $(x_i, B_i)$ in $G$. If $x_i = \text{False}$, select $(R, T_i)$, $(T_i, \neg x_i)$, and $(\neg x_i, B_i)$. This securely spans all bottom terminal nodes $B_i$ to the root $R$, utilizing exactly $3n$ edges.
+            \item For each clause $C_j$, since the assignment satisfies $\Phi$, there exists at least one literal in $C_j$ evaluated as True. Select the single edge linking $C_j$ to one True literal node. This connects all $m$ clause nodes using exactly $m$ edges.
+            \item The total number of chosen edges is $|E'| = 3n + m = k$, and all terminals in $S$ are fully connected, making it a valid Yes-instance for ST.
+        \end{itemize}
+
+        \textbf{($\impliedby$):} Suppose $G$ contains a Steiner tree $E'$ with $|E'| \le 3n + m$.
+        \begin{itemize}
+            \item To connect each bottom terminal $B_i$ to the root $R$, the path must traverse either the $x_i$ branch or the $\neg x_i$ branch of the variable diamond. This demands a structural minimum of at least $3$ edges per variable gadget, yielding a minimum of $3n$ edges across all variables.
+            \item To connect each clause node $C_j$ to the tree, at least $1$ distinct edge must be attached to it, requiring a minimum of $m$ edges.
+            \item Since the total allowed budget is exactly $3n + m$, each variable gadget must select one literal branch and consume exactly 3 edges, and each clause node must consume exactly 1 edge.
+            \item We can naturally define a truth assignment: if the branch through literal $x_i$ is selected, set $x_i = \text{True}$; otherwise, set $x_i = \text{False}$. Because every clause node $C_j$ is successfully connected to the tree via 1 edge, it must connect to a chosen (True) literal. Hence, every clause is satisfied, making $\Phi$ a Yes-instance.
+        \end{itemize}
+        \end{solution}
+    \end{enumerate}
+
+    % -------------------------------
+    % Question 3
+    % -------------------------------
+
+    \item {\color{purple}{(NP-Complete)}} 
+    
+    A recruitment agency wishes to offer $n$ possible jobs. There are $k$ job seekers interested in getting a job and each is interested in some subset of the $n$ possible jobs. To manage costs, the agency has a bound $b$ on the number of jobs it is willing to offer. Is there a way to choose $b$ jobs out of the $n$ possibilities so that every job seeker can get a job that interests them? Formally, an instance of the Job Scheduling (JS) problem consists of
+    
+    \begin{itemize}
+        \item a set $C$ of $n$ possible courses, numbered $1$ through $n$, 
+        
+        \item subsets $S_1, S_2, \dots, S_k \text{ of } \{1, 2, \dots, n\}$ (the jobs of interest to each of the job seekers), 
+        
+        \item and a bound $b$ (the maximum number of jobs actually offered).
+    \end{itemize}
+
+    The JS problem is to determine whether there is a subset $B$ of $\{1, 2, \dots, n\}$, where the size of $B \leq b$, such that $B \cap S_i$ is not empty for all $i, 1 \leq i \leq k$.
+
+    \begin{enumerate}
+        \item Describe an efficient reduction from the Vertex Cover problem to the JS problem.
+        
+        \begin{solution}
+        Given an instance of the Vertex Cover problem consisting of an undirected graph $G = (V, E)$ and a target integer $K$, we map it to an instance of the Job Scheduling (JS) problem as follows:
+        \begin{enumerate}
+            \item \textbf{Jobs Set ($C$):} We map each vertex $v_i \in V$ to a unique job. Thus, the total number of jobs is $n = |V|$, and $C = \{1, 2, \dots, n\}$.
+            \item \textbf{Job Seekers ($S_i$):} We map each edge $e_i = (u, v) \in E$ to a distinct job seeker. The interests of seeker $i$ are precisely the two endpoints of the edge: $S_i = \{u, v\}$. Hence, the total number of seekers is $k = |E|$.
+            \item \textbf{Bound ($b$):} Set the job offering bound equal to the vertex cover budget: $b = K$.
+        \end{enumerate}
+        \end{solution}
+
+        \item Show that your reduction runs in polynomial time.
+        
+        \begin{solution}
+        \begin{itemize}
+            \item Mapping the vertices $V$ to the job universe $C$ takes $O(|V|)$ operations.
+            \item Mapping the edge set $E$ to the collection of seeker subsets $S_1, \dots, S_k$ requires iterating through all edges, taking $O(|E|)$ operations.
+            \item Setting $b = K$ takes $O(1)$ constant time.
+            \item Therefore, the total time complexity of the reduction is bounded by $O(|V| + |E|)$, which is strictly linear and polynomial with respect to the input size of the graph.
+        \end{itemize}
+        \end{solution}
+
+        \item Show that the JS problem is NP-complete.
+        
+        \begin{solution}
+        To establish that JS is NP-complete, we show that JS $\in$ NP and that JS is NP-hard.
+        
+        \textbf{Step 1: JS $\in$ NP}
+        \begin{itemize}
+            \item Find a subset of jobs $B \subseteq \{1, 2, \dots, n\}$. Check if $|B| \le b$. If true, for each job seeker $S_i$ ($1 \le i \le k$), check if $B \cap S_i \neq \emptyset$. 
+            \item Counting the size of $B$ takes $O(b)$ time, and checking intersections for all $k$ seekers takes at most $O(n \cdot k)$ operations. The verification finishes in polynomial time, hence JS $\in$ NP.
+        \end{itemize}
+
+        \textbf{Step 2: Correctness of the Reduction (Vertex Cover $\iff$ JS)}
+        \begin{itemize}
+            \item \textbf{($\implies$ Direction):} Suppose $G = (V, E)$ has a vertex cover $V' \subseteq V$ of size $|V'| \le K$. We choose our selected job set to be $B = V'$. Consequently, $|B| = |V'| \le K = b$. For every job seeker $S_i$ (corresponding to edge $e_i = (u, v)$), since $V'$ is a vertex cover, either $u \in V'$ or $v \in V'$. Thus, $B \cap S_i \neq \emptyset$ for all seekers, yielding a valid solution for JS.
+            \item \textbf{($\impliedby$ Direction):} Suppose there is a subset of jobs $B$ with $|B| \le b = K$ such that $B \cap S_i \neq \emptyset$ for all $1 \le i \le k$. We choose our vertex subset to be $V' = B$. Since every seeker $S_i$ representing edge $(u, v)$ satisfies $B \cap S_i \neq \emptyset$, at least one endpoint $u$ or $v$ belongs to $V'$. This means every edge in $E$ is covered by $V'$. Since $|V'| = |B| \le K$, $V'$ is a valid vertex cover of size at most $K$.
+        \end{itemize}
+        Since Vertex Cover is known to be NP-complete, and JS is in NP and NP-hard, Job Scheduling (JS) is NP-complete.
+        \end{solution}
+    \end{enumerate}
+
+\end{enumerate}
+%========================================================================
+\end{document}

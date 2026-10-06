@@ -1,0 +1,270 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm, amsfonts}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+\ctexset{figurename=Figure}
+\ctexset{tablename=Table}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\newcommand{\postscript}[2]
+{\setlength{\epsfxsize}{#2\hsize}
+\centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof]
+{\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist
+\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse}
+\makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution]
+{\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist
+\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse}
+\makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+    \Large{\textbf{Lab 02-Greedy Algorithm}}\vspace{1mm}\\
+CS2312-Algorithm and complexity, Xiaofeng Gao, Spring 2026.}}
+\begin{center}
+  \footnotesize{\color{red}$*$ Contact TA Yixuan Cai for any
+    questions. Include both your .pdf and .tex files in the uploaded
+  .rar or .zip file.}
+
+  % Please write down your name, student id and email.
+  \footnotesize{\color{blue}$*$ Name: Yiming Li  \quad
+  Student ID: 524031910538 \quad Email: m10624@sjtu.edu.cn}
+
+\end{center}
+
+\begin{enumerate}
+  \item {\color{purple}(Fractional Knapsack)} Let \((w_{1},v_{1}), (w_{2},v_{2}), \ldots, (w_{n},v_{n})\) be \(n\) pairs of positive real values. 
+\begin{enumerate}
+    \item Given a real value \(W \leq \sum_{i=1}^{n} w_{i}\), design an algorithm to find \(x_{1}, x_{2}, \ldots, x_{n}\) to maximize the objective function
+\[
+\sum_{i=1}^{n} \frac{v_{i}}{w_{i}} \cdot x_{i}
+\]
+subject to
+\begin{itemize}
+    \item $0 \leq x_{i} \leq w_{i} \quad \text{for every } i \in [1,n]$;
+    \item $\sum_{i=1}^{n} x_{i} \leq W$.
+\end{itemize}
+
+    \begin{algorithm}[H]
+        \LinesNumbered
+        \KwIn{$(w_1, v_1), (w_2,v_2),\ldots,(w_n,v_n)$ and $W$}
+        \KwOut{$x_1, x_2,\ldots, x_n$}
+        \BlankLine
+        \caption{Fractional Knapsack} \label{Algorithm 1}
+        
+        initialize $x_i \leftarrow 0$ for all $i$\;
+        compute density $r_i \leftarrow v_i / w_i$ for each $i$\;
+        create list of indices $[1,2,\ldots,n]$ sorted by $r_i$ in descending order\;
+        $remaining \leftarrow W$\;
+        \For{each index $i$ in sorted order}{
+            \If{$w_i \le remaining$}{
+                $x_i \leftarrow w_i$\;
+                $remaining \leftarrow remaining - w_i$\;
+            }
+            \Else{
+                $x_i \leftarrow remaining$\;
+                $remaining \leftarrow 0$\;
+                break\;
+            }
+        }
+        \textbf{output} $x_1, x_2, \ldots, x_n$\;
+    \end{algorithm}
+
+    \item Analyze the time complexity of your algorithm.
+
+    Sorting takes $O(n\log n)$ time, and the for loop takes $O(n)$ time. Thus, the total time complexity is $O(n \log n + n)$, which is equivalent to 
+            \[
+            \boxed{O(n\log n)}
+            \]
+\end{enumerate}
+
+
+
+
+
+  \item {\color{purple} (Min Interval Covering)} Given a set of $n$ distinct points $\{x_1, x_2, \dots, x_n\}$ distributed on real number axis with $x_1 < x_2 < \dots < x_n$, cover these points using closed intervals of length $1$.  
+\begin{enumerate}
+    \item Design an algorithm to find the minimum number of such intervals and their positions.
+        \begin{algorithm}[H]
+            \LinesNumbered
+            \KwIn{$x_1, x_2,\ldots, x_n$ (sorted in increasing order)}
+            \KwOut{List of intervals $[l_j, l_j+1]$ covering all points}
+            \BlankLine
+            \caption{Min Interval Covering} \label{Algorithm 2}
+            
+            $intervals \leftarrow []$\;
+            $i \leftarrow 1$\;
+            \While{$i \leq n$}{
+                $l \leftarrow x_i$\;  
+                
+                $intervals \leftarrow intervals \cup [l, l+1]$\;
+                
+                // skip all points covered by this interval
+                
+                \While{$i \leq n$ and $x_i \leq l+1$}{
+                    $i \leftarrow i+1$\;
+                }
+            }
+            \textbf{output} $intervals$ and $|intervals|$\;
+        \end{algorithm}
+    \item Provide a correctness proof of your algorithm.
+        \begin{proof}
+            (by contradiction) Assume greedy is not optimal.  
+            
+            Let $g_1 < g_2 < \ldots < g_p$ denote left endpoints in intervals chosen by algorithm.
+            Let $f_1 < f_2 < \ldots < f_q$ denote left endpoints in intervals chosen in an optimal solutions.
+            Since \(x_1\) must be covered, we may shift the first optimal interval to start at \(x_1\) without losing coverage, so we can assume \(f_1 = g_1\).  
+            
+            Now let \(r\) be the largest integer such that \(f_i = g_i\) for all \(i = 1,\dots,r\).
+            
+            Consider the point \(p = g_{r+1}\), the first point not covered by the first \(r\) greedy intervals. In the optimal solution, since the first \(r\) optimal intervals cover exactly the same set as the first \(r\) greedy intervals, they cannot cover \(p\). Thus the \((r+1)\)-th optimal interval is the first that can cover \(p\), and \(f_{r+1} \le p = g_{r+1}\).  
+            Since $r$ is the largest integer that \(f_i = g_i\) for all \(i = 1,\dots,r\), we have \(f_{r+1} < p = g_{r+1}\). 
+            
+            Replace the optimal interval \([f_{r+1}, f_{r+1}+1]\) with \([g_{r+1}, g_{r+1}+1]\). Since the old left endpoint \(f_{r+1} < p = g_{r+1}\) and the old right endpoint \(f_{r+1}+1\) is less than \(g_{r+1}+1\), \([g_{r+1}, g_{r+1}+1]\) covers all points that \([f_{r+1}, f_{r+1}+1]\) covered, and possibly more. Points to the left of \(g_{r+1}\) are already covered by previous intervals, so feasibility is maintained. The number of intervals does not increase. After this replacement we have \(f_{r+1}' = g_{r+1}\).  
+            
+            Repeating the argument, we can transform the optimal solution into the greedy solution without increasing the number of intervals. Hence the greedy solution uses at most the same number of intervals as any optimal solution, i.e., it is optimal. This contradicts the assumption that greedy is not optimal.
+        \end{proof}
+\end{enumerate}
+
+
+
+  \item {\color{purple} (Matroid)} Consider a pair $M = (U, \mathcal{I})$ where universe $U$ is a finite set and $\mathcal{I}
+    \subseteq 2^U$ is a collection of subsets of $U$. We call $M$ a
+    matroid if it satisfies \emph{hereditary property} and
+    \emph{exchange property}:
+    \begin{itemize}
+      \item (\emph{HEREDITARY PROPERTY}) $\mathcal{I}$ is nonempty
+        and for every $A \in \mathcal{I}$ and $B \subseteq A$, it
+        holds that $B \in \mathcal{I}$.
+      \item (\emph{EXCHANGE PROPERTY}) For any $A, B \in
+        \mathcal{I}$ with $|A| < |B|$, there
+        exists some $x \in B \setminus A$ such that $A \cup \{x\} \in
+        \mathcal{I}$.
+    \end{itemize}
+    Each set $A \in \mathcal{I}$ is called an \emph{independent set}. The maximal independent sets are called \emph{bases}.
+    \begin{enumerate}
+      \item The dual of a matroid $\mathcal{I}$ over a universe $U$ is the family of subsets $\mathcal{I}'$ over the same universe $U$, consisting of the complements of bases of $\mathcal{I}$, and all subsets of these sets. Prove that the dual $\mathcal{I}'$ is itself a matroid.
+
+
+
+        \begin{lemma}[Basis Exchange Implies Independent Set Exchange]
+        Let $M = (U, \mathcal{I})$ be a set system satisfying the hereditary property and the basis exchange property. Then $\mathcal{I}$ satisfies the independent set exchange property: for any $A, B \in \mathcal{I}$ with $|A| < |B|$, there exists $e \in B \setminus A$ such that $A \cup \{e\} \in \mathcal{I}$.
+        \end{lemma}
+        
+        \begin{proof}[Proof Lemma 1]
+            Let $A, B \in \mathcal{I}$ with $|A| < |B|$. By the hereditary property, we can extend $A$ and $B$ to bases $A'$ and $B'$ respectively, i.e., $A \subseteq A'$, $B \subseteq B'$, and $A', B'$ are maximal independent sets. 
+        
+            We will transform $A'$ into a basis $A^*$ such that $A \subseteq A^*$ and $A^* \setminus A \subseteq B'$. The process is as follows:
+        
+            While there exists an element $x \in A' \setminus A$ with $x \notin B'$:
+            \begin{itemize}
+                \item By the basis exchange property applied to the bases $A'$ and $B'$, there exists $y \in B' \setminus A'$ such that $A'' = (A' \setminus \{x\}) \cup \{y\}$ is a basis.
+                \item Note that $A \subseteq A''$ because $x \notin A$.
+                \item If $y \in B$, then $y \in B \setminus A$ and $A \cup \{y\} \subseteq A''$ is independent, proving the claim.
+                \item If $y \notin B$, replace $A'$ by $A''$ and continue.
+            \end{itemize}
+        
+            Since $x$ is removed from $A'$ and $y \in B'$ is added, each iteration increases $|A' \cap B'|$ by at least one.
+            And $|A' \setminus A|$ is finite. The loop terminates because if no such $ x \in A' \setminus A $ with $ x \notin B' $ exists. Hence after finitely many steps we obtain a basis $A^*$ satisfying $A \subseteq A^*$ and $A^* \setminus A \subseteq B'$.
+        
+            Now suppose, for contradiction, that $A^* \setminus A$ contains no element of $B$. Then $A^* \setminus A \subseteq B' \setminus B$. Consequently,
+            \[
+            |A^* \setminus A| \le |B' \setminus B|.
+            \]
+            By the basis exchange property, all bases have the same size(denoting this common rank by $r = |A'| = |B'|$). So we have $|A^* \setminus A| = r - |A|$ and $|B' \setminus B| = r - |B|$. Thus $|A| \ge |B|$. Since $|A| < |B|$, we have a contradiction. Therefore there exists $y \in (A^* \setminus A) \cap B \subseteq B \setminus A$ s.t. $A \cup \{y\} \subseteq A^*$ is independent.
+        \end{proof}
+
+
+    \begin{proof}
+        Let $M = (U, \mathcal{I})$ be a matroid and $\mathcal{B}$ be its set of bases. The dual family $\mathcal{I}'$ is defined as:
+        $$\mathcal{I}' = \{ A \subseteq U \mid \exists B \in \mathcal{B}, A \subseteq U \setminus B \}$$
+        Let $\mathcal{B}^* = \{ U \setminus B \mid B \in \mathcal{B} \}$ denote the set of dual bases.
+        
+        \begin{enumerate}
+            \item \textbf{Hereditary Property:} By the definition of $\mathcal{I}'$, if $X \in \mathcal{I}'$, there exists a dual basis $B^* \in \mathcal{B}^*$ such that $X \subseteq B^*$. 
+            Since $Y \subseteq X$ and $X \subseteq B^*$, by the transitivity of the subset relation, we have $Y \subseteq B^*$.
+            Since $Y$ is a subset of a dual basis $B^*$, it follows from the definition that $Y \in \mathcal{I}'$.
+            % \item \textbf{Non-emptiness:} Since $\mathcal{I}$ is a matroid, $\mathcal{B} \neq \emptyset$. Consequently, $\mathcal{B}^* \neq \emptyset$.
+            \item \textbf{Basis Exchange Property:} Let $B_1^*, B_2^* \in \mathcal{B}^*$ and $x \in B_1^* \setminus B_2^*$. We must find $y \in B_2^* \setminus B_1^*$ such that $(B_1^* \setminus \{x\}) \cup \{y\} \in \mathcal{B}^*$.
+            
+            By the definition of $\mathcal{B}^*$, we have $B_1^* = U \setminus B_1$ and $B_2^* = U \setminus B_2$ for some $B_1, B_2 \in \mathcal{B}$. The condition $x \in B_1^* \setminus B_2^*$ implies:
+            \[ x \in (U \setminus B_1) \setminus (U \setminus B_2) \implies x \in B_2 \setminus B_1 \]
+            
+            Consider the set $B_1 \cup \{x\}$. Since $B_1$ is a basis and $x \notin B_1$, $B_1 \cup \{x\}$ contains a unique fundamental circuit $C(x, B_1)$. Since $B_2$ is an independent set, it cannot contain the entire circuit $C(x, B_1)$. Thus, there exists an element $y \in C(x, B_1)$ such that $y \notin B_2$. 
+            
+            Since $C(x, B_1) \subseteq B_1 \cup \{x\}$ and $y \notin B_2$ (while $x \in B_2$), it follows that $y \in B_1 \setminus B_2$. Note that $y \in B_1 \setminus B_2$ is equivalent to $y \in B_2^* \setminus B_1^*$.
+            
+            By circuit properties, $(B_1 \cup \{x\}) \setminus \{y\}$ is an independent set in $M$. Since its cardinality is $|B_1| = r(M)$, it is a basis, denoted $B_3 \in \mathcal{B}$.
+            
+            Taking the complement of $B_3$:
+            \[ U \setminus B_3 = U \setminus ((B_1 \cup \{x\}) \setminus \{y\}) = (U \setminus (B_1 \cup \{x\})) \cup \{y\} \]
+            \[ = ((U \setminus B_1) \setminus \{x\}) \cup \{y\} = (B_1^* \setminus \{x\}) \cup \{y\} \]
+            
+            Since $B_3 \in \mathcal{B}$, its complement $(B_1^* \setminus \{x\}) \cup \{y\}$ is in $\mathcal{B}^*$.
+        \end{enumerate}
+        Since $\mathcal{I}'$ is non-empty ($\emptyset \in \mathcal{I}'$), satisfies the Hereditary Property, and satisfies the Exchange Property, the dual $\mathcal{I}'$ is a matroid.
+    \end{proof}
+
+      \item Consider a matroid $\mathcal{I}$ over a universe $U$, and for a parameter $k$, define the following family of subsets 
+      \[
+          \mathcal{I}_k = \{A \mid A \in I \,\, \text{and} \,\, |A| \leq k\}
+      \]
+      Prove that for each positive integer $k$, $\mathcal{I}_k$ is a matroid.
+
+      \begin{proof}
+        
+        \begin{enumerate}
+            Let $M=(U,\mathcal{I})$ be a matroid and $k\in\mathbb{N}^+$. And
+            \[
+            \mathcal{I}_k = \{A\in\mathcal{I}\mid |A|\le k\}.
+            \]
+            We prove that $(U,\mathcal{I}_k)$ is a matroid.
+            \item \textbf{Hereditary property:} If $A\in\mathcal{I}_k$ and $B\subseteq A$, then $B\in\mathcal{I}$ by heredity of $M$, and $|B|\le|A|\le k$, so $B\in\mathcal{I}_k$. Also $\varnothing\in\mathcal{I}_k$ because $\varnothing\in\mathcal{I}$ and $|\varnothing|=0\le k$.
+            
+            \item \textbf{Exchange property:} Let $A,B\in\mathcal{I}_k$ with $|A|<|B|$. Since $A,B\in\mathcal{I}$ and $|A|<|B|$, by the exchange property of $M$ there exists $x\in B\setminus A$ such that $A\cup\{x\}\in\mathcal{I}$. Moreover, $|A|\le k-1$ because $|A|<|B|\le k$, hence $|A\cup\{x\}|=|A|+1\le k$. Thus $A\cup\{x\}\in\mathcal{I}_k$.
+        \end{enumerate}
+          
+      \end{proof}
+    \end{enumerate}
+
+% \item{\color{purple} Discontinuous Classroom Assignment} Recall the classroom scheduling example on class. This time, however, a lecture is no longer continuous. Instead, it is broken into several timepieces, namingly $\{(ts_i^1,te_i^1),(ts_i^2,te_i^2),...\}$ for lecture $i$, where $ts_i^j$ and $te_i^j$ stands for the start and ending time for timepiece $j$. You still need to arrange all the timepieces of a single lecture to the same classroom, and avoid conflict.
+% \begin{enumerate}
+%     \item Is the number of classroom needed still equals to the depth? Prove your answer. 
+%     \item Design an algorithm to find the minimal number of classroom needed.
+% \end{enumerate}
+\end{enumerate}
+
+%========================================================================
+\end{document}
+

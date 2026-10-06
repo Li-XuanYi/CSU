@@ -1,0 +1,373 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{setspace}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab04-Amortized\&Graph}}\vspace{1mm}\\
+CS2312-Algorithm and complexity, Xiaofeng Gao, Spring 2026.}}
+\begin{center}
+\footnotesize{\color{red}$*$ Contact TA Yixuan Cai for any questions. Include both your .pdf and .tex files in the uploaded .rar or .zip file.}
+
+% Please write down your name, student id and email.
+\footnotesize{\color{blue}$*$ Name: Yiming Li  \quad Student ID: 524031910538 \quad Email: m10624@sjtu.edu.cn}
+\end{center}
+
+\begin{enumerate}
+  \item {\color{purple}(Amortized
+   in special data structure)} Consider a special data structure consists of $k$ irrelevant (i.e. elements in different arrays do not have sequence constraint) non-decreasing arrays $A_0, A_1, \cdots, A_{k-1}$. The size of array $A_i$ is $2^i$. At any time, any array is either full or empty. Suppose the total number of elements is $n$. How can we insert an element into such data structure? Please analyze the time cost in the worst case and the amortized time cost. Inserting or deleting an element from an array can be regarded as a meta operation.
+
+        
+    \begin{enumerate}
+        \item Insertion under the special data structure
+        
+        This data structure behaves like a binary counter, where each array $A_i$ corresponds to the $i$-th bit. If $A_i$ is full, the bit is $1$; if empty, the bit is $0$. Inserting a new element correspond to a "+1" operation. Since the elements within each array are sorted and arrays are independent, we can merge full arrays to maintain the non-decreasing order in linear time.
+        
+        \begin{algorithm}[H]
+            \LinesNumbered
+            \KwIn{An element $e$ to be inserted, and arrays $A_0, A_1, \ldots, A_{k-1}$}
+            \KwOut{New data structure after the insertion}
+            \BlankLine
+            \caption{Special Structure Insertion} \label{Algorithm 2}
+            
+            create a temporary array $T \leftarrow [e]$\;
+            $i \leftarrow 0$\;
+            \While{$A_i$ is full}{
+                $T \leftarrow \text{Merge}(A_i, T)$ \tcp*{Merge in $O(|A_i| + |T|)$ time}
+                clear $A_i$ \tcp*{Mark $A_i$ as empty}
+                $i \leftarrow i + 1$\;
+            }
+            $A_i \leftarrow T$ \tcp*{Copy $T$ to the empty array $A_i$}
+        \end{algorithm}
+        
+        \item Analyze of the time cost in the worst case and the amortized time cost
+        
+        \textbf{Worst-case Analysis}
+        
+        The worst case occurs when all lower-order arrays are full when insertion occurs ($n = 2^k - 1$, which corresponds to a binary representation of all $1$s). Inserting a new element requires to move elements of all arrays(from $A_0$ to $A_{k-1}$), to the array $A_k$.
+        
+        In this situation, the merging steps require:
+        \[
+        (1 + 1) + (2 + 2) + (4 + 4) + \ldots + (2^{k-1} + 2^{k-1}) = \sum_{j=0}^{k-1} 2^{j+1} = 2^{k+1} - 2
+        \]
+        operations. Since $n = 2^k - 1$, the total number of operations is $2n$, which gives a worst-case time complexity of 
+        \[
+        \boxed{O(n)}
+        \]
+    
+        \textbf{Amortized Analysis (Aggregate Method)}
+        
+        Consider how frequently each array $A_i$ is involved in a merge or copy operation during $n$ insertions:
+        \begin{itemize}
+            \item Array $A_0$ (size $2^0$) is involved in every insertion, which happens $n$ times.
+            \item Array $A_1$ (size $2^1$) is involved in every $2$ insertions, which happens $\lfloor n/2 \rfloor$ times.
+            \item In general, array $A_i$ (size $2^i$) is involved every $2^i$ insertions, which happens $\lfloor n/2^i \rfloor$ times.
+        \end{itemize}
+        Thus, the total cost for $n$ insertions is:
+        \[
+        \sum_{i=0}^{\lfloor \log_2 n \rfloor} \lfloor \frac{n}{2^i} \rfloor \cdot 2^i \leq \sum_{i=0}^{\lfloor \log_2 n \rfloor} \frac{n}{2^i} \cdot 2^i = n \sum_{i=0}^{\lfloor \log_2 n \rfloor} 1 = O(n \log n)
+        \]
+        The amortized cost per insertion, is:
+        \[
+        \frac{O(n \log n)}{n} = \boxed{O(\log n)}
+        \]
+    \end{enumerate}
+
+   \item {\color{purple}(DFS\&BFS)} Let $G = (V, E)$ be a graph and $s$ be a vertex such that there is a path from s to each $u \in V$ . We say $G$ is a \textbf{good graph} if there exists a tree $T = (V, E′)$ that share the same vertex set $V$ with $G$ such that $T$ is both a depth-first search tree and a breadth-first  search tree.
+    \begin{enumerate}
+        \item If $G$ is an undirected graph, prove that $G$ is a \textbf{good graph} if and only if $G$ is a tree.
+
+        \begin{proof}
+        
+        \textbf{Sufficiency ($\Leftarrow$):} Suppose $G$ is an undirected tree. When running either DFS or BFS on $G$ starting from $s$, every edge in $G$ must be traversed to discover all vertices. Therefore, both the DFS tree and the BFS tree must be identical to $G$ itself. Choosing $T = G$ satisfies the condition, so $G$ is a good graph.
+        
+        \textbf{Necessity ($\Rightarrow$):} Suppose $G$ is a good graph and let $T = (V, E')$ be the tree that is both a BFS-tree and a DFS-tree.
+        Assume $G$ is not a tree. Then there exists an edge $e = \{u, v\} \in E \setminus E'$.
+        Since $T$ is a BFS-tree, the depths of $u$ and $v$ in $T$ differ by at most $1$.
+        Since $T$ is a DFS-tree of an undirected graph, every non-tree edge must be a back edge, i.e., one endpoint is an ancestor of the other, so their depth difference is at least $1$.
+        Thus the depth difference is exactly $1$, meaning $u$ and $v$ are parent and child in $T$, and there exists a edge in $T$ that connects $u$ and $v$. But the edge $\{u, v\}$ is not in $T$, leads to contradiction.
+        Hence no such edge exists, and $G = T$ is a tree.
+        \end{proof}
+        
+        \item If $G$ is a \textbf{good directed acyclic graph}, prove or disprove that the vertex set $V$ can be sorted in an array $L$ such that $L$ is both an non-decreasing order of the distances from $s$ and a topological order.
+
+        \medskip
+        We disprove the statement by constructing a counterexample.
+        Let $V = \{s, a, b, c\}$ and $E = \{s \to a,\; s \to b,\; b \to c,\; c \to a\}$.
+        Clearly $G$ is a directed acyclic graph and every vertex is reachable from $s$.
+        Define the spanning tree $T = (V, E')$ with $E' = \{s \to a,\; s \to b,\; b \to c\}$, T is both a BFS-tree and a DFS-tree.
+        
+        Thus $G$ is a good graph. The distance non-decreasing order requires $a$ and $b$ (distance $1$) to appear before $c$ (distance $2$).
+        However, the edge $c \to a$ forces $c$ to precede $a$ in any topological order.
+        These two requirements are contradictory.
+
+    \end{enumerate}
+
+
+
+    \item {\color{purple}(Path)} You are given a directed graph $G$, and a start vertex $u$. Every vertex in the graph contains a non-negative number of points you can collect on the first time you visit the vertex (if you visit the vertex again you get no points the second time, but there’s no penalty). You would like to figure out how many points you could collect in the graph. Design algorithms respectively if 
+    \begin{enumerate}
+        \item $G$ is strongly connected. (hint: you do not have to find the exact path, just the value.)
+        \item $G$ is a DAG. 
+        \item $G$ is any directed graph.
+    \end{enumerate}
+    For (a) and (b), just explain your idea. For (c), give full algorithm along with pseodocode.
+
+    \begin{enumerate}
+    \item \textbf{$G$ is strongly connected.}
+    
+    In a strongly connected graph, every vertex is reachable from every other vertex. 
+    We can always continue to any unvisited vertex after visiting any vertex. 
+    Hence the maximum score is simply the sum of all vertex weights $\sum_{v\in V} w(v)$.
+    
+    \item \textbf{$G$ is a DAG.}
+    
+    A DAG has no cycles, so any walk cannot revisit a vertex.
+    The set of visited vertices forms a directed path starting at $u$. 
+    The problem reduces to finding a directed path beginning at $u$ that maximizes the sum of vertex weights. 
+    This can be solved by topologically sorting the DAG and using dynamic programming:
+
+    \begin{algorithm}[H]
+        \LinesNumbered
+        \KwIn{DAG $G=(V,E)$, start vertex $u$, vertex weights $w(v)$ for all $v\in V$}
+        \KwOut{Maximum total points that can be collected starting from $u$}
+        \BlankLine
+        \caption{Max Points in DAG} \label{Algorithm DAG}
+        
+        Compute a topological ordering $topo[1\dots n]$ of $G$\;
+        Initialize array $dp[v] \leftarrow -\infty$ for all $v \in V$\;
+        $dp[u] \leftarrow w(u)$\;
+        \For{$v \in topo$}{
+            \If{$dp[v] > -\infty$}{
+                \For{$(v, t) \in E$}{
+                    $dp[t] \leftarrow \max(dp[t],\; dp[v] + w(t))$\;
+                }
+            }
+        }
+        $result \leftarrow \max_{v \in V} dp[v]$\;
+        output $result$\;
+    \end{algorithm}
+    
+    \item \textbf{$G$ is an arbitrary directed graph.}
+    
+    \begin{itemize}
+    \item Compute the strongly connected components (SCCs) of $G$. Let $c(v)$ denote the component ID of vertex $v$.
+    \item For each SCC $C$, define its weight $W(C) = \sum_{v\in C} w(v)$.
+    \item Build the condensation DAG: create a vertex for each SCC. For every edge $(x,y)$ in $G$, if $c(x) \neq c(y)$, add a directed edge from $c(x)$ to $c(y)$.
+    \item The problem reduces to calculating max points in DAG.
+    \end{itemize}
+
+    \begin{algorithm}[H]
+        \LinesNumbered
+        \KwIn{Directed graph $G=(V,E)$}
+        \KwOut{Array $comp[1\dots n]$ mapping each vertex to SCC id, and $m$ the number of SCCs }
+        \BlankLine
+        \caption{Tarjan's Strongly Connected Components Algorithm} \label{Algorithm Tarjan}
+        
+        Initialize $index \leftarrow 0$\;
+        Initialize array $dfn[v] \leftarrow -1$ for all $v \in V$ \tcp{Discovery time, -1 means unvisited}
+        Initialize array $low[v] \leftarrow -1$ for all $v \in V$\;
+        Initialize array $onStack[v] \leftarrow \text{false}$ for all $v \in V$\;
+        Initialize empty stack $S$\;
+        Initialize $comp[v] \leftarrow -1$ for all $v \in V$\;
+        Initialize $compCnt \leftarrow 0$\;
+        \BlankLine
+        
+        \For{each $v \in V$}{
+            \If{$dfn[v] = -1$}{
+                \textsc{StrongConnect}($v$)\;
+            }
+        }
+        \Return $(comp, compCnt)$\;
+        \BlankLine
+        \BlankLine
+        
+        \SetKwFunction{StrongConnect}{StrongConnect}
+        \SetKwProg{Fn}{Function}{:}{}
+        \Fn{\StrongConnect{$v$}}{
+            $dfn[v] \leftarrow index$\;
+            $low[v] \leftarrow index$\;
+            $index \leftarrow index + 1$\;
+            Push $v$ onto stack $S$\;
+            $onStack[v] \leftarrow \text{true}$\;
+            \BlankLine
+            
+            \For{each $(v, w) \in E$}{
+                \If{$dfn[w] = -1$}{
+                    \StrongConnect{$w$}\;
+                    $low[v] \leftarrow \min(low[v], low[w])$\;
+                }
+                \ElseIf{$onStack[w]$}{
+                    $low[v] \leftarrow \min(low[v], dfn[w])$\;
+                }
+            }
+            \BlankLine
+            
+            \If{$low[v] = dfn[v]$}{
+                \tcp{$v$ is the root of an SCC}
+                $compCnt \leftarrow compCnt + 1$\;
+                \Repeat{$w = v$}{
+                    Pop $w$ from stack $S$\;
+                    $onStack[w] \leftarrow \text{false}$\;
+                    $comp[w] \leftarrow compCnt$\;
+                }
+            }
+        }
+    \end{algorithm}
+
+    \begin{algorithm}[H]
+        \LinesNumbered
+        \KwIn{Directed graph $G=(V,E)$, start vertex $u$, vertex weights $w(v)$ for all $v\in V$}
+        \KwOut{Maximum total points that can be collected starting from $u$}
+        \BlankLine
+        \caption{Max Points in Arbitrary Directed Graph} \label{Algorithm General}
+        
+        Let $comp[v]$ be the SCC id of vertex $v$, and $m$ be the number of SCCs\;
+        Compute them using Algorithm~\ref{Algorithm Tarjan}\;
+        \BlankLine
+        \tcp{Build condensation DAG}
+        Initialize array $W[1\dots m] \leftarrow 0$\;
+        \For{$v \in V$}{
+            $W[comp[v]] \leftarrow W[comp[v]] + w(v)$\;
+        }
+        Create a new DAG $G' = (V', E')$ where:
+            \begin{itemize}
+                \item $V' = \{1, 2, \dots, m\}$ (one vertex per SCC)
+                \item For each $(x, y) \in E$ with $comp[x] \neq comp[y]$, add edge $(comp[x], comp[y])$ to $E'$
+            \end{itemize}
+        \BlankLine
+        \tcp{Run Algorithm~\ref{Algorithm DAG} on the condensation DAG}
+        $start \leftarrow comp[u]$\;
+        $result \leftarrow$ \textsc{MaxPointsInDAG}($G'$, $start$, $W$)\;
+        output $result$\;
+    \end{algorithm}
+    \end{enumerate}
+    
+
+    \item {\color{purple}(Flow\&Cut)} Given a bipartite graph $G = (V, E)$ with $n$ vertices and $m$ edges, we want to find the largest \textbf{independent set} $I$, i.e., a subset $I \subseteq V$ such that no two vertices in $I$ are adjacent in $G$. One way to solve the problem is to construct a flow network (a directed graph) $G′ = (V \cup\{s, t\}, E')$, where $s$ is the source and $t$ is the sink. Let $V_L$ and $V_R$ denote the left and right side of $V$ in $G$. For each $u \in V_L$, we add the directed edge $(s, u)$ to $E'$. For each $v \in V_R$, we add the directed edge $(v, t)$ to $E'$. For each $u,v \in E$ with $u \in V_L$ and $v \in V_R$, we add the directed edge $(u, v)$ to $G'$. All edges have capacity $1$. 
+    \begin{enumerate}
+        \item Prove that if there is an independent set in $G$ of size $k$, then there is an $(s, t)$-cut in $G'$ of capacity $n − k$.
+
+        \begin{proof}
+            Let $I\subseteq V$ be an independent set of size $k$ in $G$. 
+            Define an $(s,t)$-cut $(S,T)$ in $G'$ as follows:
+            \[
+            S = \{s\} \cup (V_L \cap I) \cup (V_R \setminus I),\qquad
+            T = (V_L \setminus I) \cup (V_R \cap I) \cup \{t\}.
+            \]
+            The capacity of this cut is the sum of capacities of edges going from $S$ to $T$.
+            \begin{itemize}
+                \item Edges $(s,u)$ with $u\in V_L$: capacity $1$, cross the cut iff $u\in T$, i.e., $u\in V_L\setminus I$. Number of such edges is $|V_L\setminus I|$.
+                \item Edges $(v,t)$ with $v\in V_R$: capacity $1$, cross the cut iff $v\in S$, i.e., $v\in V_R\setminus I$. Number is $|V_R\setminus I|$.
+                \item Edges $(u,v)$ with $u\in V_L, v\in V_R$: cross the cut iff $u\in S$ and $v\in T$. Here $S$ contains $V_L\cap I$, and $T$ contains $V_R\cap I$. Since $I$ is independent, there is no edge between $V_L\cap I$ and $V_R\cap I$, so no such edge crosses the cut.
+            \end{itemize}
+            Hence
+            \[
+            c(S,T) = |V_L\setminus I| + |V_R\setminus I| = (|V_L|-|V_L\cap I|)+(|V_R|-|V_R\cap I|) = n - |I| = n - k.
+            \]
+        \end{proof}
+
+        \item Conversely, prove that if there is an $(s, t)$-cut in $G'$ of capacity $n−k$, then there is an independent set in $G$ of size $k$.
+
+        \begin{proof}
+            Let $(S,T)$ be an $(s,t)$-cut in $G'$ with capacity $n-k$, $s\in S$, $t\in T$. 
+            Set
+            \[
+            A = V_L\cap S,\; B = V_L\cap T,\; C = V_R\cap S,\; D = V_R\cap T.
+            \]
+            The capacity is
+            \[
+            c(S,T) = |B| + |C| + e(A,D),
+            \]
+            where $e(A,D)$ is the number of edges from $A$ to $D$. Since $n = |A|+|B|+|C|+|D|$, we have
+            \[
+            |B|+|C|+e(A,D) = n-k = |A|+|B|+|C|+|D| - k \implies e(A,D) = |A|+|D| - k. \tag{1}
+            \]
+            
+            If $e(A,D)=0$, then $I = A\cup D = (V_L\cap S)\cup (V_R\cap T)$ is an independent set (no edge can have both endpoints in $I$), and by (1) $|I| = |A|+|D| = k$.
+            
+            If $e(A,D)>0$, we repeatedly modify the cut to eliminate all such edges without ever increasing the capacity.
+            Take an edge $(u,v)$ with $u\in A$, $v\in D$. Let $d$ be the number of edges from $A$ to $v$ (clearly $d\ge 1$). Move $v$ from $T$ to $S$.
+            The only edges that can change their contribution to the cut are:
+            \begin{itemize}
+                \item Each edge $(x,v)$ with $x\in A$: originally crosses the cut (since $x\in S, v\in T$), after the move both endpoints are in $S$, and capacity decreases by $d$.
+                \item The edge $(v,t)$: originally $v\in T, t\in T$ (no contribution), after the move $v\in S, t\in T$, and capacity increases by $1$.
+            \end{itemize}
+            Edges from $B$ to $v$ originally went from $T$ to $T$, after the move they go from $T$ to $S$, which never counts in the cut capacity (only $S\to T$ edges count). Edges from $C$ or $D$ to $v$ doesn't exist. Thus, All other edges incident to $v$ are unaffected or remain non-crossing.
+            Thus the net change in cut capacity is $\Delta = 1 - d \le 0$. The capacity does not increase, and $e(A,D)$ strictly decreases, as the edge $(u,v)$ disappears from $A$ to $D$.
+            
+            Repeating this process eventually yields a cut $(S^*,T^*)$ with capacity $c^* \le n-k$ and $e(A^*,D^*)=0$.
+            Then $I^* = (V_L\cap S^*)\cup (V_R\cap T^*)$ is an independent set, and
+            \[
+            |I^*| = |A^*|+|D^*| = n - c^* \ge n - (n-k) = k.
+            \]
+            Since any subset of an independent set is also independent, we can simply take any $k$ vertices from $I^*$. Hence there exists an independent set of size exactly $k$.
+        \end{proof}
+            
+        \item Conclude that there is a polynomial-time algorithm to compute a largest independent set in $G$.
+        
+        \medskip
+
+        In the constructed flow network all edge capacities are $1$, so the maximum flow value $f_{\max}$ equals the size of a maximum matching in the bipartite graph. Hence
+        \[
+        f_{\max} \le \min(|V_L|,|V_R|) \le n/2 \quad \text{and} \quad f_{\max} \le |E| = m.
+        \]
+        The Ford--Fulkerson algorithm augments flow by $1$ unit per iteration, using $O(E)$ time per augmentation, giving a total running time of $O(E \cdot f_{\max})$.
+        Therefore, the overall running time is
+        \[
+        O(E \cdot f_{\max}) \le O(m \cdot \min(n,\, m)) = O(m \cdot n) \;\;(\text{or } O(m^2)).
+        \]
+
+        Thus, the algorithm is strongly polynomial for this instance.
+
+    \end{enumerate}
+
+\end{enumerate}
+
+%========================================================================
+\end{document}
+
+

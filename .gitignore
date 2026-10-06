@@ -1,0 +1,6 @@
+/本地归档/
+**/.git/
+**/.DS_Store
+**/Thumbs.db
+**/__pycache__/
+**/.ipynb_checkpoints/
